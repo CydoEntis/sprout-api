@@ -1,6 +1,12 @@
-﻿namespace TaskGarden.Api.Services.Contracts;
+﻿using Microsoft.AspNetCore.Identity;
+using TaskGarden.Api.Dtos.Auth;
 
-public class IAuthManager
+namespace TaskGarden.Api.Services.Contracts;
+
+public interface IAuthManager
 {
-    
+    Task<LoginResponseDto> Login(LoginRequestDto loginDto);
+    Task<IEnumerable<IdentityError>> Register(RegisterRequestDto registerDto);
+    Task RefreshTokens();
+    Task Logout();
 }
