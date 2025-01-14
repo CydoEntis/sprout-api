@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-    </PropertyGroup>
+      <UserSecretsId>5c6b0dbc-3a4f-4de4-b123-80da9a720ebe</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
@@ -16,8 +17,13 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Dtos\" />
+      <Folder Include="Endpoints\" />
     </ItemGroup>
 
 </Project>
