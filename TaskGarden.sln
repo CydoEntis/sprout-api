@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskGarden.Api", "TaskGarden.Api\TaskGarden.Api.csproj", "{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
