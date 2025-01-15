@@ -33,9 +33,21 @@ public class AuthManager : IAuthManager
         _jwtIssuer = configuration[JwtConsts.Issuer];
     }
 
-    public Task<LoginResponseDto> Login(LoginRequestDto loginDto)
+    public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
     {
-        throw new NotImplementedException();
+        _user = await _userManager.FindByEmailAsync(loginDto.Email);
+        if (_user == null) throw new ArgumentNullException("User not found.");
+
+        bool isValidCredentials = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
+        if (!isValidCredentials) throw new ArgumentException("Invalid credentials.");
+
+        var token = GenerateAccessToken();
+
+        return new LoginResponseDto
+        {
+            Token = token,
+            UserId = _user.Id,
+        };
     }
 
     public Task<IEnumerable<IdentityError>> Register(RegisterRequestDto registerDto)
@@ -53,7 +65,7 @@ public class AuthManager : IAuthManager
         throw new NotImplementedException();
     }
 
-    private async Task<string> GenerateAccessToken()
+    private string GenerateAccessToken()
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -76,6 +88,7 @@ public class AuthManager : IAuthManager
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
 
     private async Task<RefreshToken> GenerateRefreshToken()
     {
