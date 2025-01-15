@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using TaskGarden.Api.Constants;
 using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
@@ -15,6 +16,10 @@ public class AuthManager : IAuthManager
     private readonly UserManager<User> _userManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
+    private readonly string _jwtSecret;
+    private readonly string _jwtAudience;
+    private readonly string _jwtIssuer;
+
     private User? _user;
 
     public AuthManager(UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
@@ -22,6 +27,10 @@ public class AuthManager : IAuthManager
         _userManager = userManager;
         _configuration = configuration;
         _mapper = mapper;
+
+        _jwtSecret = configuration[JwtConsts.Secret];
+        _jwtAudience = configuration[JwtConsts.Audience];
+        _jwtIssuer = configuration[JwtConsts.Issuer];
     }
 
     public Task<LoginResponseDto> Login(LoginRequestDto loginDto)
@@ -58,13 +67,21 @@ public class AuthManager : IAuthManager
         };
 
         var token = new JwtSecurityToken(
-            issuer: _configuration["JWT:ValidIssuer"],
-            audience: _configuration["JWT:ValidAudience"],
+            issuer: _jwtIssuer,
+            audience: _jwtAudience,
             claims: claims,
             expires: DateTime.Now.AddHours(1),
             signingCredentials: credentials
         );
-        
+
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private async Task<RefreshToken> GenerateRefreshToken()
+    {
+        var expires = DateTime.Now.AddHours(16);
+        var token = Guid.NewGuid().ToString();
+
+        return new RefreshToken { Token = token, ExpiryDate = expires };
     }
 }
