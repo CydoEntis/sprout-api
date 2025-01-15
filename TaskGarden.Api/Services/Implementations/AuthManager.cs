@@ -50,10 +50,19 @@ public class AuthManager : IAuthManager
         };
     }
 
-    public Task<IEnumerable<IdentityError>> Register(RegisterRequestDto registerDto)
+    public async Task<IEnumerable<IdentityError>?> Register(RegisterRequestDto registerDto)
     {
-        throw new NotImplementedException();
+        var _user = _mapper.Map<User>(registerDto);
+        var result = await _userManager.CreateAsync(_user, registerDto.Password);
+
+        if (!result.Succeeded)
+        {
+            return result.Errors;
+        }
+
+        return null;
     }
+
 
     public Task RefreshTokens()
     {
