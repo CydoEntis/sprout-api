@@ -25,4 +25,8 @@
       <Folder Include="Endpoints\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TaskGarden.Data\TaskGarden.Data.csproj" />
+    </ItemGroup>
+
 </Project>
