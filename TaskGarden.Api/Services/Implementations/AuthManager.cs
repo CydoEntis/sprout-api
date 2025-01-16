@@ -7,23 +7,27 @@ using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Constants;
 using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Data;
 using TaskGarden.Data.Models;
 
 namespace TaskGarden.Api.Services.Implementations;
 
 public class AuthManager : IAuthManager
 {
-    private readonly UserManager<User> _userManager;
+    private readonly AppDbContext _context;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
     private readonly string _jwtSecret;
     private readonly string _jwtAudience;
     private readonly string _jwtIssuer;
 
-    private User? _user;
+    private AppUser? _user;
 
-    public AuthManager(UserManager<User> userManager, IConfiguration configuration, IMapper mapper)
+    public AuthManager(AppDbContext context, UserManager<AppUser> userManager, IConfiguration configuration,
+        IMapper mapper)
     {
+        _context = context;
         _userManager = userManager;
         _configuration = configuration;
         _mapper = mapper;
@@ -52,7 +56,7 @@ public class AuthManager : IAuthManager
 
     public async Task<IEnumerable<IdentityError>?> Register(RegisterRequestDto registerDto)
     {
-        var _user = _mapper.Map<User>(registerDto);
+        var _user = _mapper.Map<AppUser>(registerDto);
         var result = await _userManager.CreateAsync(_user, registerDto.Password);
 
         if (!result.Succeeded)
@@ -105,5 +109,28 @@ public class AuthManager : IAuthManager
         var token = Guid.NewGuid().ToString();
 
         return new RefreshToken { Token = token, ExpiryDate = expires };
+    }
+
+    private async Task CreateSessionAsync(string userId, RefreshToken refreshToken)
+    {
+        var sessionId = Guid.NewGuid();
+        var session = new Session
+        {
+            UserId = userId,
+            SessionId = sessionId,
+            RefreshToken = refreshToken.Token,
+            RefreshTokenExpirationDate = refreshToken.ExpiryDate,
+        };
+    }
+
+    private async Task<Session> GetSessionByUserIdAsync(string userId)
+    {
+        return await _context.Session.GetByUserIdAsync(userId);
+    }
+
+    private Task<bool> ValidateRefreshToken(string refreshToken)
+    {
+        var session = await _context.Session.GetByRefreshTokenAsync(refreshToken);
+        return session != null && session.RefreshTokenExpirationDate > DateTime.Now;
     }
 }
