@@ -5,9 +5,9 @@ using TaskGarden.Data.Models;
 
 namespace TaskGarden.Data;
 
-public class AppDbContext : IdentityDbContext<User>
+public class AppDbContext : IdentityDbContext<AppUser>
 {
-    public DbSet<User> Users { get; set; }
+    public DbSet<AppUser> Users { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
