@@ -2,7 +2,7 @@
 
 public class Session : BaseEntity
 {
-    public required Guid SessionId { get; set; }
+    public required string SessionId { get; set; }
     public required string UserId { get; set; }
     public AppUser User { get; set; }
     public required string RefreshToken { get; set; }

@@ -111,26 +111,5 @@ public class AuthManager : IAuthManager
         return new RefreshToken { Token = token, ExpiryDate = expires };
     }
 
-    private async Task CreateSessionAsync(string userId, RefreshToken refreshToken)
-    {
-        var sessionId = Guid.NewGuid();
-        var session = new Session
-        {
-            UserId = userId,
-            SessionId = sessionId,
-            RefreshToken = refreshToken.Token,
-            RefreshTokenExpirationDate = refreshToken.ExpiryDate,
-        };
-    }
 
-    private async Task<Session> GetSessionByUserIdAsync(string userId)
-    {
-        return await _context.Session.GetByUserIdAsync(userId);
-    }
-
-    private Task<bool> ValidateRefreshToken(string refreshToken)
-    {
-        var session = await _context.Session.GetByRefreshTokenAsync(refreshToken);
-        return session != null && session.RefreshTokenExpirationDate > DateTime.Now;
-    }
 }
