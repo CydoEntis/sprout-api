@@ -49,6 +49,9 @@ public class TokenManager
     // TODO: Add Logic to create Refresh Tokens.
     public RefreshToken GenerateRefreshToken()
     {
-        throw new NotImplementedException();
+        var expirationDate = DateTime.Now.AddHours(16);
+        var token = Guid.NewGuid().ToString();
+
+        return new RefreshToken() { Token = token, ExpiryDate = expirationDate };
     }
 }
