@@ -1,6 +1,6 @@
 ﻿namespace TaskGarden.Api.Errors;
 
-public class ErrorMessages
+public class ExceptionMessages
 {
     public const string DefaultErrorMessage = "An error has occured.";
     public const string EmailInUse = "Email is already in use.";
