@@ -9,4 +9,6 @@ public interface IAuthManager
     Task<AuthenticatedResponseDto> Register(RegisterRequestDto registerDto);
     Task<RefreshTokensResponseDto> RefreshTokens();
     Task<LogoutResponseDto> Logout();
+    Task<ForgotPasswordResponseDto> ForgotPasswordAsync(ForgotPasswordRequestDto forgotPasswordRequestDto);
+    Task<ResetPasswordResponseDto> ResetPasswordAsync(ResetPasswordRequestDto requestDto);
 }

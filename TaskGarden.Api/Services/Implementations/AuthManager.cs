@@ -65,7 +65,6 @@ public class AuthManager : IAuthManager
         return await Login(new LoginRequestDto { Email = registerDto.Email, Password = registerDto.Password });
     }
 
-
     public async Task<RefreshTokensResponseDto> RefreshTokens()
     {
         var refreshToken = _cookieManager.Get(CookieConsts.RefreshToken);
@@ -127,5 +126,39 @@ public class AuthManager : IAuthManager
 
         return new ForgotPasswordResponseDto()
             { Message = "If an account with that email exists, a password reset link will be sent." };
+    }
+
+    public async Task<ResetPasswordResponseDto> ResetPasswordAsync(ResetPasswordRequestDto requestDto)
+    {
+        _user = await _userManager.FindByEmailAsync(requestDto.Email);
+        if (_user is null)
+            throw new NotFoundException(ExceptionMessages.UserNotFound);
+
+        var decodedToken = Uri.UnescapeDataString(requestDto.Token);
+
+        var tokenIsValid = await _userManager.VerifyUserTokenAsync(
+            _user,
+            _userManager.Options.Tokens.PasswordResetTokenProvider,
+            "ResetPassword",
+            decodedToken
+        );
+
+        if (!tokenIsValid)
+            throw new InvalidTokenException(ExceptionMessages.TokenInvalid);
+
+        var currentPasswordHash = _user.PasswordHash;
+        var passwordHasher = new PasswordHasher<AppUser>();
+        var passwordVerificationResult =
+            passwordHasher.VerifyHashedPassword(_user, currentPasswordHash, requestDto.NewPassword);
+
+        if (passwordVerificationResult == PasswordVerificationResult.Success)
+            throw new AlreadyExistsException("new-password", ExceptionMessages.OldPassword);
+
+        var resetPasswordResult = await _userManager.ResetPasswordAsync(_user, decodedToken, requestDto.NewPassword);
+        if (!resetPasswordResult.Succeeded)
+            throw new OperationException(ExceptionTitles.PasswordResetException,
+                ExceptionMessages.PasswordResetFailed);
+
+        return new ResetPasswordResponseDto() { Message = "Password has been reset." };
     }
 }
