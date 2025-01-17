@@ -12,6 +12,11 @@ public class SessionManager
         _sessionRepository = sessionRepository;
     }
 
+    public async Task<Session> GetSessionAsync(string refreshToken)
+    {
+        return await _sessionRepository.GetByRefreshToken(refreshToken);
+    }
+    
     public async Task CreateSessionAsync(string userId, RefreshToken refreshToken)
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -24,6 +29,13 @@ public class SessionManager
         };
     }
 
+    public async Task InvalidateSessionAsync(Session session)
+    {
+        session.IsVaild = false;
+        session.RefreshTokenExpirationDate = DateTime.Now;
+        await _sessionRepository.UpdateAsync(session);
+    }
+    
     public async Task<bool> ValidateRefreshToken(string refreshToken)
     {
         var session = await _sessionRepository.GetByRefreshToken(refreshToken);

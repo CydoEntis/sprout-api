@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Constants;
 using TaskGarden.Api.Dtos.Auth;
+using TaskGarden.Api.Errors;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
 
@@ -63,11 +64,19 @@ public class AuthManager : IAuthManager
         throw new NotImplementedException();
     }
 
-    public Task Logout()
+    public async Task Logout()
     {
         var refreshToken = _cookieManager.Get(CookieConsts.RefreshToken);
         if (string.IsNullOrEmpty(refreshToken))
-            throw new NotFoundException(ErrorMessages.TokenNotFound);
+            throw new NotFoundException(ExceptionMessages.TokenNotFound);
+
+        var session = await _sessionManager.GetSessionAsync(refreshToken);
+        if(session is null)
+            throw new NotFoundException(ExceptionMessages.SessionNotFound);
+
+        await _sessionManager.InvalidateSessionAsync(session);
+        _cookieManager.Delete(CookieConsts.RefreshToken);
+        return new LogoutResponseDto() {Message = "Logged out successfully."};
     }
 
     
