@@ -60,9 +60,30 @@ public class AuthManager : IAuthManager
     }
 
 
-    public Task RefreshTokens()
+    public async Task<RefreshTokensResponseDto> RefreshTokens()
     {
-        throw new NotImplementedException();
+        var refreshToken = _cookieManager.Get(CookieConsts.RefreshToken);
+        if (string.IsNullOrEmpty(refreshToken))
+            throw new NotFoundException(ExceptionMessages.TokenNotFound);
+
+        var session = await _sessionManager.GetSessionAsync(refreshToken);
+        if (session is null)
+            throw new NotFoundException(ExceptionMessages.SessionNotFound);
+
+        var _user = await _userManager.FindByIdAsync(session.UserId);
+        if (_user is null)
+            throw new NotFoundException(ExceptionMessages.UserNotFound);
+
+        var newAccessToken = _tokenManager.GenerateAccessToken(_user);
+        var newRefreshToken = _tokenManager.GenerateRefreshToken();
+
+        await _sessionManager.InvalidateSessionAsync(session);
+        await _sessionManager.CreateSessionAsync(newAccessToken, newRefreshToken);
+
+        _cookieManager.Append(CookieConsts.RefreshToken, newRefreshToken.Token, true, newRefreshToken.ExpiryDate);
+
+        return new RefreshTokensResponseDto()
+            { Message = "Tokens refreshed successfully.", AccessToken = newAccessToken };
     }
 
     public async Task<LogoutResponseDto> Logout()
@@ -72,15 +93,13 @@ public class AuthManager : IAuthManager
             throw new NotFoundException(ExceptionMessages.TokenNotFound);
 
         var session = await _sessionManager.GetSessionAsync(refreshToken);
-        if(session is null)
+        if (session is null)
             throw new NotFoundException(ExceptionMessages.SessionNotFound);
 
         await _sessionManager.InvalidateSessionAsync(session);
         _cookieManager.Delete(CookieConsts.RefreshToken);
-        return new LogoutResponseDto() {Message = "Logged out successfully."};
+        return new LogoutResponseDto() { Message = "Logged out successfully." };
     }
-
-    
 
 
     private async Task<RefreshToken> GenerateRefreshToken()

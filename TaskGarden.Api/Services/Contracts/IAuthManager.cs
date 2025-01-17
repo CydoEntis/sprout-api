@@ -7,6 +7,6 @@ public interface IAuthManager
 {
     Task<LoginResponseDto> Login(LoginRequestDto loginDto);
     Task<IEnumerable<IdentityError>> Register(RegisterRequestDto registerDto);
-    Task RefreshTokens();
+    Task<RefreshTokensResponseDto> RefreshTokens();
     Task<LogoutResponseDto> Logout();
 }
