@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using TaskGarden.Api.Constants;
 using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
@@ -62,10 +63,12 @@ public class AuthManager : IAuthManager
         throw new NotImplementedException();
     }
 
-    // public Task Logout()
-    // {
-    //     var refreshToken = _cookieManager.Get()
-    // }
+    public Task Logout()
+    {
+        var refreshToken = _cookieManager.Get(CookieConsts.RefreshToken);
+        if (string.IsNullOrEmpty(refreshToken))
+            throw new NotFoundException(ErrorMessages.TokenNotFound);
+    }
 
     
 
