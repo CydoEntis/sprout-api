@@ -105,12 +105,20 @@ public class AuthManager : IAuthManager
         return new LogoutResponseDto() { Message = "Logged out successfully." };
     }
 
-
-    private async Task<RefreshToken> GenerateRefreshToken()
+    public async Task<ForgotPasswordRequestDto> ForgotPasswordAsync(ForgotPasswordRequestDto forgotPasswordRequestDto)
     {
-        var expires = DateTime.Now.AddHours(16);
-        var token = Guid.NewGuid().ToString();
-
-        return new RefreshToken { Token = token, ExpiryDate = expires };
+        _user = await _userManager.FindByEmailAsync(forgotPasswordRequestDto.Email);
+        if(_user is null)
+            throw new NotFoundException(ExceptionMessages.UserNotFound);
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(_user);
+        var encodedToken = Uri.EscapeDataString(resetToken);
+        
+        // Set Email Placeholders
+        
+        // Set Email Body
+        
+        // Send Email
+        
+        // Return response
     }
 }
