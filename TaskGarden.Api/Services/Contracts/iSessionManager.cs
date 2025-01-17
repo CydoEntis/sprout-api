@@ -2,7 +2,7 @@
 
 namespace TaskGarden.Api.Services.Contracts;
 
-public interface iSessionManager
+public interface ISessionManager
 {
     Task CreateSessionAsync(string userId, RefreshToken refreshToken);
     Task<bool> ValidateRefreshToken(string refreshToken);

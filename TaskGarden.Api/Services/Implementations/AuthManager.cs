@@ -4,37 +4,28 @@ using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using TaskGarden.Api.Constants;
 using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Services.Contracts;
-using TaskGarden.Data;
 using TaskGarden.Data.Models;
 
 namespace TaskGarden.Api.Services.Implementations;
 
 public class AuthManager : IAuthManager
 {
-    private readonly AppDbContext _context;
     private readonly UserManager<AppUser> _userManager;
+    private readonly ICookieManager _cookieManager;
+    private readonly ISessionManager _sessionManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
-    private readonly string _jwtSecret;
-    private readonly string _jwtAudience;
-    private readonly string _jwtIssuer;
 
     private AppUser? _user;
 
-    public AuthManager(AppDbContext context, UserManager<AppUser> userManager, IConfiguration configuration,
+    public AuthManager(UserManager<AppUser> userManager, IConfiguration configuration,
         IMapper mapper)
     {
-        _context = context;
         _userManager = userManager;
         _configuration = configuration;
         _mapper = mapper;
-
-        _jwtSecret = configuration[JwtConsts.Secret];
-        _jwtAudience = configuration[JwtConsts.Audience];
-        _jwtIssuer = configuration[JwtConsts.Issuer];
     }
 
     public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
@@ -60,9 +51,7 @@ public class AuthManager : IAuthManager
         var result = await _userManager.CreateAsync(_user, registerDto.Password);
 
         if (!result.Succeeded)
-        {
             return result.Errors;
-        }
 
         return null;
     }
@@ -75,7 +64,7 @@ public class AuthManager : IAuthManager
 
     public Task Logout()
     {
-        throw new NotImplementedException();
+        var refreshToken = _cookieManager.Get()
     }
 
     private string GenerateAccessToken()
@@ -110,6 +99,4 @@ public class AuthManager : IAuthManager
 
         return new RefreshToken { Token = token, ExpiryDate = expires };
     }
-
-
 }

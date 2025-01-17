@@ -1,6 +1,8 @@
-﻿namespace TaskGarden.Api.Services.Implementations;
+﻿using TaskGarden.Api.Services.Contracts;
 
-public class CookieManager
+namespace TaskGarden.Api.Services.Implementations;
+
+public class CookieManager : ICookieManager
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 

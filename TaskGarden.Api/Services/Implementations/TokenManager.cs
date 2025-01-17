@@ -46,7 +46,6 @@ public class TokenManager
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    // TODO: Add Logic to create Refresh Tokens.
     public RefreshToken GenerateRefreshToken()
     {
         var expirationDate = DateTime.Now.AddHours(16);
