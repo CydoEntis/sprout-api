@@ -5,7 +5,7 @@ namespace TaskGarden.Api.Services.Contracts;
 
 public interface IAuthManager
 {
-    Task<LoginResponseDto> Login(LoginRequestDto loginDto);
+    Task<AuthenticatedResponseDto> Login(LoginRequestDto loginDto);
     Task<IEnumerable<IdentityError>> Register(RegisterRequestDto registerDto);
     Task<RefreshTokensResponseDto> RefreshTokens();
     Task<LogoutResponseDto> Logout();

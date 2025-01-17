@@ -31,7 +31,7 @@ public class AuthManager : IAuthManager
         _tokenManager = tokenManager;
     }
 
-    public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
+    public async Task<AuthenticatedResponseDto> Login(LoginRequestDto loginDto)
     {
         _user = await _userManager.FindByEmailAsync(loginDto.Email);
         if (_user == null)
@@ -39,22 +39,26 @@ public class AuthManager : IAuthManager
 
         if (!await _userManager.CheckPasswordAsync(_user, loginDto.Password))
             throw new ValidationException("email", ExceptionMessages.InvalidCredentials);
-        
+
         var accessToken = _tokenManager.GenerateAccessToken(_user);
         var refreshToken = _tokenManager.GenerateRefreshToken();
         await _sessionManager.CreateSessionAsync(_user.Id, refreshToken);
         _cookieManager.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
-        
-        return new LoginResponseDto() {Message = "Logged in successfully.", AccessToken = accessToken};
+
+        return new AuthenticatedResponseDto() { Message = "Logged in successfully.", AccessToken = accessToken };
     }
 
-    public async Task<IEnumerable<IdentityError>?> Register(RegisterRequestDto registerDto)
+    public async Task<AuthenticatedResponseDto> Register(RegisterRequestDto registerDto)
     {
+        var existingEmail = await _userManager.FindByEmailAsync(registerDto.Email);
+        if (existingEmail is not null)
+            throw new ValidationException("email", ExceptionMessages.EmailInUse);
+
         var _user = _mapper.Map<AppUser>(registerDto);
         var result = await _userManager.CreateAsync(_user, registerDto.Password);
 
         if (!result.Succeeded)
-            return result.Errors;
+                throw new ResourceCreationException(ExceptionMessages.RegistrationFailed);
 
         return null;
     }
