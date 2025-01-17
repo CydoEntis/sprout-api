@@ -15,17 +15,19 @@ public class AuthManager : IAuthManager
     private readonly UserManager<AppUser> _userManager;
     private readonly ICookieManager _cookieManager;
     private readonly ISessionManager _sessionManager;
+    private readonly ITokenManager _tokenManager;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
     private AppUser? _user;
 
     public AuthManager(UserManager<AppUser> userManager, IConfiguration configuration,
-        IMapper mapper)
+        IMapper mapper, ITokenManager tokenManager)
     {
         _userManager = userManager;
         _configuration = configuration;
         _mapper = mapper;
+        _tokenManager = tokenManager;
     }
 
     public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
@@ -36,7 +38,7 @@ public class AuthManager : IAuthManager
         bool isValidCredentials = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
         if (!isValidCredentials) throw new ArgumentException("Invalid credentials.");
 
-        var token = GenerateAccessToken();
+        var token = _tokenManager.GenerateToken(_user);
 
         return new LoginResponseDto
         {
@@ -67,29 +69,7 @@ public class AuthManager : IAuthManager
         var refreshToken = _cookieManager.Get()
     }
 
-    private string GenerateAccessToken()
-    {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Sub, _user.UserName),
-            new Claim(JwtRegisteredClaimNames.Email, _user.Email),
-            new Claim("userId", _user.Id),
-        };
-
-        var token = new JwtSecurityToken(
-            issuer: _jwtIssuer,
-            audience: _jwtAudience,
-            claims: claims,
-            expires: DateTime.Now.AddHours(1),
-            signingCredentials: credentials
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
+    
 
 
     private async Task<RefreshToken> GenerateRefreshToken()
