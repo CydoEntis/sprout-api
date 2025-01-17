@@ -1,4 +1,6 @@
-﻿namespace TaskGarden.Api.Errors;
+﻿using TaskGarden.Api.Constants;
+
+namespace TaskGarden.Api.Errors;
 
 public class IsRequiredException(string message)
-    : ServiceException(StatusCodes.Status400BadRequest, ErrorTitles.RequiredException, message);
+    : BaseException(StatusCodes.Status400BadRequest, ExceptionTitles.RequiredException, message);

@@ -1,5 +1,7 @@
-﻿namespace TaskGarden.Api.Errors;
+﻿using TaskGarden.Api.Constants;
+
+namespace TaskGarden.Api.Errors;
 
 public class InvalidTokenException(string errorMessage) : BaseException(StatusCodes.Status401Unauthorized,
-    ErrorTitles.InvalidToken,
+    ExceptionTitles.InvalidToken,
     errorMessage);
