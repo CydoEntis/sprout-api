@@ -16,16 +16,14 @@ public class AuthManager : IAuthManager
     private readonly ICookieManager _cookieManager;
     private readonly ISessionManager _sessionManager;
     private readonly ITokenManager _tokenManager;
-    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
     private AppUser? _user;
 
-    public AuthManager(UserManager<AppUser> userManager, IConfiguration configuration,
+    public AuthManager(UserManager<AppUser> userManager,
         IMapper mapper, ITokenManager tokenManager)
     {
         _userManager = userManager;
-        _configuration = configuration;
         _mapper = mapper;
         _tokenManager = tokenManager;
     }
@@ -64,10 +62,10 @@ public class AuthManager : IAuthManager
         throw new NotImplementedException();
     }
 
-    public Task Logout()
-    {
-        var refreshToken = _cookieManager.Get()
-    }
+    // public Task Logout()
+    // {
+    //     var refreshToken = _cookieManager.Get()
+    // }
 
     
 
