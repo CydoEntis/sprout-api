@@ -4,22 +4,25 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Constants;
 using TaskGarden.Data.Models;
+using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Api.Services.Implementations;
 
 public class TokenManager
 {
     private readonly IConfiguration _configuration;
+    private readonly ISessionRepository _sessionRepository;
     private readonly string _jwtSecret;
     private readonly string _jwtAudience;
     private readonly string _jwtIssuer;
 
-    public TokenManager(IConfiguration configuration)
+    public TokenManager(IConfiguration configuration, ISessionRepository sessionRepository)
     {
         _configuration = configuration;
-        _jwtSecret = configuration[JwtConsts.Secret];
-        _jwtAudience = configuration[JwtConsts.Audience];
-        _jwtIssuer = configuration[JwtConsts.Issuer];
+        _sessionRepository = sessionRepository;
+        _jwtSecret = _configuration[JwtConsts.Secret];
+        _jwtAudience = _configuration[JwtConsts.Audience];
+        _jwtIssuer = _configuration[JwtConsts.Issuer];
     }
 
     public string GenerateAccessToken(AppUser user)
@@ -52,5 +55,11 @@ public class TokenManager
         var token = Guid.NewGuid().ToString();
 
         return new RefreshToken() { Token = token, ExpiryDate = expirationDate };
+    }
+
+    public async Task<bool> IsRefreshTokenValid(string token)
+    {
+        var session = await _sessionRepository.GetByRefreshToken(token);
+        return session.RefreshTokenExpirationDate > DateTime.Now;
     }
 }
