@@ -1,6 +1,6 @@
 ﻿namespace TaskGarden.Api.Dtos.Auth;
 
-public class ForgotPasswordRequestDto : ResponseDto
+public class ForgotPasswordRequestDto
 {
     public string Email { get; set; }
 }

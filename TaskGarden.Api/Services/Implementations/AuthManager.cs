@@ -18,6 +18,8 @@ public class AuthManager : IAuthManager
     private readonly UserManager<AppUser> _userManager;
     private readonly ICookieManager _cookieManager;
     private readonly ISessionManager _sessionManager;
+    private readonly IEmailTemplateService _emailTemplateService;
+    private readonly IEmailService _emailService;
     private readonly ITokenManager _tokenManager;
     private readonly IMapper _mapper;
 
@@ -58,7 +60,7 @@ public class AuthManager : IAuthManager
         var result = await _userManager.CreateAsync(_user, registerDto.Password);
 
         if (!result.Succeeded)
-                throw new ResourceCreationException(ExceptionMessages.RegistrationFailed);
+            throw new ResourceCreationException(ExceptionMessages.RegistrationFailed);
 
         return await Login(new LoginRequestDto { Email = registerDto.Email, Password = registerDto.Password });
     }
@@ -105,20 +107,25 @@ public class AuthManager : IAuthManager
         return new LogoutResponseDto() { Message = "Logged out successfully." };
     }
 
-    public async Task<ForgotPasswordRequestDto> ForgotPasswordAsync(ForgotPasswordRequestDto forgotPasswordRequestDto)
+    public async Task<ForgotPasswordResponseDto> ForgotPasswordAsync(ForgotPasswordRequestDto forgotPasswordRequestDto)
     {
         _user = await _userManager.FindByEmailAsync(forgotPasswordRequestDto.Email);
-        if(_user is null)
+        if (_user is null)
             throw new NotFoundException(ExceptionMessages.UserNotFound);
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(_user);
         var encodedToken = Uri.EscapeDataString(resetToken);
-        
-        // Set Email Placeholders
-        
-        // Set Email Body
-        
-        // Send Email
-        
-        // Return response
+        var resetUrl = $"{ProjectConsts.DevUrl}/reset-password?token={encodedToken}";
+        var placeholders = new Dictionary<string, string>
+        {
+            { "Recipient's Email", forgotPasswordRequestDto.Email },
+            { "Reset Link", resetUrl }
+        };
+
+        var emailBody = _emailTemplateService.GetEmailTemplate("ForgotPasswordTemplate", placeholders);
+        await _emailService.SendEmailAsync("TaskGarden", forgotPasswordRequestDto.Email, "Forgot Password Request",
+            emailBody);
+
+        return new ForgotPasswordResponseDto()
+            { Message = "If an account with that email exists, a password reset link will be sent." };
     }
 }
