@@ -34,18 +34,18 @@ public class AuthManager : IAuthManager
     public async Task<LoginResponseDto> Login(LoginRequestDto loginDto)
     {
         _user = await _userManager.FindByEmailAsync(loginDto.Email);
-        if (_user == null) throw new ArgumentNullException("User not found.");
+        if (_user == null)
+            throw new ValidationException("email", ExceptionMessages.InvalidCredentials);
 
-        bool isValidCredentials = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
-        if (!isValidCredentials) throw new ArgumentException("Invalid credentials.");
-
-        var token = _tokenManager.GenerateToken(_user);
-
-        return new LoginResponseDto
-        {
-            Token = token,
-            UserId = _user.Id,
-        };
+        if (!await _userManager.CheckPasswordAsync(_user, loginDto.Password))
+            throw new ValidationException("email", ExceptionMessages.InvalidCredentials);
+        
+        var accessToken = _tokenManager.GenerateAccessToken(_user);
+        var refreshToken = _tokenManager.GenerateRefreshToken();
+        await _sessionManager.CreateSessionAsync(_user.Id, refreshToken);
+        _cookieManager.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
+        
+        return new LoginResponseDto() {Message = "Logged in successfully.", AccessToken = accessToken};
     }
 
     public async Task<IEnumerable<IdentityError>?> Register(RegisterRequestDto registerDto)
