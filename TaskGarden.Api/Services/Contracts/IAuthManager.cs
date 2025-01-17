@@ -11,4 +11,5 @@ public interface IAuthManager
     Task<LogoutResponseDto> Logout();
     Task<ForgotPasswordResponseDto> ForgotPasswordAsync(ForgotPasswordRequestDto forgotPasswordRequestDto);
     Task<ResetPasswordResponseDto> ResetPasswordAsync(ResetPasswordRequestDto requestDto);
+    Task<ChangePasswordResponseDto> ChangePasswordAsync(string userId, ChangePasswordRequestDto requestDto);
 }

@@ -161,4 +161,22 @@ public class AuthManager : IAuthManager
 
         return new ResetPasswordResponseDto() { Message = "Password has been reset." };
     }
+
+    public async Task<ChangePasswordResponseDto> ChangePasswordAsync(string userId, ChangePasswordRequestDto requestDto)
+    {
+        _user = await _userManager.FindByIdAsync(userId);
+        if (_user is null)
+            throw new NotFoundException(ExceptionMessages.UserNotFound);
+
+        var isCurrentPasswordValid = await _userManager.CheckPasswordAsync(_user, requestDto.CurrentPassword);
+        if (!isCurrentPasswordValid)
+            throw new ValidationException("current-password", ExceptionMessages.CurrentPasswordMismatch);
+
+        var updateResult =
+            await _userManager.ChangePasswordAsync(_user, requestDto.CurrentPassword, requestDto.NewPassword);
+        if (!updateResult.Succeeded)
+            throw new ResourceModificationException(ExceptionMessages.ChangePasswordFailed);
+
+        return new ChangePasswordResponseDto() { Message = "Password has been changed." };
+    }
 }
