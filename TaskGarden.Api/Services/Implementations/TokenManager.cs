@@ -3,12 +3,13 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Constants;
+using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Api.Services.Implementations;
 
-public class TokenManager
+public class TokenManager : ITokenManager
 {
     private readonly IConfiguration _configuration;
     private readonly ISessionRepository _sessionRepository;
