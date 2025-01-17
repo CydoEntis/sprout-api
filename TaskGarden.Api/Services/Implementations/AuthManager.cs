@@ -60,7 +60,7 @@ public class AuthManager : IAuthManager
         if (!result.Succeeded)
                 throw new ResourceCreationException(ExceptionMessages.RegistrationFailed);
 
-        return null;
+        return await Login(new LoginRequestDto { Email = registerDto.Email, Password = registerDto.Password });
     }
 
 
