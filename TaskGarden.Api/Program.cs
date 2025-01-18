@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TaskGarden.Api.Configurations;
 using TaskGarden.Api.Constants;
 using TaskGarden.Api.Endpoints;
 using TaskGarden.Api.Services.Contracts;
@@ -17,6 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -48,7 +52,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration[JwtConsts.Secret]))
     };
 });
-
 
 // Repositories
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
