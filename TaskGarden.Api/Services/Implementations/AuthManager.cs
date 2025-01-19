@@ -26,11 +26,15 @@ public class AuthManager : IAuthManager
     private AppUser? _user;
 
     public AuthManager(UserManager<AppUser> userManager,
-        IMapper mapper, ITokenManager tokenManager)
+        IMapper mapper, ITokenManager tokenManager, ICookieManager cookieManager, ISessionManager sessionManager, IEmailTemplateService emailTemplateService, IEmailService emailService)
     {
         _userManager = userManager;
         _mapper = mapper;
         _tokenManager = tokenManager;
+        _cookieManager = cookieManager;
+        _sessionManager = sessionManager;
+        _emailTemplateService = emailTemplateService;
+        _emailService = emailService;
     }
 
     public async Task<AuthenticatedResponseDto> Login(LoginRequestDto loginDto)
