@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", policy => policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
 });
 
-var conn = builder.Configuration.GetConnectionString(ProjectConsts.ConnectionString);
+var conn = builder.Configuration[ProjectConsts.ConnectionString];
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(conn, options => options.CommandTimeout(360)));
 
