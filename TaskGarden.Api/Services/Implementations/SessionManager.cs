@@ -35,13 +35,13 @@ public class SessionManager : ISessionManager
     public async Task InvalidateSessionAsync(Session session)
     {
         session.IsVaild = false;
-        session.RefreshTokenExpirationDate = DateTime.Now;
+        session.RefreshTokenExpirationDate = DateTime.UtcNow;
         await _sessionRepository.UpdateAsync(session);
     }
     
     public async Task<bool> ValidateRefreshToken(string refreshToken)
     {
         var session = await _sessionRepository.GetByRefreshToken(refreshToken);
-        return session != null && session.RefreshTokenExpirationDate > DateTime.Now;
+        return session != null && session.RefreshTokenExpirationDate > DateTime.UtcNow;
     }
 }

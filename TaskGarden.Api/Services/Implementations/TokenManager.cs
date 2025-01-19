@@ -43,7 +43,7 @@ public class TokenManager : ITokenManager
             issuer: _jwtIssuer,
             audience: _jwtAudience,
             claims: claims,
-            expires: DateTime.Now.AddHours(1),
+            expires: DateTime.UtcNow.AddHours(1),
             signingCredentials: credentials
         );
 
@@ -52,7 +52,7 @@ public class TokenManager : ITokenManager
 
     public RefreshToken GenerateRefreshToken()
     {
-        var expirationDate = DateTime.Now.AddHours(16);
+        var expirationDate = DateTime.UtcNow.AddHours(16);
         var token = Guid.NewGuid().ToString();
 
         return new RefreshToken() { Token = token, ExpiryDate = expirationDate };
@@ -61,6 +61,6 @@ public class TokenManager : ITokenManager
     public async Task<bool> IsRefreshTokenValid(string token)
     {
         var session = await _sessionRepository.GetByRefreshToken(token);
-        return session.RefreshTokenExpirationDate > DateTime.Now;
+        return session.RefreshTokenExpirationDate > DateTime.UtcNow;
     }
 }
