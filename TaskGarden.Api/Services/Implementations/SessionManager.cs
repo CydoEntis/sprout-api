@@ -1,9 +1,10 @@
-﻿using TaskGarden.Data.Models;
+﻿using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Api.Services.Implementations;
 
-public class SessionManager
+public class SessionManager : ISessionManager
 {
     private readonly ISessionRepository _sessionRepository;
 
@@ -27,6 +28,8 @@ public class SessionManager
             RefreshToken = refreshToken.Token,
             RefreshTokenExpirationDate = refreshToken.ExpiryDate,
         };
+
+        await _sessionRepository.AddAsync(session);
     }
 
     public async Task InvalidateSessionAsync(Session session)

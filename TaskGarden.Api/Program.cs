@@ -61,6 +61,7 @@ builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddScoped<ICookieManager, CookieManager>();
 builder.Services.AddScoped<ITokenManager, TokenManager>();
+builder.Services.AddScoped<ISessionManager, SessionManager>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 builder.Services.AddScoped<IEmailService, MailKitService>();
 
