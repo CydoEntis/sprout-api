@@ -1,5 +1,6 @@
 ﻿using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Data.Models;
 
 namespace TaskGarden.Api.Endpoints;
 
@@ -12,7 +13,7 @@ public static class AuthEndpoints
         group.MapPost("/register", async (RegisterRequestDto registerRequestDto, IAuthManager authManager) =>
         {
             var response = await authManager.Register(registerRequestDto);
-            return Results.Ok(response);
+            return Results.Ok(ApiResponse<>);
         })
         .WithName("Register")
         .Produces(StatusCodes.Status400BadRequest)
