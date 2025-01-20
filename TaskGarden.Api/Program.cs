@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Configurations;
 using TaskGarden.Api.Constants;
 using TaskGarden.Api.Endpoints;
+using TaskGarden.Api.Middleware;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Api.Services.Implementations;
 using TaskGarden.Data;
@@ -80,6 +81,8 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapAuthEndpoints();
 
