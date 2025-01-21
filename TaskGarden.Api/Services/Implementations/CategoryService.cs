@@ -32,6 +32,6 @@ public class CategoryService : ICategoryService
         category.UserId = userId;
 
         await _categoryRepository.AddAsync(category);
-        return new NewCategoryResponseDto() { Message = $"{category.Name} has been created" };
+        return new NewCategoryResponseDto() { Message = $"{category.Name} category has been created" };
     }
 }
