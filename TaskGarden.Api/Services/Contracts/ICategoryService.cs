@@ -1,6 +1,8 @@
-﻿namespace TaskGarden.Api.Services.Contracts;
+﻿using TaskGarden.Api.Dtos.Category;
 
-public class ICategoryService
+namespace TaskGarden.Api.Services.Contracts;
+
+public interface ICategoryService
 {
-    
+    Task<NewCategoryResponseDto> CreateNewCategory(CategoryRequestDto categoryRequestDto);
 }
