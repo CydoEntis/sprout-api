@@ -17,12 +17,12 @@ public class CategoryService : ICategoryService
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<NewCategoryResponseDto> CreateNewCategory(CategoryRequestDto categoryRequestDto)
+    public async Task<NewCategoryResponseDto> CreateNewCategory(NewCategoryRequestDto dto)
     {
-        var existingCategory = await _categoryRepository.GetCategoryByCategoryName(categoryRequestDto.Name);
+        var existingCategory = await _categoryRepository.GetCategoryByCategoryName(dto.Name);
         if (existingCategory is not null) throw new ConflictException("Category already exists");
 
-        var category = _mapper.Map<Category>(categoryRequestDto);
+        var category = _mapper.Map<Category>(dto);
 
         await _categoryRepository.AddAsync(category);
         return new NewCategoryResponseDto() { Message = $"{category.Name} has been created" };
