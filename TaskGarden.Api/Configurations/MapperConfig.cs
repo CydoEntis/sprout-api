@@ -6,6 +6,10 @@ public class MapperConfig
 {
     public static MapperConfiguration RegisterMappings()
     {
-        return new MapperConfiguration(config => { config.AddProfile(new AuthMappingProfile()); });
+        return new MapperConfiguration(config =>
+        {
+            config.AddProfile(new AuthMappingProfile());
+            config.AddProfile(new CategoryMappingProfile());
+        });
     }
 }
