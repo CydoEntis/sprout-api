@@ -63,6 +63,8 @@ builder.Services.AddAuthentication(options =>
 
 // Repositories
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 // Services
 builder.Services.AddScoped<IAuthManager, AuthManager>();

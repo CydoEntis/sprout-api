@@ -9,6 +9,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<AppUser> Users { get; set; }
     public DbSet<Session> Sessions { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -19,6 +20,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
         base.OnModelCreating(builder);
 
         // TODO: Add database seeding.
-        
     }
 }
