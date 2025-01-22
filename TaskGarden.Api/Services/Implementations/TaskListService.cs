@@ -32,13 +32,13 @@ public class TaskListService : ITaskListService
         return new NewTaskListResponseDto() { Message = $"Task list created: {taskList.Id}", Id = taskList.Id };
     }
     
-    public async Task<List<TaskListResponseDto>> GetAllTaskListsByCategoryAsync(TaskListRequestDto dto)
+    public async Task<List<TaskListResponseDto>> GetAllTaskListsByCategoryAsync(string category)
     {
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var taskLists =await _taskListRepository.GetAllTaskListsByCategoryForUser(userId, dto.Category);
+        var taskLists =await _taskListRepository.GetAllTaskListsByCategoryForUser(userId, category);
         return _mapper.Map<List<TaskListResponseDto>>(taskLists);
     }
     

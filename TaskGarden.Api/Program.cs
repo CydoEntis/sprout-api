@@ -100,6 +100,7 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapAuthEndpoints();
 app.MapCategoryEndpoints();
+app.MapTaskListEndpoints();
 
 
 app.Run();

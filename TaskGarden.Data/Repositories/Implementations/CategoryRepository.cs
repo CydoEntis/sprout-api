@@ -12,7 +12,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 
     public async Task<Category?> GetCategoryByCategoryName(string categoryName)
     {
-        return await _context.Categories.FirstOrDefaultAsync(c => c.Name == categoryName);
+        return await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == categoryName.ToLower());
     }
 
     public async Task<IEnumerable<Category>> GetAllCategoriesForUser(string userId)

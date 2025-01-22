@@ -17,7 +17,7 @@ public static class CategoryEndpoints
                     var response = await categoryService.CreateNewCategoryAsync(newCategoryRequestDto);
                     return Results.Ok(ApiResponse<NewCategoryResponseDto>.SuccessResponse(response));
                 })
-            .WithName("Add Category")
+            .WithName("AddCategory")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
@@ -28,7 +28,7 @@ public static class CategoryEndpoints
                     var response = await categoryService.GetAllCategoriesAsync();
                     return Results.Ok(ApiResponse<List<CategoryResponseDto>>.SuccessResponse(response));
                 })
-            .WithName("Get All Categories")
+            .WithName("GetAllCategories")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
