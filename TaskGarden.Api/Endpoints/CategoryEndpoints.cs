@@ -14,10 +14,22 @@ public static class CategoryEndpoints
         group.MapPost("/",
                 async (NewCategoryRequestDto newCategoryRequestDto, ICategoryService categoryService) =>
                 {
-                    var response = await categoryService.CreateNewCategory(newCategoryRequestDto);
+                    var response = await categoryService.CreateNewCategoryAsync(newCategoryRequestDto);
                     return Results.Ok(ApiResponse<NewCategoryResponseDto>.SuccessResponse(response));
                 })
             .WithName("Add Category")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK);
+
+        group.MapGet("/",
+                async (ICategoryService categoryService) =>
+                {
+                    var response = await categoryService.GetAllCategoriesAsync();
+                    return Results.Ok(ApiResponse<List<CategoryResponseDto>>.SuccessResponse(response));
+                })
+            .WithName("Get All Categories")
+            .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
     }

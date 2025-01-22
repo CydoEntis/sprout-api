@@ -10,5 +10,6 @@ public class CategoryMappingProfile : Profile
     public CategoryMappingProfile()
     {
         CreateMap<NewCategoryRequestDto, Category>().ReverseMap();
+        CreateMap<Category, CategoryResponseDto>().ReverseMap();
     }
 }
