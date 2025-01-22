@@ -1,6 +1,8 @@
-﻿namespace TaskGarden.Api.Services.Contracts;
+﻿using TaskGarden.Api.Dtos.TaskList;
+
+namespace TaskGarden.Api.Services.Contracts;
 
 public interface ITaskListService
 {
-    
+    Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto);
 }

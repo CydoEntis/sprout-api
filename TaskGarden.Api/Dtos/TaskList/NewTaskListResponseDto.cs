@@ -2,4 +2,5 @@
 
 public class NewTaskListResponseDto : ResponseDto
 {
+    public int Id { get; set; }
 }

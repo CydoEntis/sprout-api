@@ -27,5 +27,8 @@ public class TaskListService : ITaskListService
             throw new UnauthorizedAccessException("User not authenticated");
         
         var taskList = _mapper.Map<TaskList>(dto);
+        await _taskListRepository.AddAsync(taskList);
+        
+        return new NewTaskListResponseDto() { Message = $"Task list created: {taskList.Id}", Id = taskList.Id };
     }
 }
