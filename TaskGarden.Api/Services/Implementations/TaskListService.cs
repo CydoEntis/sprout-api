@@ -1,4 +1,5 @@
 ﻿using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Api.Services.Implementations;
 
