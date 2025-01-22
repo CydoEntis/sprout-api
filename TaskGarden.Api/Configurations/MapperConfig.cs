@@ -10,6 +10,7 @@ public class MapperConfig
         {
             config.AddProfile(new AuthMappingProfile());
             config.AddProfile(new CategoryMappingProfile());
+            config.AddProfile(new TaskListMappingProfile());
         });
     }
 }
