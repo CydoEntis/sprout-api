@@ -1,4 +1,5 @@
-﻿using TaskGarden.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Data.Repositories;
@@ -8,9 +9,9 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     public TaskListRepository(AppDbContext context) : base(context)
     {
     }
-    
-    public async Task<IEnumerable<Category>> GetAllTaskListsByCategoryForUser(string userId, string categoryName)
+
+    public async Task<IEnumerable<TaskList>> GetAllTaskListsByCategoryForUser(string userId, string categoryName)
     {
-        return await _context.TaskList.Where(c => c.UserId == userId && c.Category == categoryName).ToListAsync();
+        return await _context.TaskLists.Where(c => c.UserId == userId && c.Category == categoryName).ToListAsync();
     }
 }
