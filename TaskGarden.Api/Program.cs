@@ -64,7 +64,7 @@ builder.Services.AddAuthentication(options =>
 // Repositories
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
+builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
 
 // Services
 builder.Services.AddScoped<IAuthManager, AuthManager>();
@@ -74,6 +74,7 @@ builder.Services.AddScoped<ISessionManager, SessionManager>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 builder.Services.AddScoped<IEmailService, MailKitService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITaskListService, TaskListService>();
 
 
 var app = builder.Build();
