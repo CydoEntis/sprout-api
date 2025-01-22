@@ -1,4 +1,8 @@
-﻿using TaskGarden.Api.Services.Contracts;
+﻿using AutoMapper;
+using TaskGarden.Api.Dtos.TaskList;
+using TaskGarden.Api.Helpers;
+using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Api.Services.Implementations;
@@ -6,9 +10,22 @@ namespace TaskGarden.Api.Services.Implementations;
 public class TaskListService : ITaskListService
 {
     private readonly ITaskListRepository _taskListRepository;
+    private readonly IUserContextService _userContextService;
+    private readonly IMapper _mapper;
 
-    public TaskListService(ITaskListRepository taskListRepository)
+    public TaskListService(ITaskListRepository taskListRepository, IUserContextService userContextService, IMapper mapper)
     {
         _taskListRepository = taskListRepository;
+        _userContextService = userContextService;
+        _mapper = mapper;
+    }
+
+    public async Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+        
+        var taskList = _mapper.Map<TaskList>(dto);
     }
 }

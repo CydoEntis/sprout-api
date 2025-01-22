@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Errors;
+using TaskGarden.Api.Helpers;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
@@ -9,19 +10,19 @@ public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly IMapper _mapper;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IUserContextService _userContextService;
 
     public CategoryService(ICategoryRepository categoryRepository, IHttpContextAccessor httpContextAccessor,
-        IMapper mapper)
+        IMapper mapper, IUserContextService userContextService)
     {
         _categoryRepository = categoryRepository;
-        _httpContextAccessor = httpContextAccessor;
         _mapper = mapper;
+        _userContextService = userContextService;
     }
 
     public async Task<NewCategoryResponseDto> CreateNewCategoryAsync(NewCategoryRequestDto dto)
     {
-        var userId = GetUserIdFromContext();
+        var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
@@ -38,22 +39,11 @@ public class CategoryService : ICategoryService
 
     public async Task<List<CategoryResponseDto>> GetAllCategoriesAsync()
     {
-        var userId = GetUserIdFromContext();
+        var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
         var categories = await _categoryRepository.GetAllCategoriesForUser(userId);
         return _mapper.Map<List<CategoryResponseDto>>(categories);
-    }
-
-    private string? GetUserIdFromContext()
-    {
-        var user = _httpContextAccessor.HttpContext?.User;
-        if (user == null || !(user.Identity?.IsAuthenticated ?? false))
-        {
-            return null;
-        }
-
-        return user.FindFirst("userId")?.Value;
     }
 }

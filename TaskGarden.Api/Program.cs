@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Configurations;
 using TaskGarden.Api.Constants;
 using TaskGarden.Api.Endpoints;
+using TaskGarden.Api.Helpers;
 using TaskGarden.Api.Middleware;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Api.Services.Implementations;
@@ -61,12 +62,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+
+
 // Repositories
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
 
 // Services
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 builder.Services.AddScoped<ICookieManager, CookieManager>();
 builder.Services.AddScoped<ITokenManager, TokenManager>();
