@@ -13,6 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<TaskList> TaskLists { get; set; }
 
     public DbSet<UserTaskList> UserTaskLists { get; set; }
+    public DbSet<TaskListItem> TaskListItems { get; set; }
+
     
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
