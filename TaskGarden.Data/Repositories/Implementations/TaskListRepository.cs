@@ -12,6 +12,10 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
 
     public async Task<IEnumerable<TaskList>> GetAllTaskListsByCategoryForUser(string userId, string categoryName)
     {
-        return await _context.TaskLists.Where(c => c.UserId == userId && c.Category == categoryName).ToListAsync();
+        return await _context.TaskLists
+            .Include(t => t.UserTaskLists)
+            .ThenInclude(utl => utl.User)
+            .Where(c => c.UserId == userId && c.Category == categoryName)
+            .ToListAsync();
     }
 }
