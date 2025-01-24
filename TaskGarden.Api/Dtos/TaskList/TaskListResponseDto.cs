@@ -9,4 +9,5 @@ public class TaskListResponseDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public List<MemberResponseDto> Members { get; set; }
+    public List<TaskListItemReponseDto> TaskListItems { get; set; } = new(); 
 }

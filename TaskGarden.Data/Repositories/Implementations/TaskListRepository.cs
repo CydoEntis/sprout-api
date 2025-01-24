@@ -15,6 +15,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
         return await _context.TaskLists
             .Include(t => t.UserTaskLists)
             .ThenInclude(utl => utl.User)
+            .Include(t => t.TaskListItems)
             .Where(c => c.UserId == userId && c.Category == categoryName)
             .ToListAsync();
     }
