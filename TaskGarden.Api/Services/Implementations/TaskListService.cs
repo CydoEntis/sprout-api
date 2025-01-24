@@ -32,6 +32,8 @@ public class TaskListService : ITaskListService
 
         var taskList = _mapper.Map<TaskList>(dto);
         taskList.UserId = userId;
+
+
         await _taskListRepository.AddAsync(taskList);
         await _userTaskListService.AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
 

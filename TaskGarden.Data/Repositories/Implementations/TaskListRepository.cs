@@ -16,7 +16,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
             .Include(t => t.UserTaskLists)
             .ThenInclude(utl => utl.User)
             .Include(t => t.TaskListItems)
-            .Where(c => c.UserId == userId && c.Category == categoryName)
+            .Where(c => c.UserId == userId && c.Category.Name == categoryName)
             .ToListAsync();
     }
 

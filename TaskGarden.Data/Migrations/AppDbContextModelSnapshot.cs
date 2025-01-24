@@ -306,11 +306,7 @@ namespace TaskGarden.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -480,15 +476,19 @@ namespace TaskGarden.Data.Migrations
 
             modelBuilder.Entity("TaskGarden.Data.Models.TaskList", b =>
                 {
-                    b.HasOne("TaskGarden.Data.Models.Category", null)
+                    b.HasOne("TaskGarden.Data.Models.Category", "Category")
                         .WithMany("TaskLists")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TaskGarden.Data.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });

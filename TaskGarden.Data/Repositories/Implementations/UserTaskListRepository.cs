@@ -16,7 +16,7 @@ public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskLis
         return await _context.UserTaskLists
             .Where(utl => utl.UserId == userId)
             .Include(utl => utl.TaskList)
-            .Where(utl => utl.TaskList.Category == categoryName)
+            .Where(utl => utl.TaskList.Category.Name == categoryName)
             .CountAsync();
     }
 }
