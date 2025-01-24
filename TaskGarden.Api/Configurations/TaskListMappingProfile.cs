@@ -17,20 +17,19 @@ public class TaskListMappingProfile : Profile
         CreateMap<NewTaskListRequestDto, TaskList>().ReverseMap();
 
         CreateMap<TaskList, TaskListResponseDto>()
-            .ForMember(dest => dest.Members, opt => opt.MapFrom(src =>
-                src.UserTaskLists.Select(utl => new MemberResponseDto
-                {
-                    UserId = utl.User.Id,
-                    Name = $"{utl.User.FirstName} {utl.User.LastName}"
-                }).ToList()));
+            .ForMember(dest => dest.TotalTasksCount, opt => opt.MapFrom(src => src.TaskListItems.Count))
+            .ForMember(dest => dest.CompletedTasksCount,
+                opt => opt.MapFrom(src => src.TaskListItems.Count(t => t.IsCompleted)))
+            .ForMember(dest => dest.TaskCompletionPercentage, opt => opt.MapFrom(src =>
+                src.TaskListItems.Any()
+                    ? (double)src.TaskListItems.Count(t => t.IsCompleted) / src.TaskListItems.Count() * 100
+                    : 0))
+            .ReverseMap();
+
 
         CreateMap<UserTaskList, MemberResponseDto>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.User.FirstName} {src.User.LastName}"));
-        
-        CreateMap<TaskList, TaskListResponseDto>()
-            .ForMember(dest => dest.TaskListItems, opt => opt.MapFrom(src => src.TaskListItems ?? new List<TaskListItem>()))
-            .ReverseMap();
     }
 }

@@ -9,5 +9,7 @@ public class TaskListResponseDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public List<MemberResponseDto> Members { get; set; }
-    public List<TaskListItemReponseDto> TaskListItems { get; set; } = new(); 
+    public int TotalTasksCount { get; set; }
+    public int CompletedTasksCount { get; set; }
+    public double TaskCompletionPercentage { get; set; }
 }
