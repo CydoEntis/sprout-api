@@ -310,6 +310,9 @@ namespace TaskGarden.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -329,6 +332,8 @@ namespace TaskGarden.Data.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -363,14 +368,11 @@ namespace TaskGarden.Data.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TaskListId");
+                    b.HasIndex("CompletedById");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TaskListId");
 
                     b.ToTable("TaskListItems");
                 });
@@ -478,6 +480,10 @@ namespace TaskGarden.Data.Migrations
 
             modelBuilder.Entity("TaskGarden.Data.Models.TaskList", b =>
                 {
+                    b.HasOne("TaskGarden.Data.Models.Category", null)
+                        .WithMany("TaskLists")
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("TaskGarden.Data.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -489,15 +495,17 @@ namespace TaskGarden.Data.Migrations
 
             modelBuilder.Entity("TaskGarden.Data.Models.TaskListItem", b =>
                 {
-                    b.HasOne("TaskGarden.Data.Models.TaskList", "TaskList")
+                    b.HasOne("TaskGarden.Data.Models.AppUser", "CompletedBy")
                         .WithMany()
-                        .HasForeignKey("TaskListId")
+                        .HasForeignKey("CompletedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaskGarden.Data.Models.AppUser", "CompletedBy")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.HasOne("TaskGarden.Data.Models.TaskList", "TaskList")
+                        .WithMany("TaskListItems")
+                        .HasForeignKey("TaskListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CompletedBy");
 
@@ -530,8 +538,15 @@ namespace TaskGarden.Data.Migrations
                     b.Navigation("UserTaskLists");
                 });
 
+            modelBuilder.Entity("TaskGarden.Data.Models.Category", b =>
+                {
+                    b.Navigation("TaskLists");
+                });
+
             modelBuilder.Entity("TaskGarden.Data.Models.TaskList", b =>
                 {
+                    b.Navigation("TaskListItems");
+
                     b.Navigation("UserTaskLists");
                 });
 #pragma warning restore 612, 618

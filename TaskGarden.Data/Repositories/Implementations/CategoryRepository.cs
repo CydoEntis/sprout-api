@@ -10,13 +10,31 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
     }
 
-    public async Task<Category?> GetCategoryByCategoryName(string categoryName)
+    public async Task<Category?> GetCategoryByCategoryNameAsync(string categoryName)
     {
         return await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == categoryName.ToLower());
     }
 
-    public async Task<IEnumerable<Category>> GetAllCategoriesForUser(string userId)
+    public async Task<IEnumerable<Category>> GetAllCategoriesForUserAsync(string userId)
     {
         return await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
+    }
+
+    public async Task<List<CategoryAndCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId)
+    {
+        var categories = await _context.Categories
+            .Include(c => c.TaskLists)
+            .Where(c => c.UserId == userId)
+            .ToListAsync();
+
+        var categoryTaskListCounts = categories.Select(c => new CategoryAndCount
+        {
+            Id = c.Id,
+            CategoryName = c.Name,
+            CategoryTag = c.Tag,
+            TaskListCount = c.TaskLists.Count
+        }).ToList();
+
+        return categoryTaskListCounts;
     }
 }
