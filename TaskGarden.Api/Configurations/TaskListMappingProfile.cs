@@ -24,7 +24,12 @@ public class TaskListMappingProfile : Profile
                 src.TaskListItems.Any()
                     ? (double)src.TaskListItems.Count(t => t.IsCompleted) / src.TaskListItems.Count() * 100
                     : 0))
-            .ReverseMap();
+            .ForMember(dest => dest.Members, opt => opt.MapFrom(src =>
+                src.UserTaskLists.Select(utl => new MemberResponseDto
+                {
+                    UserId = utl.User.Id,
+                    Name = $"{utl.User.FirstName} {utl.User.LastName}"
+                }).ToList())).ReverseMap();
 
 
         CreateMap<UserTaskList, MemberResponseDto>()
