@@ -39,13 +39,13 @@ public class CategoryService : ICategoryService
         return new NewCategoryResponseDto() { Message = $"{category.Name} category has been created" };
     }
 
-    public async Task<List<CategoryResponseDto>> GetAllCategoriesAsync()
+    public async Task<List<CategoryWithCountResponseDto>> GetAllCategoriesAsync()
     {
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
         var categories = await _categoryRepository.GetCategoriesWithTaskListCountsForUserAsync(userId);
-        return _mapper.Map<List<CategoryResponseDto>>(categories);
+        return _mapper.Map<List<CategoryWithCountResponseDto>>(categories);
     }
 }

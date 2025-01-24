@@ -10,8 +10,13 @@ public class CategoryMappingProfile : Profile
     public CategoryMappingProfile()
     {
         CreateMap<NewCategoryRequestDto, Category>().ReverseMap();
-        CreateMap<Category, CategoryResponseDto>().ReverseMap();
-        CreateMap<CategoryAndCount, CategoryResponseDto>().ReverseMap();
+        CreateMap<Category, CategoryResponseDto>()
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.CategoryTag, opt => opt.MapFrom(src => src.Tag))
+            .ReverseMap();
+        CreateMap<Category, CategoryWithCountResponseDto>().ReverseMap();
+        CreateMap<CategoryWithCount, CategoryResponseDto>().ReverseMap();
+        CreateMap<CategoryWithCount, CategoryWithCountResponseDto>().ReverseMap();
 
     }
 }

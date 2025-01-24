@@ -26,7 +26,7 @@ public static class CategoryEndpoints
                 async (ICategoryService categoryService) =>
                 {
                     var response = await categoryService.GetAllCategoriesAsync();
-                    return Results.Ok(ApiResponse<List<CategoryResponseDto>>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<List<CategoryWithCountResponseDto>>.SuccessResponse(response));
                 })
             .WithName("GetAllCategories")
             .RequireAuthorization()

@@ -20,14 +20,14 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         return await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
     }
 
-    public async Task<List<CategoryAndCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId)
+    public async Task<List<CategoryWithCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId)
     {
         var categories = await _context.Categories
             .Include(c => c.TaskLists)
             .Where(c => c.UserId == userId)
             .ToListAsync();
 
-        var categoryTaskListCounts = categories.Select(c => new CategoryAndCount
+        var categoryTaskListCounts = categories.Select(c => new CategoryWithCount
         {
             Id = c.Id,
             CategoryName = c.Name,
