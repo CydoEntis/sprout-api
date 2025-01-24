@@ -28,5 +28,9 @@ public class TaskListMappingProfile : Profile
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.User.FirstName} {src.User.LastName}"));
+        
+        CreateMap<TaskList, TaskListResponseDto>()
+            .ForMember(dest => dest.TaskListItems, opt => opt.MapFrom(src => src.TaskListItems ?? new List<TaskListItem>()))
+            .ReverseMap();
     }
 }

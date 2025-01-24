@@ -12,5 +12,5 @@ public class TaskList : BaseEntity
     public AppUser User { get; set; }
     
     public ICollection<UserTaskList> UserTaskLists { get; set; }
-
+    public ICollection<TaskListItem> TaskListItems { get; set; } = new List<TaskListItem>();
 }

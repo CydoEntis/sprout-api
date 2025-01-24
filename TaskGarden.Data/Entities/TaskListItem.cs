@@ -10,6 +10,6 @@ public class TaskListItem : BaseEntity
     [ForeignKey("TaskListId")]
     public TaskList TaskList { get; set; }
     public string CompletedById { get; set; }
-    [ForeignKey("UserId")]
+    [ForeignKey("CompletedById")]
     public AppUser CompletedBy { get; set; }
 }
