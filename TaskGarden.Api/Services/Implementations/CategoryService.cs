@@ -73,4 +73,26 @@ public class CategoryService : ICategoryService
 
         return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully" };
     }
+    
+    public async Task DeleteCategoryAsync(int categoryId)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var category = await _categoryRepository.GetAsync(categoryId);
+        if (category == null || category.UserId != userId)
+            throw new NotFoundException("Category not found or access denied");
+
+        var userTaskList = await _userTaskListRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
+        if (userTaskList == null || userTaskList.GetRole() != TaskListRole.Owner)
+            throw new PermissionException("Only owners can delete categories");
+
+        foreach (var taskList in category.TaskLists)
+        {
+            await _userTaskListRepository.DeleteAsync(taskList.Id);
+        }
+
+        await _categoryRepository.DeleteAsync(categoryId);
+    }
 }
