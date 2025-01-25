@@ -32,5 +32,33 @@ public static class CategoryEndpoints
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
+
+        // Update Category Endpoint
+        group.MapPut("/{categoryId}",
+                async (int categoryId, UpdateCategoryRequestDto updateDto, ICategoryService categoryService) =>
+                {
+                    var response = await categoryService.UpdateCategoryAsync(categoryId, updateDto);
+                    return Results.Ok(ApiResponse<UpdateCategoryResponseDto>.SuccessResponse(response));
+                })
+            .WithName("UpdateCategory")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
+        // Delete Category Endpoint
+        group.MapDelete("/{categoryId}",
+                async (int categoryId, ICategoryService categoryService) =>
+                {
+                    await categoryService.DeleteCategoryAsync(categoryId);
+                    return Results.Ok(ApiResponse<DeleteCategoryResponseDto>.SuccessResponse("Category successfully deleted."));
+                })
+            .WithName("DeleteCategory")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
     }
 }

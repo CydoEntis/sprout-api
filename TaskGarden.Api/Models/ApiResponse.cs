@@ -23,6 +23,11 @@ public class ApiResponse<T>
     {
         return new ApiResponse<T>(true, data, title, statusCode);
     }
+    
+    public static ApiResponse<object> SuccessResponse(string message, int statusCode = 200)
+    {
+        return new ApiResponse<object>(true, null, message, statusCode);
+    }
 
     public static ApiResponse<T> ErrorResponse(string title, int statusCode, Dictionary<string, string>? errors = null)
     {
