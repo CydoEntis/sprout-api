@@ -49,6 +49,28 @@ public class CategoryService : ICategoryService
         var categories = await _categoryRepository.GetCategoriesWithTaskListCountsForUserAsync(userId);
         return _mapper.Map<List<CategoryWithCountResponseDto>>(categories);
     }
-    
 
+    public async Task<UpdateCategoryResponseDto> UpdateCategoryAsync(int categoryId, UpdateCategoryRequestDto dto)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var category = await _categoryRepository.GetAsync(categoryId);
+        if (category == null || category.UserId != userId)
+            throw new NotFoundException("Category not found or access denied");
+
+        var userTaskList = await _userTaskListRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
+        if (userTaskList.GetRole() != TaskListRole.Owner)
+            throw new PermissionException("Only owners can update categories");
+
+        var existingCategory = await _categoryRepository.GetCategoryByCategoryNameAsync(dto.Name);
+        if (existingCategory != null && existingCategory.Id != categoryId)
+            throw new ConflictException("A category with this name already exists");
+
+        _mapper.Map(dto, category);
+        await _categoryRepository.UpdateAsync(category);
+
+        return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully" };
+    }
 }
