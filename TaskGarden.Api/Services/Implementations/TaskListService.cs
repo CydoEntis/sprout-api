@@ -51,23 +51,30 @@ public class TaskListService : ITaskListService
         return _mapper.Map<List<TaskListResponseDto>>(taskLists);
     }
     
-    // public async Task UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto)
-    // {
-    //     var userId = _userContextService.GetUserId();
-    //     if (userId == null)
-    //         throw new UnauthorizedAccessException("User not authenticated");
-    //
-    //     var userRole = await _.(userId, taskListId);
-    //     if (userRole != TaskListRole.Owner && userRole != TaskListRole.Editor)
-    //         throw new PermissionException("You do not have permission to update this task list");
-    //
-    //     // TODO: Add updating of individual tasks.
-    //     
-    //     var taskList = await _taskListRepository.GetAsync(taskListId);
-    //     if (taskList == null)
-    //         throw new NotFoundException("Task list not found");
-    //
-    //     _mapper.Map(dto, taskList);
-    //     await _taskListRepository.UpdateAsync(taskList);
-    // }
+    public async Task UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var userRoleString = await _userTaskListService.GetUserRoleAsync(userId, taskListId);
+    
+        if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
+        {
+            throw new PermissionException("Invalid role");
+        }
+
+        if (userRole != TaskListRole.Owner && userRole != TaskListRole.Editor)
+            throw new PermissionException("You do not have permission to update this task list");
+
+        // TODO: Add updating of individual tasks.
+    
+        var taskList = await _taskListRepository.GetAsync(taskListId);
+        if (taskList == null)
+            throw new NotFoundException("Task list not found");
+
+        _mapper.Map(dto, taskList);
+        await _taskListRepository.UpdateAsync(taskList);
+    }
+
 }
