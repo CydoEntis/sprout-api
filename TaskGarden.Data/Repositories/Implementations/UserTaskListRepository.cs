@@ -26,4 +26,13 @@ public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskLis
             .Include(ut => ut.TaskList)
             .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
     }
+
+    public async Task<string> GetUserRoleForTaskListAsync(string userId, int taskListId)
+    {
+        var taskListUserRole = await _context.UserTaskLists
+            .Where(tl => tl.TaskListId == taskListId && tl.UserId == userId)
+            .FirstOrDefaultAsync();
+
+        return taskListUserRole.Role;
+    }
 }

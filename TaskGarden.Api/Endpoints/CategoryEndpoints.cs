@@ -1,5 +1,4 @@
-﻿using TaskGarden.Api.Dtos.Auth;
-using TaskGarden.Api.Dtos.Category;
+﻿using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
 

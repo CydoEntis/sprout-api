@@ -33,7 +33,10 @@ public class UserTaskListService : IUserTaskListService
             return false;
         }
     }
-    
-    
+
+    public async Task<string> GetUserRoleAsync(string userId, int taskListId)
+    {
+        return await _userTaskListRepository.GetUserRoleForTaskListAsync(userId, taskListId);
+    }
 
 }
