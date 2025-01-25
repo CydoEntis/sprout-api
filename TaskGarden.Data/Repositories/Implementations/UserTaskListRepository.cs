@@ -10,7 +10,6 @@ public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskLis
     {
     }
 
-
     public async Task<int> GetTaskListCountByCategoryForUserAsync(string userId, string categoryName)
     {
         return await _context.UserTaskLists
@@ -18,5 +17,13 @@ public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskLis
             .Include(utl => utl.TaskList)
             .Where(utl => utl.TaskList.Category.Name == categoryName)
             .CountAsync();
+    }
+
+    public async Task<UserTaskList> GetUserTaskListByUserAndCategoryIdAsync(string userId, int categoryId)
+    {
+        return await _context.UserTaskLists
+            .Where(ut => ut.UserId == userId)
+            .Include(ut => ut.TaskList)
+            .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
     }
 }

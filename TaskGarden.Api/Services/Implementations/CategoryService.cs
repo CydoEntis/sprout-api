@@ -3,6 +3,7 @@ using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Errors;
 using TaskGarden.Api.Helpers;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Data.Enums;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
@@ -48,4 +49,6 @@ public class CategoryService : ICategoryService
         var categories = await _categoryRepository.GetCategoriesWithTaskListCountsForUserAsync(userId);
         return _mapper.Map<List<CategoryWithCountResponseDto>>(categories);
     }
+    
+
 }
