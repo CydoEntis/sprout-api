@@ -50,7 +50,7 @@ public class TaskListService : ITaskListService
         var taskLists = await _taskListRepository.GetAllTaskListsByCategoryForUser(userId, category);
         return _mapper.Map<List<TaskListResponseDto>>(taskLists);
     }
-    
+
 
     public async Task<TaskListResponseDto> GetTaskListByIdAsync(int taskListId)
     {
@@ -58,10 +58,10 @@ public class TaskListService : ITaskListService
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var taskLists = await _taskListRepository.GetTaskListForUser(userId, category);
+        var taskLists = await _taskListRepository.GetTaskListByIdForUser(userId, taskListId);
         return _mapper.Map<TaskListResponseDto>(taskLists);
     }
-    
+
     public async Task UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto)
     {
         var userId = _userContextService.GetUserId();
@@ -69,7 +69,7 @@ public class TaskListService : ITaskListService
             throw new UnauthorizedAccessException("User not authenticated");
 
         var userRoleString = await _userTaskListService.GetUserRoleAsync(userId, taskListId);
-    
+
         if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
         {
             throw new PermissionException("Invalid role");
@@ -79,15 +79,14 @@ public class TaskListService : ITaskListService
             throw new PermissionException("You do not have permission to update this task list");
 
         // TODO: Add updating of individual tasks.
-    
+
         var taskList = await _taskListRepository.GetAsync(taskListId);
         if (taskList == null)
             throw new NotFoundException("Task list not found");
 
         _mapper.Map(dto, taskList);
         await _taskListRepository.UpdateAsync(taskList);
-        
+
         // TODO: Decided if i want to add a return dto, Update messagge and possible id of the updated entity.
     }
-
 }
