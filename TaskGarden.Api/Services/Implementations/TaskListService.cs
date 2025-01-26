@@ -51,6 +51,17 @@ public class TaskListService : ITaskListService
         return _mapper.Map<List<TaskListResponseDto>>(taskLists);
     }
     
+
+    public async Task<TaskListResponseDto> GetTaskListByIdAsync(int taskListId)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var taskLists = await _taskListRepository.GetTaskListForUser(userId, category);
+        return _mapper.Map<TaskListResponseDto>(taskLists);
+    }
+    
     public async Task UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto)
     {
         var userId = _userContextService.GetUserId();
