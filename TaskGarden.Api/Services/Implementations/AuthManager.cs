@@ -87,7 +87,7 @@ public class AuthManager : IAuthManager
         var newRefreshToken = _tokenManager.GenerateRefreshToken();
 
         await _sessionManager.InvalidateSessionAsync(session);
-        await _sessionManager.CreateSessionAsync(newAccessToken, newRefreshToken);
+        await _sessionManager.CreateSessionAsync(_user.Id, newRefreshToken);
 
         _cookieManager.Append(CookieConsts.RefreshToken, newRefreshToken.Token, true, newRefreshToken.ExpiryDate);
 

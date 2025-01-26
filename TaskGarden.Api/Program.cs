@@ -36,6 +36,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+
 var conn = builder.Configuration[ProjectConsts.ConnectionString];
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(conn, options => options.CommandTimeout(360)));
@@ -63,7 +64,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-
 // Repositories
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -83,7 +83,6 @@ builder.Services.AddScoped<IEmailService, MailKitService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ITaskListService, TaskListService>();
 builder.Services.AddScoped<IUserTaskListService, UserTaskListService>();
-
 
 
 var app = builder.Build();
