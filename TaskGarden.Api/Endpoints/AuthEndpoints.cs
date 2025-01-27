@@ -31,7 +31,7 @@ public static class AuthEndpoints
         group.MapPost("/refresh-tokens", async (ICookieManager cookieManager, IAuthManager authManager) =>
             {
                 var response = await authManager.RefreshTokens();
-                return Results.Ok(response);
+                return Results.Ok(ApiResponse<RefreshTokensResponseDto>.SuccessResponse(response));
             })
             .WithName("RefreshTokens")
             .Produces(StatusCodes.Status400BadRequest)
@@ -41,7 +41,7 @@ public static class AuthEndpoints
         group.MapPost("/logout", async (ICookieManager cookieManager, IAuthManager authManager) =>
             {
                 var response = await authManager.Logout();
-                return Results.Ok(response);
+                return Results.Ok(ApiResponse<LogoutResponseDto>.SuccessResponse(response));
             })
             .WithName("Logout")
             .Produces(StatusCodes.Status400BadRequest)
@@ -51,7 +51,7 @@ public static class AuthEndpoints
         group.MapPost("/forgot-password", async (ForgotPasswordRequestDto requestDto, IAuthManager authManager) =>
             {
                 var response = await authManager.ForgotPasswordAsync(requestDto);
-                return Results.Ok(response);
+                return Results.Ok(ApiResponse<ForgotPasswordResponseDto>.SuccessResponse(response));
             })
             .WithName("ForgotPassword")
             .Produces(StatusCodes.Status400BadRequest)
@@ -61,7 +61,7 @@ public static class AuthEndpoints
         group.MapPost("/reset-password", async (ResetPasswordRequestDto requestDto, IAuthManager authManager) =>
             {
                 var response = await authManager.ResetPasswordAsync(requestDto);
-                return Results.Ok(response);
+                return Results.Ok(ApiResponse<ResetPasswordResponseDto>.SuccessResponse(response));
             })
             .WithName("ResetPassword")
             .Produces(StatusCodes.Status400BadRequest)
@@ -72,7 +72,7 @@ public static class AuthEndpoints
                 async (string userId, ChangePasswordRequestDto requestDto, IAuthManager authManager) =>
                 {
                     var response = await authManager.ChangePasswordAsync(userId, requestDto);
-                    return Results.Ok(response);
+                    return Results.Ok(ApiResponse<ChangePasswordResponseDto>.SuccessResponse(response));
                 })
             .WithName("ChangePassword")
             .Produces(StatusCodes.Status400BadRequest)
