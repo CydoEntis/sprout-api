@@ -1,4 +1,5 @@
-﻿using TaskGarden.Api.Dtos.Auth;
+﻿using TaskGarden.Api.Constants;
+using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
 
@@ -38,11 +39,23 @@ public static class AuthEndpoints
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapPost("/logout", async (ICookieManager cookieManager, IAuthManager authManager) =>
-            {
-                var response = await authManager.Logout();
-                return Results.Ok(ApiResponse<LogoutResponseDto>.SuccessResponse(response));
-            })
+        group.MapPost("/logout",
+                async (HttpContext httpContext, ICookieManager cookieManager, IAuthManager authManager) =>
+                {
+                    var cookies = httpContext.Request.Cookies;
+
+                    if (cookies.ContainsKey(CookieConsts.RefreshToken))
+                    {
+                        var authToken = cookies[CookieConsts.RefreshToken];
+
+                        // Print the token to the console
+                        Console.WriteLine($"Received auth token: {authToken}");
+                        var response = await authManager.Logout();
+                        return Results.Ok(ApiResponse<LogoutResponseDto>.SuccessResponse(response));
+                    }
+
+                    return Results.Ok(ApiResponse<LogoutResponseDto>.SuccessResponse("Test"));
+                })
             .WithName("Logout")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
