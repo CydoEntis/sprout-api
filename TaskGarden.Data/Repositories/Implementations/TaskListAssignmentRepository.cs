@@ -13,7 +13,7 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
 
     public async Task<int> GetCountAsync(string userId, string categoryName)
     {
-        return await _context.UserTaskLists
+        return await _context.TaskListAssignments
             .Where(utl => utl.UserId == userId)
             .Include(utl => utl.TaskList)
             .Where(utl => utl.TaskList.Category.Name == categoryName)
@@ -22,7 +22,7 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
 
     public async Task<string> GetAssignedRoleAsync(string userId, int taskListId)
     {
-        var taskListUserRole = await _context.UserTaskLists
+        var taskListUserRole = await _context.TaskListAssignments
             .Where(tl => tl.TaskListId == taskListId && tl.UserId == userId)
             .FirstOrDefaultAsync();
 
@@ -31,7 +31,7 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
 
     public async Task<TaskListAssignments?> GetByCategoryIdAsync(string userId, int categoryId)
     {
-        return await _context.UserTaskLists
+        return await _context.TaskListAssignments
             .Where(ut => ut.UserId == userId)
             .Include(ut => ut.TaskList)
             .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
