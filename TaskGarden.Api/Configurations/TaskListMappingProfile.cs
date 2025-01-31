@@ -32,7 +32,7 @@ public class TaskListMappingProfile : Profile
                 }).ToList())).ReverseMap();
 
 
-        CreateMap<UserTaskList, MemberResponseDto>()
+        CreateMap<TaskListAssignments, MemberResponseDto>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.User.FirstName} {src.User.LastName}"));

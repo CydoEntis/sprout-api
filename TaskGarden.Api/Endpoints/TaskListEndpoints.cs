@@ -22,15 +22,6 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapGet("/{category}",
-                async (string category, ITaskListService taskListService) =>
-                {
-                    var response = await taskListService.GetAllTaskListsByCategoryAsync(category);
-                    return Results.Ok(ApiResponse<List<TaskListResponseDto>>.SuccessResponse(response));
-                })
-            .WithName("GetTaskListByCategory")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status200OK);
+
     }
 }

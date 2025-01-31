@@ -2,7 +2,8 @@
 
 namespace TaskGarden.Data.Models;
 
-public class UserTaskList : BaseEntity
+// The Model for tracking which users are assigned to which TaskList and what role they have in the assigned task list.
+public class TaskListAssignments : BaseEntity
 {
     public string UserId { get; set; }
     public AppUser User { get; set; }

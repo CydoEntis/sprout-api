@@ -1,4 +1,5 @@
 ﻿using TaskGarden.Api.Dtos.Category;
+using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Data.Models;
 
@@ -32,6 +33,17 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
+        group.MapGet("/{category}",
+                async (string category, ICategoryService categoryService) =>
+                {
+                    var response = await categoryService.GetAllTaskListsByCategoryAsync(category);
+                    return Results.Ok(ApiResponse<List<CategoriesTaskListsResponseDto>>.SuccessResponse(response));
+                })
+            .WithName("GetTaskListByCategory")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK);
+
         // Update Category Endpoint
         group.MapPut("/{categoryId}",
                 async (int categoryId, UpdateCategoryRequestDto updateDto, ICategoryService categoryService) =>
@@ -51,7 +63,8 @@ public static class CategoryEndpoints
                 async (int categoryId, ICategoryService categoryService) =>
                 {
                     await categoryService.DeleteCategoryAsync(categoryId);
-                    return Results.Ok(ApiResponse<DeleteCategoryResponseDto>.SuccessResponse("Category successfully deleted."));
+                    return Results.Ok(
+                        ApiResponse<DeleteCategoryResponseDto>.SuccessResponse("Category successfully deleted."));
                 })
             .WithName("DeleteCategory")
             .RequireAuthorization()

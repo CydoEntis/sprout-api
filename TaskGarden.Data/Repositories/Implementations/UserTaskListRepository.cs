@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskGarden.Data.Enums;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Data.Repositories;
 
-public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskListRepository
+public class UserTaskListRepository : BaseRepository<TaskListAssignments>, IUserTaskListRepository
 {
     public UserTaskListRepository(AppDbContext context) : base(context)
     {
@@ -19,14 +20,6 @@ public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskLis
             .CountAsync();
     }
 
-    public async Task<UserTaskList> GetUserTaskListByUserAndCategoryIdAsync(string userId, int categoryId)
-    {
-        return await _context.UserTaskLists
-            .Where(ut => ut.UserId == userId)
-            .Include(ut => ut.TaskList)
-            .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
-    }
-
     public async Task<string> GetUserRoleForTaskListAsync(string userId, int taskListId)
     {
         var taskListUserRole = await _context.UserTaskLists
@@ -34,5 +27,13 @@ public class UserTaskListRepository : BaseRepository<UserTaskList>, IUserTaskLis
             .FirstOrDefaultAsync();
 
         return taskListUserRole.Role;
+    }
+    
+    public async Task<TaskListAssignments?> GetUserTaskListByUserAndCategoryIdAsync(string userId, int categoryId)
+    {
+        return await _context.UserTaskLists
+            .Where(ut => ut.UserId == userId)
+            .Include(ut => ut.TaskList)
+            .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
     }
 }

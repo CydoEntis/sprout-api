@@ -12,7 +12,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Category> Categories { get; set; }
     public DbSet<TaskList> TaskLists { get; set; }
 
-    public DbSet<UserTaskList> UserTaskLists { get; set; }
+    public DbSet<TaskListAssignments> UserTaskLists { get; set; }
     public DbSet<TaskListItem> TaskListItems { get; set; }
 
     
@@ -24,15 +24,15 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<UserTaskList>()
+        builder.Entity<TaskListAssignments>()
             .HasKey(ut => new { ut.UserId, ut.TaskListId });
 
-        builder.Entity<UserTaskList>()
+        builder.Entity<TaskListAssignments>()
             .HasOne(ut => ut.User)
             .WithMany(u => u.UserTaskLists)
             .HasForeignKey(ut => ut.UserId);
 
-        builder.Entity<UserTaskList>()
+        builder.Entity<TaskListAssignments>()
             .HasOne(ut => ut.TaskList)
             .WithMany(t => t.UserTaskLists)
             .HasForeignKey(ut => ut.TaskListId);

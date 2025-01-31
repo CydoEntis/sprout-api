@@ -18,7 +18,7 @@ public class UserTaskListService : IUserTaskListService
     {
         try
         {
-            var userTaskList = new UserTaskList
+            var userTaskList = new TaskListAssignments
             {
                 UserId = userId,
                 TaskListId = taskListId,
