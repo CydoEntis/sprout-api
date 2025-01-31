@@ -11,7 +11,7 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
     {
     }
 
-    public async Task<int> GetCount(string userId, string categoryName)
+    public async Task<int> GetCountAsync(string userId, string categoryName)
     {
         return await _context.UserTaskLists
             .Where(utl => utl.UserId == userId)
@@ -20,7 +20,7 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
             .CountAsync();
     }
 
-    public async Task<string> GetAssignedRole(string userId, int taskListId)
+    public async Task<string> GetAssignedRoleAsync(string userId, int taskListId)
     {
         var taskListUserRole = await _context.UserTaskLists
             .Where(tl => tl.TaskListId == taskListId && tl.UserId == userId)
