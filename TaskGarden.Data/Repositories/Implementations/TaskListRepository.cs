@@ -10,7 +10,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     {
     }
 
-    public async Task<TaskList?> GetTaskListByIdForUser(string userId, int taskListId)
+    public async Task<TaskList?> GetByUserIdAsync(string userId, int taskListId)
     {
         return await _context.TaskLists
             .Include(t => t.UserTaskLists)
@@ -21,7 +21,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                                       t.UserTaskLists.Any(utl => utl.UserId == userId));
     }
 
-    public async Task<List<TaskList>> GetTaskListsByCategoryIdAsync(string userId, int categoryId)
+    public async Task<List<TaskList>> GetByCategoryIdAsync(string userId, int categoryId)
     {
         return await _context.TaskLists.Include(tl => tl.Category)
             .Where(tl => tl.UserId == userId && tl.CategoryId == categoryId).ToListAsync();
