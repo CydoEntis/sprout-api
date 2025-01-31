@@ -99,7 +99,7 @@ public class CategoryService : ICategoryService
         if (tasksListsToDelete.Count != 0)
         {
             var taskListIds = tasksListsToDelete.Select(t => t.Id).ToList();
-            var taskListAssignmentsToDelete = await _taskListAssignmentRepository.
+            var taskListAssignmentsToDelete = await _taskListAssignmentRepository.GetByTaskListIdsAsync(taskListIds);
             
             
             await _taskListRepository.DeleteRangeAsync(tasksListsToDelete);

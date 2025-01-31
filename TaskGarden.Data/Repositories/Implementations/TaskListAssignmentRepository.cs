@@ -37,8 +37,10 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
             .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
     }
 
-    public async Task<List<TaskListAssignments>> GetAllByTaskListIdAsync(int taskListId)
+    public async Task<List<TaskListAssignments>> GetByTaskListIdsAsync(List<int> taskListIds)
     {
-        return await _context.TaskListAssignments.Where(t => t.TaskListId == taskListId).ToListAsync();
+        return await _context.TaskListAssignments
+            .Where(t => taskListIds.Contains(t.TaskListId))
+            .ToListAsync();
     }
 }

@@ -7,5 +7,5 @@ public interface ITaskListAssignmentRepository : IBaseRepository<TaskListAssignm
     Task<int> GetCountAsync(string userId, string categoryName);
     Task<string> GetAssignedRoleAsync(string userId, int taskListId);
     Task<TaskListAssignments?> GetByCategoryIdAsync(string userId, int categoryId);
-    Task<List<TaskListAssignments>> GetAllByTaskListIdAsync(int taskListId);
+    Task<List<TaskListAssignments>> GetByTaskListIdsAsync(List<int> taskListIds);
 }

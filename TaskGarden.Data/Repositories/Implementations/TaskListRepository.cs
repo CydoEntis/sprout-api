@@ -19,12 +19,12 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     public async Task<TaskList?> GetByUserIdAsync(string userId, int taskListId)
     {
         return await _context.TaskLists
-            .Include(t => t.UserTaskLists)
+            .Include(t => t.TaskListAssignments)
             .ThenInclude(utl => utl.User)
             .Include(t => t.TaskListItems)
             .Include(t => t.Category)
             .FirstOrDefaultAsync(t => t.Id == taskListId &&
-                                      t.UserTaskLists.Any(utl => utl.UserId == userId));
+                                      t.TaskListAssignments.Any(utl => utl.UserId == userId));
     }
 
     public async Task<List<TaskList>> GetByCategoryIdAsync(string userId, int categoryId)
