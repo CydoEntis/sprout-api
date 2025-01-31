@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
@@ -21,6 +22,15 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     public async Task<List<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
+    }
+    
+    public async Task<List<T>> GetByIdsAsync(List<int> ids, Expression<Func<T, int>> idSelector)
+    {
+        var compiledSelector = idSelector.Compile(); 
+
+        return await _context.Set<T>()
+            .Where(e => ids.Contains(compiledSelector(e))) 
+            .ToListAsync();
     }
 
     public async Task<T> AddAsync(T entity)

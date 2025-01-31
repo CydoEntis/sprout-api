@@ -12,18 +12,21 @@ public class CategoryService : ICategoryService
     private readonly ICategoryRepository _categoryRepository;
     private readonly ITaskListRepository _taskListRepository;
     private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
+    private readonly ITaskListItemRepository _taskListItemRepository;
     private readonly IMapper _mapper;
     private readonly IUserContextService _userContextService;
 
     public CategoryService(ICategoryRepository categoryRepository,
         IMapper mapper, IUserContextService userContextService,
-        ITaskListAssignmentRepository taskListAssignmentRepository, ITaskListRepository taskListRepository)
+        ITaskListAssignmentRepository taskListAssignmentRepository, ITaskListRepository taskListRepository,
+        ITaskListItemRepository taskListItemRepository)
     {
         _categoryRepository = categoryRepository;
-        _mapper = mapper;
-        _userContextService = userContextService;
-        _taskListAssignmentRepository = taskListAssignmentRepository;
         _taskListRepository = taskListRepository;
+        _taskListItemRepository = taskListItemRepository;
+        _taskListAssignmentRepository = taskListAssignmentRepository;
+        _userContextService = userContextService;
+        _mapper = mapper;
     }
 
     public async Task<NewCategoryResponseDto> CreateNewCategoryAsync(NewCategoryRequestDto dto)
@@ -99,13 +102,14 @@ public class CategoryService : ICategoryService
         if (tasksListsToDelete.Count != 0)
         {
             var taskListIds = tasksListsToDelete.Select(t => t.Id).ToList();
-            var taskListAssignmentsToDelete = await _taskListAssignmentRepository.GetByTaskListIdsAsync(taskListIds);
-            
-            
+            var taskListAssignmentsToDelete =
+                await _taskListAssignmentRepository.GetByIdsAsync(taskListIds, tl => tl.TaskListId);
+            var taskListItemsToDelete =
+                await _taskListItemRepository.GetByIdsAsync(taskListIds, tli => tli.TaskListId);
+
+
             await _taskListRepository.DeleteRangeAsync(tasksListsToDelete);
         }
-        
-        
 
 
         foreach (var taskList in category.TaskLists)

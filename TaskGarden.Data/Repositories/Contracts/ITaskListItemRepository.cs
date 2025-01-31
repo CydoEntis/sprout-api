@@ -2,7 +2,7 @@
 
 namespace TaskGarden.Data.Repositories.Contracts;
 
-public interface ITaskListItemRepository
+public interface ITaskListItemRepository : IBaseRepository<TaskListItem>
 {
     Task<IEnumerable<TaskListItem>> GetAllTasksForTaskList(int taskListId);
 }
