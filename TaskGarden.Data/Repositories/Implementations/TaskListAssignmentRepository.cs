@@ -5,13 +5,13 @@ using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Data.Repositories;
 
-public class UserTaskListRepository : BaseRepository<TaskListAssignments>, IUserTaskListRepository
+public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>, ITaskListAssignmentRepository
 {
-    public UserTaskListRepository(AppDbContext context) : base(context)
+    public TaskListAssignmentRepository(AppDbContext context) : base(context)
     {
     }
 
-    public async Task<int> GetTaskListCountByCategoryForUserAsync(string userId, string categoryName)
+    public async Task<int> GetCount(string userId, string categoryName)
     {
         return await _context.UserTaskLists
             .Where(utl => utl.UserId == userId)
@@ -20,7 +20,7 @@ public class UserTaskListRepository : BaseRepository<TaskListAssignments>, IUser
             .CountAsync();
     }
 
-    public async Task<string> GetUserRoleForTaskListAsync(string userId, int taskListId)
+    public async Task<string> GetAssignedRole(string userId, int taskListId)
     {
         var taskListUserRole = await _context.UserTaskLists
             .Where(tl => tl.TaskListId == taskListId && tl.UserId == userId)
@@ -29,7 +29,7 @@ public class UserTaskListRepository : BaseRepository<TaskListAssignments>, IUser
         return taskListUserRole.Role;
     }
     
-    public async Task<TaskListAssignments?> GetUserTaskListByUserAndCategoryIdAsync(string userId, int categoryId)
+    public async Task<TaskListAssignments?> GetByCategoryIdAsync(string userId, int categoryId)
     {
         return await _context.UserTaskLists
             .Where(ut => ut.UserId == userId)

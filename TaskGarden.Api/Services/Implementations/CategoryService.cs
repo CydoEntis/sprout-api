@@ -10,17 +10,17 @@ using TaskGarden.Data.Repositories.Contracts;
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly IUserTaskListRepository _userTaskListRepository;
+    private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
     private readonly IMapper _mapper;
     private readonly IUserContextService _userContextService;
 
     public CategoryService(ICategoryRepository categoryRepository,
-        IMapper mapper, IUserContextService userContextService, IUserTaskListRepository userTaskListRepository)
+        IMapper mapper, IUserContextService userContextService, ITaskListAssignmentRepository taskListAssignmentRepository)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
         _userContextService = userContextService;
-        _userTaskListRepository = userTaskListRepository;
+        _taskListAssignmentRepository = taskListAssignmentRepository;
     }
 
     public async Task<NewCategoryResponseDto> CreateNewCategoryAsync(NewCategoryRequestDto dto)
@@ -71,7 +71,7 @@ public class CategoryService : ICategoryService
         if (category == null || category.UserId != userId)
             throw new NotFoundException("Category not found or access denied");
 
-        var userTaskList = await _userTaskListRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
+        var userTaskList = await _taskListAssignmentRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
         if (userTaskList.GetRole() != TaskListRole.Owner)
             throw new PermissionException("Only owners can update categories");
 
@@ -95,13 +95,13 @@ public class CategoryService : ICategoryService
         if (category == null || category.UserId != userId)
             throw new NotFoundException("Category not found or access denied");
 
-        var userTaskList = await _userTaskListRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
+        var userTaskList = await _taskListAssignmentRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
         if (userTaskList == null || userTaskList.GetRole() != TaskListRole.Owner)
             throw new PermissionException("Only owners can delete categories");
 
         foreach (var taskList in category.TaskLists)
         {
-            await _userTaskListRepository.DeleteAsync(taskList.Id);
+            await _taskListAssignmentRepository.DeleteAsync(taskList.Id);
         }
 
         await _categoryRepository.DeleteAsync(categoryId);

@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
-builder.Services.AddScoped<IUserTaskListRepository, UserTaskListRepository>();
+builder.Services.AddScoped<ITaskListAssignmentRepository, TaskListAssignmentRepository>();
 builder.Services.AddScoped<ITaskListItemRepository, TaskListItemRepository>();
 
 

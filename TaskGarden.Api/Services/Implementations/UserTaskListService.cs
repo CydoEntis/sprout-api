@@ -7,11 +7,11 @@ namespace TaskGarden.Api.Services.Implementations;
 
 public class UserTaskListService : IUserTaskListService
 {
-    private readonly IUserTaskListRepository _userTaskListRepository;
+    private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
 
-    public UserTaskListService(IUserTaskListRepository userTaskListRepository)
+    public UserTaskListService(ITaskListAssignmentRepository taskListAssignmentRepository)
     {
-        _userTaskListRepository = userTaskListRepository;
+        _taskListAssignmentRepository = taskListAssignmentRepository;
     }
 
     public async Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role)
@@ -25,7 +25,7 @@ public class UserTaskListService : IUserTaskListService
                 Role = role.ToString()
             };
 
-            await _userTaskListRepository.AddAsync(userTaskList);
+            await _taskListAssignmentRepository.AddAsync(userTaskList);
             return true;
         }
         catch (Exception ex)
@@ -36,7 +36,7 @@ public class UserTaskListService : IUserTaskListService
 
     public async Task<string> GetUserRoleAsync(string userId, int taskListId)
     {
-        return await _userTaskListRepository.GetUserRoleForTaskListAsync(userId, taskListId);
+        return await _taskListAssignmentRepository.GetUserRoleForTaskListAsync(userId, taskListId);
     }
 
 }
