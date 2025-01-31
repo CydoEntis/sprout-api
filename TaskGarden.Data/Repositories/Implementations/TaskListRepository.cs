@@ -20,4 +20,10 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
             .FirstOrDefaultAsync(t => t.Id == taskListId &&
                                       t.UserTaskLists.Any(utl => utl.UserId == userId));
     }
+
+    public async Task<List<TaskList>> GetTaskListsByCategoryIdAsync(string userId, int categoryId)
+    {
+        return await _context.TaskLists.Include(tl => tl.Category)
+            .Where(tl => tl.UserId == userId && tl.CategoryId == categoryId).ToListAsync();
+    }
 }
