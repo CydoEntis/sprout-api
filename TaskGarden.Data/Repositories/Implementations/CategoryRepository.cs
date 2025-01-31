@@ -10,14 +10,14 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
     }
 
-    public async Task<Category?> GetCategoryByCategoryNameAsync(string userId, string categoryName)
+    public async Task<Category?> GetByNameAsync(string userId, string categoryName)
     {
         return await _context.Categories
             .FirstOrDefaultAsync(c =>
                 c.UserId == userId && c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
     }
 
-    public async Task<IEnumerable<Category>> GetAllCategoriesForUserAsync(string userId)
+    public async Task<IEnumerable<Category>> GetAll(string userId)
     {
         return await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
     }
