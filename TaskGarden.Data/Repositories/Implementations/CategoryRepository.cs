@@ -17,7 +17,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
                 c.UserId == userId && c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
     }
 
-    public async Task<IEnumerable<Category>> GetAll(string userId)
+    public async Task<IEnumerable<Category>> GetAllByUserIdAsync(string userId)
     {
         return await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
     }
