@@ -81,8 +81,8 @@ builder.Services.AddScoped<ISessionManager, SessionManager>();
 builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 builder.Services.AddScoped<IEmailService, MailKitService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<ITaskListService, TaskListService>();
-builder.Services.AddScoped<ITaskListAssignmentService, TaskListAssignmentService>();
+// builder.Services.AddScoped<ITaskListService, TaskListService>();
+// builder.Services.AddScoped<ITaskListAssignmentService, TaskListAssignmentService>();
 
 
 var app = builder.Build();

@@ -28,12 +28,17 @@ public class TaskListAssignmentRepository : BaseRepository<TaskListAssignments>,
 
         return taskListUserRole.Role;
     }
-    
+
     public async Task<TaskListAssignments?> GetByCategoryIdAsync(string userId, int categoryId)
     {
         return await _context.UserTaskLists
             .Where(ut => ut.UserId == userId)
             .Include(ut => ut.TaskList)
             .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
+    }
+
+    public async Task<List<TaskListAssignments>> GetAllByTaskListIdAsync(int taskListId)
+    {
+        return await _context.TaskListAssignments.Where(t => t.TaskListId == taskListId).ToListAsync();
     }
 }

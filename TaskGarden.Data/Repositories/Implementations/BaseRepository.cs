@@ -36,6 +36,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         _context.Set<T>().Remove(entity);
         return await _context.SaveChangesAsync() > 0;
     }
+    
+    public async Task DeleteRangeAsync(List<T> entities)
+    {
+        _context.Set<T>().RemoveRange(entities);  // Removes the provided entities from the DbSet
+        await _context.SaveChangesAsync();        // Persists the changes to the database
+    }
 
     public async Task UpdateAsync(T entity)
     {

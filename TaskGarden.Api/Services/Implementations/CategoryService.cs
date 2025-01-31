@@ -10,17 +10,20 @@ using TaskGarden.Data.Repositories.Contracts;
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ITaskListRepository _taskListRepository;
     private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
     private readonly IMapper _mapper;
     private readonly IUserContextService _userContextService;
 
     public CategoryService(ICategoryRepository categoryRepository,
-        IMapper mapper, IUserContextService userContextService, ITaskListAssignmentRepository taskListAssignmentRepository)
+        IMapper mapper, IUserContextService userContextService,
+        ITaskListAssignmentRepository taskListAssignmentRepository, ITaskListRepository taskListRepository)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
         _userContextService = userContextService;
         _taskListAssignmentRepository = taskListAssignmentRepository;
+        _taskListRepository = taskListRepository;
     }
 
     public async Task<NewCategoryResponseDto> CreateNewCategoryAsync(NewCategoryRequestDto dto)
@@ -29,7 +32,7 @@ public class CategoryService : ICategoryService
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var existingCategory = await _categoryRepository.GetCategoryByCategoryNameAsync(dto.Name);
+        var existingCategory = await _categoryRepository.GetByNameAsync(userId, dto.Name);
         if (existingCategory is not null)
             throw new ConflictException("Category already exists");
 
@@ -68,20 +71,14 @@ public class CategoryService : ICategoryService
             throw new UnauthorizedAccessException("User not authenticated");
 
         var category = await _categoryRepository.GetAsync(categoryId);
-        if (category == null || category.UserId != userId)
-            throw new NotFoundException("Category not found or access denied");
+        if (category == null)
+            throw new NotFoundException("Category not found.");
 
-        var userTaskList = await _taskListAssignmentRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
-        if (userTaskList.GetRole() != TaskListRole.Owner)
-            throw new PermissionException("Only owners can update categories");
-
-        var existingCategory = await _categoryRepository.GetCategoryByCategoryNameAsync(dto.Name);
-        if (existingCategory != null && existingCategory.Id != categoryId)
-            throw new ConflictException("A category with this name already exists");
+        if (category.UserId != userId)
+            throw new PermissionException("You are not the owner of this category.");
 
         _mapper.Map(dto, category);
         await _categoryRepository.UpdateAsync(category);
-
         return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully" };
     }
 
@@ -92,12 +89,24 @@ public class CategoryService : ICategoryService
             throw new UnauthorizedAccessException("User not authenticated");
 
         var category = await _categoryRepository.GetAsync(categoryId);
-        if (category == null || category.UserId != userId)
-            throw new NotFoundException("Category not found or access denied");
+        if (category == null)
+            throw new NotFoundException("Category not found.");
 
-        var userTaskList = await _taskListAssignmentRepository.GetUserTaskListByUserAndCategoryIdAsync(userId, categoryId);
-        if (userTaskList == null || userTaskList.GetRole() != TaskListRole.Owner)
-            throw new PermissionException("Only owners can delete categories");
+        if (category.UserId != userId)
+            throw new PermissionException("You are not the owner of this category.");
+
+        var tasksListsToDelete = await _taskListRepository.GetAllByCategoryIdAsync(categoryId);
+        if (tasksListsToDelete.Count != 0)
+        {
+            var taskListIds = tasksListsToDelete.Select(t => t.Id).ToList();
+            var taskListAssignmentsToDelete = await _taskListAssignmentRepository.
+            
+            
+            await _taskListRepository.DeleteRangeAsync(tasksListsToDelete);
+        }
+        
+        
+
 
         foreach (var taskList in category.TaskLists)
         {

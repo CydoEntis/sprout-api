@@ -5,6 +5,7 @@ namespace TaskGarden.Data.Repositories.Contracts;
 public interface ITaskListRepository : IBaseRepository<TaskList>
 {
     // Task<IEnumerable<TaskList>> GetAllTaskListsByCategoryForUser(string userId, string categoryName);
+    Task<List<TaskList>> GetAllByCategoryIdAsync(int categoryId);
     Task<TaskList?> GetByUserIdAsync(string userId, int taskListId);
     Task<List<TaskList>> GetByCategoryIdAsync(string userId, int categoryId);
 }

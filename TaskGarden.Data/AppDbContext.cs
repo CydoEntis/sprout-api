@@ -12,7 +12,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Category> Categories { get; set; }
     public DbSet<TaskList> TaskLists { get; set; }
 
-    public DbSet<TaskListAssignments> UserTaskLists { get; set; }
+    public DbSet<TaskListAssignments> TaskListAssignments { get; set; }
     public DbSet<TaskListItem> TaskListItems { get; set; }
 
     
@@ -29,12 +29,12 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         builder.Entity<TaskListAssignments>()
             .HasOne(ut => ut.User)
-            .WithMany(u => u.UserTaskLists)
+            .WithMany(u => u.TaskListAssignments)
             .HasForeignKey(ut => ut.UserId);
 
         builder.Entity<TaskListAssignments>()
             .HasOne(ut => ut.TaskList)
-            .WithMany(t => t.UserTaskLists)
+            .WithMany(t => t.TaskListAssignments)
             .HasForeignKey(ut => ut.TaskListId);
         
         // TODO: Add database seeding.
