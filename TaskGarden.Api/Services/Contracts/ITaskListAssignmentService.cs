@@ -2,7 +2,7 @@
 
 namespace TaskGarden.Api.Services.Contracts;
 
-public interface IUserTaskListService
+public interface ITaskListAssignmentService
 {
     Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role);
     Task<string> GetUserRoleAsync(string userId, int taskListId);

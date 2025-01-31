@@ -14,15 +14,15 @@ public class TaskListService : ITaskListService
     private readonly ITaskListRepository _taskListRepository;
     private readonly IUserContextService _userContextService;
     private readonly IMapper _mapper;
-    private readonly IUserTaskListService _userTaskListService;
+    private readonly ITaskListAssignmentService _taskListAssignmentService;
 
     public TaskListService(ITaskListRepository taskListRepository, IUserContextService userContextService,
-        IMapper mapper, IUserTaskListService userTaskListService)
+        IMapper mapper, ITaskListAssignmentService taskListAssignmentService)
     {
         _taskListRepository = taskListRepository;
         _userContextService = userContextService;
         _mapper = mapper;
-        _userTaskListService = userTaskListService;
+        _taskListAssignmentService = taskListAssignmentService;
     }
 
     public async Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto)
@@ -36,7 +36,7 @@ public class TaskListService : ITaskListService
 
 
         await _taskListRepository.AddAsync(taskList);
-        await _userTaskListService.AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
+        await _taskListAssignmentService.AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
 
         return new NewTaskListResponseDto() { Message = $"Task list created: {taskList.Id}", Id = taskList.Id };
     }
@@ -57,7 +57,7 @@ public class TaskListService : ITaskListService
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var userRoleString = await _userTaskListService.GetUserRoleAsync(userId, taskListId);
+        var userRoleString = await _taskListAssignmentService.GetUserRoleAsync(userId, taskListId);
 
         if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
         {

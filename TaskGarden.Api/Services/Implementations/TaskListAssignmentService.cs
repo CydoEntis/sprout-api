@@ -5,11 +5,11 @@ using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Api.Services.Implementations;
 
-public class UserTaskListService : IUserTaskListService
+public class TaskListAssignmentService : ITaskListAssignmentService
 {
     private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
 
-    public UserTaskListService(ITaskListAssignmentRepository taskListAssignmentRepository)
+    public TaskListAssignmentService(ITaskListAssignmentRepository taskListAssignmentRepository)
     {
         _taskListAssignmentRepository = taskListAssignmentRepository;
     }
