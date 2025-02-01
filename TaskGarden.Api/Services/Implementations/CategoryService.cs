@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TaskGarden.Api.Dtos.Category;
+using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Errors;
 using TaskGarden.Api.Helpers;
 using TaskGarden.Api.Services.Contracts;
@@ -51,26 +52,26 @@ public class CategoryService : ICategoryService
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
-    
+
         var categories = await _categoryRepository.GetAllCategoriesTaskListsAsync(userId);
         return _mapper.Map<List<CategoryOverviewResponseDto>>(categories);
     }
 
 
-    // public async Task<List<CategoriesTaskListsResponseDto>> GetAllTaskListsInCategory(string categoryName)
-    // {
-    //     var userId = _userContextService.GetUserId();
-    //     if (userId == null)
-    //         throw new UnauthorizedAccessException("User not authenticated");
-    //     
-    //     var existingCategory = await _categoryRepository.GetByNameAsync(userId, categoryName);
-    //     if (existingCategory is null)
-    //         throw new NotFoundException("Category does not exist");
-    //     
-    //     var taskLists = _categoryRepository.GetAllTaskListsInCategoryAsync(existingCategory.Id);
-    //
-    //     return _mapper.Map<List<CategoriesTaskListsResponseDto>>(taskLists);
-    // }
+    public async Task<List<TaskListResponseDto>> GetAllTaskListsInCategory(string categoryName)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var existingCategory = await _categoryRepository.GetByNameAsync(userId, categoryName);
+        if (existingCategory is null)
+            throw new NotFoundException("Category does not exist");
+
+        var taskLists = await _taskListRepository.GetAllTaskListsInCategoryAsync(existingCategory.Id);
+
+        return _mapper.Map<List<TaskListResponseDto>>(taskLists);
+    }
 
     public async Task<UpdateCategoryResponseDto> UpdateCategoryAsync(int categoryId, UpdateCategoryRequestDto dto)
     {

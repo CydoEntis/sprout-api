@@ -33,16 +33,16 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
-        // group.MapGet("/{category}",
-        //         async (string category, ICategoryService categoryService) =>
-        //         {
-        //             var response = await categoryService.GetAllTaskListsByCategoryAsync(category);
-        //             return Results.Ok(ApiResponse<List<CategoriesTaskListsResponseDto>>.SuccessResponse(response));
-        //         })
-        //     .WithName("GetTaskListByCategory")
-        //     .RequireAuthorization()
-        //     .Produces(StatusCodes.Status400BadRequest)
-        //     .Produces(StatusCodes.Status200OK);
+        group.MapGet("/{category}",
+                async (string category, ICategoryService categoryService) =>
+                {
+                    var response = await categoryService.GetAllTaskListsInCategory(category);
+                    return Results.Ok(ApiResponse<List<TaskListResponseDto>>.SuccessResponse(response));
+                })
+            .WithName("GetTaskListByCategory")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK);
 
         // Update Category Endpoint
         group.MapPut("/{categoryId}",

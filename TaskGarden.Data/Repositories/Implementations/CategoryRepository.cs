@@ -14,7 +14,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
         return await _context.Categories
             .FirstOrDefaultAsync(c =>
-                c.UserId == userId && c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
+                c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
     }
 
     public async Task<IEnumerable<Category>> GetAllByUserIdAsync(string userId)
@@ -26,15 +26,6 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
         return await _context.Categories.Where(c => c.UserId == userId).Include(c => c.TaskLists).ToListAsync();
     }
-
-    // public async Task<List<Category>> GetAllTaskListsInCategoryAsync(int categoryId)
-    // {
-    //     return await _context.Categories.Where(c => c.Id == categoryId)
-    //         .Include(c => c.TaskLists)
-    //         .ThenInclude(tl => tl.TaskListItems)
-    //         .Include(c => c.TaskLists)
-    //         .ThenInclude(tl => tl.TaskListAssignments).ToListAsync();
-    // }
 
     public async Task<bool> DeleteCategoryAndDependenciesAsync(Category category)
     {
