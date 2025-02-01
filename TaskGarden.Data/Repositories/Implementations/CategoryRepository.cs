@@ -21,7 +21,21 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
         return await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
     }
-    
+
+    public async Task<List<Category>> GetAllCategoriesTaskListsAsync(string userId)
+    {
+        return await _context.Categories.Where(c => c.UserId == userId).Include(c => c.TaskLists).ToListAsync();
+    }
+
+    // public async Task<List<Category>> GetAllTaskListsInCategoryAsync(int categoryId)
+    // {
+    //     return await _context.Categories.Where(c => c.Id == categoryId)
+    //         .Include(c => c.TaskLists)
+    //         .ThenInclude(tl => tl.TaskListItems)
+    //         .Include(c => c.TaskLists)
+    //         .ThenInclude(tl => tl.TaskListAssignments).ToListAsync();
+    // }
+
     public async Task<bool> DeleteCategoryAndDependenciesAsync(Category category)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync();
@@ -61,7 +75,6 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
             return false;
         }
     }
-
 
 
     // public async Task<IEnumerable<Category>> GetAllCategoriesTaskListsAsync(string userId, string categoryName)
@@ -108,14 +121,14 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     // }
 
 
-    public async Task<List<CategoryWithCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId)
+    public async Task<List<CategoryWithTaskListCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId)
     {
         var categories = await _context.Categories
             .Include(c => c.TaskLists)
             .Where(c => c.UserId == userId)
             .ToListAsync();
 
-        var categoryTaskListCounts = categories.Select(c => new CategoryWithCount
+        var categoryTaskListCounts = categories.Select(c => new CategoryWithTaskListCount
         {
             Id = c.Id,
             CategoryName = c.Name,

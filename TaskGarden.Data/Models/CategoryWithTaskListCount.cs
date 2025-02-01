@@ -1,6 +1,6 @@
 ﻿namespace TaskGarden.Data.Models;
 
-public class CategoryWithCount
+public class CategoryWithTaskListCount
 {
     public int Id { get; set; }
     public string CategoryName { get; set; }

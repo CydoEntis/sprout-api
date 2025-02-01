@@ -6,7 +6,10 @@ public interface ICategoryRepository : IBaseRepository<Category>
 {
     Task<Category?> GetByNameAsync(string userId, string categoryName);
     Task<IEnumerable<Category>> GetAllByUserIdAsync(string userId);
-    // Task<List<Category>> GetAllCategoriesWithTaskListsAsync(string userId, string categoryName);
+
+    Task<List<Category>> GetAllCategoriesTaskListsAsync(string userId);
+
+    // Task<List<Category>> GetAllTaskListsInCategoryAsync(int categoryId);
     // Task<List<CategoryWithCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId);
     Task<bool> DeleteCategoryAndDependenciesAsync(Category category);
 }

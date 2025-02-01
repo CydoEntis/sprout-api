@@ -25,7 +25,7 @@ public class TaskListMappingProfile : Profile
                     ? (double)src.TaskListItems.Count(t => t.IsCompleted) / src.TaskListItems.Count() * 100
                     : 0))
             .ForMember(dest => dest.Members, opt => opt.MapFrom(src =>
-                src.UserTaskLists.Select(utl => new MemberResponseDto
+                src.TaskListAssignments.Select(utl => new MemberResponseDto
                 {
                     UserId = utl.User.Id,
                     Name = $"{utl.User.FirstName} {utl.User.LastName}"

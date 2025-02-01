@@ -46,26 +46,31 @@ public class CategoryService : ICategoryService
         return new NewCategoryResponseDto() { Message = $"{category.Name} category has been created" };
     }
 
-    public async Task<List<CategoryWithCountResponseDto>> GetAllCategoriesAsync()
+    public async Task<List<CategoryOverviewResponseDto>> GetAllCategoriesAsync()
     {
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
     
-        var categories = await _categoryRepository.GetCategoriesWithTaskListCountsForUserAsync(userId);
-        return _mapper.Map<List<CategoryWithCountResponseDto>>(categories);
+        var categories = await _categoryRepository.GetAllCategoriesTaskListsAsync(userId);
+        return _mapper.Map<List<CategoryOverviewResponseDto>>(categories);
     }
 
 
-    public async Task<List<CategoriesTaskListsResponseDto>> GetAllTaskListsByCategoryAsync(string category)
-    {
-        var userId = _userContextService.GetUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
-    
-        var taskLists = await _categoryRepository.GetAllCategoriesWithTaskListsAsync(userId, category);
-        return _mapper.Map<List<CategoriesTaskListsResponseDto>>(taskLists);
-    }
+    // public async Task<List<CategoriesTaskListsResponseDto>> GetAllTaskListsInCategory(string categoryName)
+    // {
+    //     var userId = _userContextService.GetUserId();
+    //     if (userId == null)
+    //         throw new UnauthorizedAccessException("User not authenticated");
+    //     
+    //     var existingCategory = await _categoryRepository.GetByNameAsync(userId, categoryName);
+    //     if (existingCategory is null)
+    //         throw new NotFoundException("Category does not exist");
+    //     
+    //     var taskLists = _categoryRepository.GetAllTaskListsInCategoryAsync(existingCategory.Id);
+    //
+    //     return _mapper.Map<List<CategoriesTaskListsResponseDto>>(taskLists);
+    // }
 
     public async Task<UpdateCategoryResponseDto> UpdateCategoryAsync(int categoryId, UpdateCategoryRequestDto dto)
     {

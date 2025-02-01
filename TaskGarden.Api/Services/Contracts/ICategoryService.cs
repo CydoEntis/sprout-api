@@ -5,8 +5,8 @@ namespace TaskGarden.Api.Services.Contracts;
 public interface ICategoryService
 {
     Task<NewCategoryResponseDto> CreateNewCategoryAsync(NewCategoryRequestDto dto);
-    Task<List<CategoryWithCountResponseDto>> GetAllCategoriesAsync();
-    Task<List<CategoriesTaskListsResponseDto>> GetAllTaskListsByCategoryAsync(string category);
+    Task<List<CategoryOverviewResponseDto>> GetAllCategoriesAsync();
+    // Task<List<CategoriesTaskListsResponseDto>> GetAllTaskListsInCategory(string categoryName);
     Task<UpdateCategoryResponseDto> UpdateCategoryAsync(int categoryId, UpdateCategoryRequestDto dto);
     Task DeleteCategoryAsync(int categoryId);
 }

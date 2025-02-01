@@ -312,6 +312,10 @@ namespace TaskGarden.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -323,17 +327,41 @@ namespace TaskGarden.Data.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("TaskLists");
+                });
+
+            modelBuilder.Entity("TaskGarden.Data.Models.TaskListAssignments", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TaskListId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "TaskListId");
+
+                    b.HasIndex("TaskListId");
+
+                    b.ToTable("TaskListAssignments");
                 });
 
             modelBuilder.Entity("TaskGarden.Data.Models.TaskListItem", b =>
@@ -371,34 +399,6 @@ namespace TaskGarden.Data.Migrations
                     b.HasIndex("TaskListId");
 
                     b.ToTable("TaskListItems");
-                });
-
-            modelBuilder.Entity("TaskGarden.Data.Models.UserTaskList", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TaskListId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("UserId", "TaskListId");
-
-                    b.HasIndex("TaskListId");
-
-                    b.ToTable("UserTaskLists");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -482,13 +482,32 @@ namespace TaskGarden.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaskGarden.Data.Models.AppUser", "User")
+                    b.HasOne("TaskGarden.Data.Models.AppUser", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("TaskGarden.Data.Models.TaskListAssignments", b =>
+                {
+                    b.HasOne("TaskGarden.Data.Models.TaskList", "TaskList")
+                        .WithMany("TaskListAssignments")
+                        .HasForeignKey("TaskListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TaskGarden.Data.Models.AppUser", "User")
+                        .WithMany("TaskListAssignments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TaskList");
 
                     b.Navigation("User");
                 });
@@ -512,30 +531,11 @@ namespace TaskGarden.Data.Migrations
                     b.Navigation("TaskList");
                 });
 
-            modelBuilder.Entity("TaskGarden.Data.Models.UserTaskList", b =>
-                {
-                    b.HasOne("TaskGarden.Data.Models.TaskList", "TaskList")
-                        .WithMany("UserTaskLists")
-                        .HasForeignKey("TaskListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TaskGarden.Data.Models.AppUser", "User")
-                        .WithMany("UserTaskLists")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TaskList");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TaskGarden.Data.Models.AppUser", b =>
                 {
                     b.Navigation("Categories");
 
-                    b.Navigation("UserTaskLists");
+                    b.Navigation("TaskListAssignments");
                 });
 
             modelBuilder.Entity("TaskGarden.Data.Models.Category", b =>
@@ -545,9 +545,9 @@ namespace TaskGarden.Data.Migrations
 
             modelBuilder.Entity("TaskGarden.Data.Models.TaskList", b =>
                 {
-                    b.Navigation("TaskListItems");
+                    b.Navigation("TaskListAssignments");
 
-                    b.Navigation("UserTaskLists");
+                    b.Navigation("TaskListItems");
                 });
 #pragma warning restore 612, 618
         }
