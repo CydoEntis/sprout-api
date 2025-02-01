@@ -51,7 +51,7 @@ public class CategoryService : ICategoryService
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
-
+    
         var categories = await _categoryRepository.GetCategoriesWithTaskListCountsForUserAsync(userId);
         return _mapper.Map<List<CategoryWithCountResponseDto>>(categories);
     }
@@ -62,7 +62,7 @@ public class CategoryService : ICategoryService
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
-
+    
         var taskLists = await _categoryRepository.GetAllCategoriesWithTaskListsAsync(userId, category);
         return _mapper.Map<List<CategoriesTaskListsResponseDto>>(taskLists);
     }
@@ -98,25 +98,8 @@ public class CategoryService : ICategoryService
         if (category.UserId != userId)
             throw new PermissionException("You are not the owner of this category.");
 
-        var tasksListsToDelete = await _taskListRepository.GetAllByCategoryIdAsync(categoryId);
-        if (tasksListsToDelete.Count != 0)
-        {
-            var taskListIds = tasksListsToDelete.Select(t => t.Id).ToList();
-            var taskListAssignmentsToDelete =
-                await _taskListAssignmentRepository.GetByIdsAsync(taskListIds, tl => tl.TaskListId);
-            var taskListItemsToDelete =
-                await _taskListItemRepository.GetByIdsAsync(taskListIds, tli => tli.TaskListId);
-
-
-            await _taskListRepository.DeleteRangeAsync(tasksListsToDelete);
-        }
-
-
-        foreach (var taskList in category.TaskLists)
-        {
-            await _taskListAssignmentRepository.DeleteAsync(taskList.Id);
-        }
-
-        await _categoryRepository.DeleteAsync(categoryId);
+        var result = await _categoryRepository.DeleteCategoryAndDependenciesAsync(category);
+        if (!result)
+            throw new ResourceModificationException("Category could not be deleted.");
     }
 }
