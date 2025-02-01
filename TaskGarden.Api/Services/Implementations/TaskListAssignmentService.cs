@@ -14,25 +14,25 @@ public class TaskListAssignmentService : ITaskListAssignmentService
         _taskListAssignmentRepository = taskListAssignmentRepository;
     }
 
-    // public async Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role)
-    // {
-    //     try
-    //     {
-    //         var userTaskList = new TaskListAssignments
-    //         {
-    //             UserId = userId,
-    //             TaskListId = taskListId,
-    //             Role = role.ToString()
-    //         };
-    //
-    //         await _taskListAssignmentRepository.AddAsync(userTaskList);
-    //         return true;
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         return false;
-    //     }
-    // }
+    public async Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role)
+    {
+        try
+        {
+            var userTaskList = new TaskListAssignments
+            {
+                UserId = userId,
+                TaskListId = taskListId,
+                Role = role.ToString()
+            };
+    
+            await _taskListAssignmentRepository.AddAsync(userTaskList);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
     //
     // public async Task<string> GetUserRoleAsync(string userId, int taskListId)
     // {

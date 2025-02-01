@@ -12,34 +12,56 @@ namespace TaskGarden.Api.Services.Implementations;
 public class TaskListService : ITaskListService
 {
     private readonly ITaskListRepository _taskListRepository;
+    private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
     private readonly IUserContextService _userContextService;
     private readonly IMapper _mapper;
-    private readonly ITaskListAssignmentService _taskListAssignmentService;
 
     public TaskListService(ITaskListRepository taskListRepository, IUserContextService userContextService,
-        IMapper mapper, ITaskListAssignmentService taskListAssignmentService)
+        IMapper mapper, ITaskListAssignmentRepository taskListAssignmentRepository)
     {
         _taskListRepository = taskListRepository;
         _userContextService = userContextService;
         _mapper = mapper;
-        _taskListAssignmentService = taskListAssignmentService;
+        _taskListAssignmentRepository = taskListAssignmentRepository;
     }
 
-    // public async Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto)
-    // {
-    //     var userId = _userContextService.GetUserId();
-    //     if (userId == null)
-    //         throw new UnauthorizedAccessException("User not authenticated");
-    //
-    //     var taskList = _mapper.Map<TaskList>(dto);
-    //     taskList.UserId = userId;
-    //
-    //
-    //     await _taskListRepository.AddAsync(taskList);
-    //     await _taskListAssignmentService.AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
-    //
-    //     return new NewTaskListResponseDto() { Message = $"Task list created: {taskList.Id}", Id = taskList.Id };
-    // }
+    public async Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto)
+    {
+        var userId = _userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedAccessException("User not authenticated");
+
+        var taskList = _mapper.Map<TaskList>(dto);
+        taskList.CreatedById = userId;
+
+
+        await _taskListRepository.AddAsync(taskList);
+        var response = await AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
+        if (!response)
+            throw new ResourceCreationException("Unable to assign user to task list.");
+
+        return new NewTaskListResponseDto() { Message = $"Task list created: {taskList.Id}", Id = taskList.Id };
+    }
+
+    private async Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role)
+    {
+        try
+        {
+            var userTaskList = new TaskListAssignments
+            {
+                UserId = userId,
+                TaskListId = taskListId,
+                Role = role.ToString()
+            };
+
+            await _taskListAssignmentRepository.AddAsync(userTaskList);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     // public async Task<TaskListResponseDto> GetTaskListByIdAsync(int taskListId)
     // {
