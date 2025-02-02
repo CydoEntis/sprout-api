@@ -12,17 +12,20 @@ namespace TaskGarden.Api.Services.Implementations;
 public class TaskListService : ITaskListService
 {
     private readonly ITaskListRepository _taskListRepository;
+    private readonly ICategoryRepository _categoryRepository;
     private readonly ITaskListAssignmentRepository _taskListAssignmentRepository;
     private readonly IUserContextService _userContextService;
     private readonly IMapper _mapper;
 
     public TaskListService(ITaskListRepository taskListRepository, IUserContextService userContextService,
-        IMapper mapper, ITaskListAssignmentRepository taskListAssignmentRepository)
+        IMapper mapper, ITaskListAssignmentRepository taskListAssignmentRepository,
+        ICategoryRepository categoryRepository)
     {
         _taskListRepository = taskListRepository;
         _userContextService = userContextService;
         _mapper = mapper;
         _taskListAssignmentRepository = taskListAssignmentRepository;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto)
@@ -31,8 +34,11 @@ public class TaskListService : ITaskListService
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
+        var category = await _categoryRepository.GetByNameAsync(userId, dto.CategoryName);
+
         var taskList = _mapper.Map<TaskList>(dto);
         taskList.CreatedById = userId;
+        taskList.CategoryId = category.Id;
 
 
         await _taskListRepository.AddAsync(taskList);
