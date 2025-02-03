@@ -15,7 +15,7 @@ public static class TaskListEndpoints
                 async (int taskListId, ITaskListService taskListService) =>
                 {
                     var response = await taskListService.GetTaskListByIdAsync(taskListId);
-                    return Results.Ok(ApiResponse<TaskListResponseDto>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<TaskListDetailsResponseDto>.SuccessResponse(response));
                 })
             .WithName("GetTaskListById")
             .RequireAuthorization()
