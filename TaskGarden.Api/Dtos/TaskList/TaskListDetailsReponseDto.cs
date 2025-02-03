@@ -6,5 +6,5 @@ public class TaskListDetailsReponseDto
     public int CompletedTasks { get; set; }
     public int TotalTasks { get; set; }
     public bool IsCompleted { get; set; }
-    public TYPE Type { get; set; }
+    public List<TaskListItemReponseDto> TaskListItems { get; set; } = new List<TaskListItemReponseDto>();
 }
