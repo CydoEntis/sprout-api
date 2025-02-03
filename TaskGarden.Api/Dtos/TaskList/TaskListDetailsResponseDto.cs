@@ -1,6 +1,6 @@
 ﻿namespace TaskGarden.Api.Dtos.TaskList;
 
-public class TaskListDetailsReponseDto
+public class TaskListDetailsResponseDto
 {
     public string Name { get; set; }
     public int CompletedTasks { get; set; }
