@@ -11,6 +11,17 @@ public static class TaskListEndpoints
     {
         var group = routes.MapGroup("/api/task-list").WithTags("Task List");
 
+        group.MapGet("/{taskListId:int}",
+                async (int taskListId, ITaskListService taskListService) =>
+                {
+                    var response = await taskListService.GetTaskListByIdAsync(taskListId);
+                    return Results.Ok(ApiResponse<TaskListResponseDto>.SuccessResponse(response));
+                })
+            .WithName("GetTaskListById")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK);
+
         group.MapPost("/",
                 async (NewTaskListRequestDto dto, ITaskListService taskListService) =>
                 {
@@ -21,7 +32,5 @@ public static class TaskListEndpoints
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
-
-
     }
 }
