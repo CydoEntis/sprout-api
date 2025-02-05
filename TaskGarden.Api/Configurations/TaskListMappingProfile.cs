@@ -31,6 +31,18 @@ public class TaskListMappingProfile : Profile
                     Name = $"{utl.User.FirstName} {utl.User.LastName}"
                 }).ToList())).ReverseMap();
 
+        CreateMap<TaskList, TaskListDetailsResponseDto>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+            .ForMember(dest => dest.CompletedTasksCount,
+                opt => opt.MapFrom(src => src.TaskListItems.Count(t => t.IsCompleted)))
+            .ForMember(dest => dest.Members, opt => opt.MapFrom(src =>
+                src.TaskListAssignments.Select(utl => new MemberResponseDto
+                {
+                    UserId = utl.User.Id,
+                    Name = $"{utl.User.FirstName} {utl.User.LastName}"
+                }).ToList())).ReverseMap();
+        
+        
 
         CreateMap<TaskListAssignments, MemberResponseDto>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))

@@ -10,11 +10,15 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     {
     }
 
-    public async Task<TaskList> GetByIdAsync(string userId, int id)
+    public async Task<TaskList?> GetByIdAsync(string userId, int id)
     {
-        return await _context.TaskLists.Where(tl => tl.CreatedById == userId && tl.Id == id).FirstOrDefaultAsync();
+        return await _context.TaskLists.Where(tl => tl.CreatedById == userId && tl.Id == id)
+            .Include(tl => tl.TaskListAssignments)
+                .ThenInclude(ta => ta.User)
+            .Include(tl => tl.TaskListItems)
+            .FirstOrDefaultAsync();
     }
-    
+
     public async Task<List<TaskList>> GetAllTaskListsInCategoryAsync(int categoryId)
     {
         return await _context.TaskLists.Where(t => t.CategoryId == categoryId)
