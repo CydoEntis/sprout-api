@@ -4,6 +4,7 @@ using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Data.Models;
+using TaskGarden.Data.Projections;
 
 namespace TaskGarden.Api.Configurations;
 
@@ -41,8 +42,8 @@ public class TaskListMappingProfile : Profile
                     UserId = utl.User.Id,
                     Name = $"{utl.User.FirstName} {utl.User.LastName}"
                 }).ToList())).ReverseMap();
-        
-        
+
+        CreateMap<TaskListOverview, TaskListResponseDto>().ReverseMap();
 
         CreateMap<TaskListAssignments, MemberResponseDto>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
