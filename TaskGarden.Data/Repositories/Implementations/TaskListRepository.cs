@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Data.Models;
+using TaskGarden.Data.Models.Member;
+using TaskGarden.Data.Projections;
 using TaskGarden.Data.Repositories.Contracts;
 
 namespace TaskGarden.Data.Repositories;
@@ -14,7 +16,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     {
         return await _context.TaskLists.Where(tl => tl.CreatedById == userId && tl.Id == id)
             .Include(tl => tl.TaskListAssignments)
-                .ThenInclude(ta => ta.User)
+            .ThenInclude(ta => ta.User)
             .Include(tl => tl.TaskListItems)
             .FirstOrDefaultAsync();
     }
@@ -28,7 +30,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     //         .ThenInclude(tla => tla.User)
     //         .ToListAsync();
     // }
-    
+
     // Used projection for better queries.
     public async Task<List<TaskListOverview>> GetAllTaskListsInCategoryAsync(int categoryId)
     {
@@ -41,16 +43,16 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                 CreatedAt = tl.CreatedAt,
                 UpdatedAt = tl.UpdatedAt,
                 Members = tl.TaskListAssignments
-                    .Select(tla => new Members
+                    .Select(tla => new Member
                     {
                         Id = tla.User.Id,
                         Name = tla.User.FirstName + " " + tla.User.LastName,
                     })
-                    .ToList(), // Ensure materialization
-                TotalTasksCount = tl.TaskListItems.Count(), // Corrected to count tasks instead of assignments
+                    .ToList(),
+                TotalTasksCount = tl.TaskListItems.Count(),
                 CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
-                TaskCompletionPercentage = tl.TaskListItems.Count() == 0 
-                    ? 0 
+                TaskCompletionPercentage = tl.TaskListItems.Count() == 0
+                    ? 0
                     : (double)tl.TaskListItems.Count(q => q.IsCompleted) / tl.TaskListItems.Count() * 100
             })
             .ToListAsync();
