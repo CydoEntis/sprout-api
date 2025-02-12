@@ -10,6 +10,6 @@ public class MemberMappingProfile : Profile
     public MemberMappingProfile()
     {
         CreateMap<AppUser, Member>().ReverseMap();
-        CreateMap<Member, MemberResponseDto>().ReverseMap();
+        CreateMap<Member, MemberResponseDto>().ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id)).ReverseMap();
     }
 }

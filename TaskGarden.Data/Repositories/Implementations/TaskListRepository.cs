@@ -39,6 +39,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
             .Select(tl => new TaskListOverview
             {
                 Id = tl.Id,
+                Name = tl.Name,
                 Description = tl.Description,
                 CreatedAt = tl.CreatedAt,
                 UpdatedAt = tl.UpdatedAt,
