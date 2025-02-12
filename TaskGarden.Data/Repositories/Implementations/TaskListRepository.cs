@@ -20,14 +20,14 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     }
 
     // TODO: Remove this because its less performant.
-    public async Task<List<TaskList>> GetAllTaskListsInCategoryAsync(int categoryId)
-    {
-        return await _context.TaskLists.Where(t => t.CategoryId == categoryId)
-            .Include(t => t.TaskListItems)
-            .Include(t => t.TaskListAssignments)
-            .ThenInclude(tla => tla.User)
-            .ToListAsync();
-    }
+    // public async Task<List<TaskList>> GetAllTaskListsInCategoryAsync(int categoryId)
+    // {
+    //     return await _context.TaskLists.Where(t => t.CategoryId == categoryId)
+    //         .Include(t => t.TaskListItems)
+    //         .Include(t => t.TaskListAssignments)
+    //         .ThenInclude(tla => tla.User)
+    //         .ToListAsync();
+    // }
     
     // Used projection for better queries.
     public async Task<List<TaskListOverview>> GetAllTaskListsInCategoryAsync(int categoryId)
@@ -78,23 +78,4 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
         return await _context.TaskLists.Include(tl => tl.Category)
             .Where(tl => tl.CreatedById == userId && tl.CategoryId == categoryId).ToListAsync();
     }
-}
-
-public class TaskListOverview
-{
-    public int Id { get; set; }
-    public string Description { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public List<Members> Members { get; set; }
-    public int TotalTasksCount { get; set; }
-    public int CompletedTasksCount { get; set; }
-    public double TaskCompletionPercentage { get; set; }
-    
-}
-
-public class Members
-{
-    public string Id { get; set; }
-    public string Name { get; set; }
 }
