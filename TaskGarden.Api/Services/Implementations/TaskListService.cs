@@ -69,7 +69,6 @@ public class TaskListService : ITaskListService
         }
     }
 
-    // TODO: Add mapping.
     public async Task<TaskListDetailsResponseDto> GetTaskListByIdAsync(int taskListId)
     {
         var userId = _userContextService.GetUserId();
