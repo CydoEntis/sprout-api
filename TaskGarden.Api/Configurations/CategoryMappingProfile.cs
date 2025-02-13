@@ -19,5 +19,8 @@ public class CategoryMappingProfile : Profile
         CreateMap<Category, CategoryOverviewResponseDto>()
             .ForMember(src => src.TaskListCount, opt => opt.MapFrom(src => src.TaskLists.Count()))
             .ReverseMap();
+        
+        CreateMap<UpdateCategoryRequestDto, Category>().ReverseMap();
+        CreateMap<Category, UpdateCategoryResponseDto>().ReverseMap();
     }
 }

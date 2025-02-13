@@ -88,7 +88,7 @@ public class CategoryService : ICategoryService
 
         _mapper.Map(dto, category);
         await _categoryRepository.UpdateAsync(category);
-        return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully" };
+        return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully", CategoryId = categoryId };
     }
 
     public async Task DeleteCategoryAsync(int categoryId)
