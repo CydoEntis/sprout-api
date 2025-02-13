@@ -12,26 +12,30 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     {
     }
 
-    public async Task<TaskList?> GetByIdAsync(string userId, int id)
+    public async Task<TaskListOverview?> GetByIdAsync(string userId, int id)
     {
-        return await _context.TaskLists.Where(tl => tl.CreatedById == userId && tl.Id == id)
-            .Include(tl => tl.TaskListAssignments)
-            .ThenInclude(ta => ta.User)
-            .Include(tl => tl.TaskListItems)
-            .FirstOrDefaultAsync();
+        return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListOverview
+        {
+            Id = tl.Id,
+            Name = tl.Name,
+            Description = tl.Description,
+            CreatedAt = tl.CreatedAt,
+            UpdatedAt = tl.UpdatedAt,
+            Members = tl.TaskListAssignments
+                .Select(tla => new Member
+                {
+                    Id = tla.User.Id,
+                    Name = tla.User.FirstName + " " + tla.User.LastName,
+                })
+                .ToList(),
+            TotalTasksCount = tl.TaskListItems.Count(),
+            CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
+            TaskCompletionPercentage = tl.TaskListItems.Count() == 0
+                ? 0
+                : (double)tl.TaskListItems.Count(q => q.IsCompleted) / tl.TaskListItems.Count() * 100
+        }).FirstOrDefaultAsync();
     }
 
-    // TODO: Remove this because its less performant.
-    // public async Task<List<TaskList>> GetAllTaskListsInCategoryAsync(int categoryId)
-    // {
-    //     return await _context.TaskLists.Where(t => t.CategoryId == categoryId)
-    //         .Include(t => t.TaskListItems)
-    //         .Include(t => t.TaskListAssignments)
-    //         .ThenInclude(tla => tla.User)
-    //         .ToListAsync();
-    // }
-
-    // Used projection for better queries.
     public async Task<List<TaskListOverview>> GetAllTaskListsInCategoryAsync(int categoryId)
     {
         return await _context.TaskLists
@@ -57,28 +61,5 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                     : (double)tl.TaskListItems.Count(q => q.IsCompleted) / tl.TaskListItems.Count() * 100
             })
             .ToListAsync();
-    }
-
-    public async Task<List<TaskList>> GetAllByCategoryIdAsync(int categoryId)
-    {
-        return await _context.TaskLists.Where(tl => tl.Category.Id == categoryId)
-            .ToListAsync();
-    }
-
-    public async Task<TaskList?> GetByUserIdAsync(string userId, int taskListId)
-    {
-        return await _context.TaskLists
-            .Include(t => t.TaskListAssignments)
-            .ThenInclude(utl => utl.User)
-            .Include(t => t.TaskListItems)
-            .Include(t => t.Category)
-            .FirstOrDefaultAsync(t => t.Id == taskListId &&
-                                      t.TaskListAssignments.Any(utl => utl.UserId == userId));
-    }
-
-    public async Task<List<TaskList>> GetByCategoryIdAsync(string userId, int categoryId)
-    {
-        return await _context.TaskLists.Include(tl => tl.Category)
-            .Where(tl => tl.CreatedById == userId && tl.CategoryId == categoryId).ToListAsync();
     }
 }
