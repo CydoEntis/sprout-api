@@ -12,7 +12,7 @@ public class TaskList : BaseEntity
     public AppUser CreatedBy { get; set; }
     public ICollection<TaskListAssignments> TaskListAssignments { get; set; }
     public ICollection<TaskListItem> TaskListItems { get; set; } = new List<TaskListItem>();
-    
+    public bool IsCompleted { get; set; } = false;
     public int CategoryId { get; set; }
     
     [ForeignKey("CategoryId")]

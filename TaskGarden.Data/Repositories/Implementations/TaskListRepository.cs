@@ -12,15 +12,17 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     {
     }
 
-    public async Task<TaskListOverview?> GetByIdAsync(int id)
+    public async Task<TaskListDetails?> GetByIdAsync(int id)
     {
-        return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListOverview
+        return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListDetails()
         {
             Id = tl.Id,
             Name = tl.Name,
             Description = tl.Description,
+            CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
+            TotalTasksCount = tl.TaskListItems.Count(),
+            IsCompleted = tl.IsCompleted,
             CreatedAt = tl.CreatedAt,
-            UpdatedAt = tl.UpdatedAt,
             Members = tl.TaskListAssignments
                 .Select(tla => new Member
                 {
@@ -28,11 +30,12 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                     Name = tla.User.FirstName + " " + tla.User.LastName,
                 })
                 .ToList(),
-            TotalTasksCount = tl.TaskListItems.Count(),
-            CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
-            TaskCompletionPercentage = tl.TaskListItems.Count() == 0
-                ? 0
-                : (double)tl.TaskListItems.Count(q => q.IsCompleted) / tl.TaskListItems.Count() * 100
+            TaskListItems = tl.TaskListItems.Select(q => new TaskListItemDetail
+            {
+                Id = q.Id,
+                Description = q.Description,
+                IsCompleted = q.IsCompleted
+            }).ToList(),
         }).FirstOrDefaultAsync();
     }
 
