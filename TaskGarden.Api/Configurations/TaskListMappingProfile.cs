@@ -17,34 +17,9 @@ public class TaskListMappingProfile : Profile
         CreateMap<TaskListResponseDto, TaskList>().ReverseMap();
         CreateMap<NewTaskListRequestDto, TaskList>().ReverseMap();
 
-        CreateMap<TaskList, TaskListResponseDto>()
-            .ForMember(dest => dest.TotalTasksCount, opt => opt.MapFrom(src => src.TaskListItems.Count))
-            .ForMember(dest => dest.CompletedTasksCount,
-                opt => opt.MapFrom(src => src.TaskListItems.Count(t => t.IsCompleted)))
-            .ForMember(dest => dest.TaskCompletionPercentage, opt => opt.MapFrom(src =>
-                src.TaskListItems.Any()
-                    ? (double)src.TaskListItems.Count(t => t.IsCompleted) / src.TaskListItems.Count() * 100
-                    : 0))
-            .ForMember(dest => dest.Members, opt => opt.MapFrom(src =>
-                src.TaskListAssignments.Select(utl => new MemberResponseDto
-                {
-                    UserId = utl.User.Id,
-                    Name = $"{utl.User.FirstName} {utl.User.LastName}"
-                }).ToList())).ReverseMap();
-
-        CreateMap<TaskList, TaskListDetailsResponseDto>()
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-            .ForMember(dest => dest.CompletedTasksCount,
-                opt => opt.MapFrom(src => src.TaskListItems.Count(t => t.IsCompleted)))
-            .ForMember(dest => dest.Members, opt => opt.MapFrom(src =>
-                src.TaskListAssignments.Select(utl => new MemberResponseDto
-                {
-                    UserId = utl.User.Id,
-                    Name = $"{utl.User.FirstName} {utl.User.LastName}"
-                }).ToList())).ReverseMap();
-
+        
+        CreateMap<TaskListDetails, TaskListDetailsResponseDto>().ReverseMap();
         CreateMap<TaskListOverview, TaskListResponseDto>().ReverseMap();
-
         CreateMap<TaskListAssignments, MemberResponseDto>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
