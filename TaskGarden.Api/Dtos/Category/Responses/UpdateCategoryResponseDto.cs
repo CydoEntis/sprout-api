@@ -2,4 +2,5 @@
 
 public class UpdateCategoryResponseDto : ResponseDto
 {
+    public int CategoryId { get; set; }
 }

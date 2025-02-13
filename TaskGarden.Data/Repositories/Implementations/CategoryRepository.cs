@@ -27,6 +27,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         return await _context.Categories.Where(c => c.UserId == userId).Include(c => c.TaskLists).ToListAsync();
     }
 
+
     public async Task<bool> DeleteCategoryAndDependenciesAsync(Category category)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync();
@@ -67,66 +68,4 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         }
     }
 
-
-    // public async Task<IEnumerable<Category>> GetAllCategoriesTaskListsAsync(string userId, string categoryName)
-    // {
-    //     return await _context.Categories
-    //         .Include(c => c.TaskLists)
-    //         .ThenInclude(tl => tl.User)
-    //         .Include(c => c.TaskLists)
-    //         .ThenInclude(tl => tl.TaskListItems)
-    //         .Include(c => c.TaskLists)
-    //         .ThenInclude(tl => tl.UserTaskLists)
-    //         .Where(c => c.UserId == userId && c.Name.ToLower() == categoryName.ToLower())
-    //         .ToListAsync();
-    // }
-
-    // public async Task<List<Category>> GetAllCategoriesWithTaskListsAsync(string userId, string categoryName)
-    // {
-    //     return await _context.Categories
-    //         .Where(c => c.UserId == userId && c.Name.ToLower() == categoryName.ToLower())
-    //         .Select(c => new Category
-    //         {
-    //             Id = c.Id,
-    //             Name = c.Name,
-    //             TaskLists = c.TaskLists.Select(tl => new TaskList
-    //             {
-    //                 Id = tl.Id,
-    //                 Name = tl.Name,
-    //                 TaskListItems = tl.TaskListItems.Select(tli => new TaskListItem
-    //                 {
-    //                     Id = tli.Id,
-    //                     IsCompleted = tli.IsCompleted
-    //                 }).ToList(),
-    //                 UserTaskLists = tl.UserTaskLists.Select(utl => new TaskListAssignments
-    //                 {
-    //                     User = new AppUser
-    //                     {
-    //                         Id = utl.User.Id,
-    //                         FirstName = utl.User.FirstName,
-    //                         LastName = utl.User.LastName
-    //                     }
-    //                 }).ToList()
-    //             }).ToList()
-    //         }).ToListAsync();
-    // }
-
-
-    public async Task<List<CategoryWithTaskListCount>> GetCategoriesWithTaskListCountsForUserAsync(string userId)
-    {
-        var categories = await _context.Categories
-            .Include(c => c.TaskLists)
-            .Where(c => c.UserId == userId)
-            .ToListAsync();
-
-        var categoryTaskListCounts = categories.Select(c => new CategoryWithTaskListCount
-        {
-            Id = c.Id,
-            CategoryName = c.Name,
-            CategoryTag = c.Tag,
-            TaskListCount = c.TaskLists.Count
-        }).ToList();
-
-        return categoryTaskListCounts;
-    }
 }
