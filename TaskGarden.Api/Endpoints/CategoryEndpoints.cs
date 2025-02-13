@@ -45,10 +45,10 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status200OK);
 
         // Update Category Endpoint
-        group.MapPut("/{categoryId}",
-                async (int categoryId, UpdateCategoryRequestDto updateDto, ICategoryService categoryService) =>
+        group.MapPut("/",
+                async (UpdateCategoryRequestDto updateDto, ICategoryService categoryService) =>
                 {
-                    var response = await categoryService.UpdateCategoryAsync(categoryId, updateDto);
+                    var response = await categoryService.UpdateCategoryAsync(updateDto);
                     return Results.Ok(ApiResponse<UpdateCategoryResponseDto>.SuccessResponse(response));
                 })
             .WithName("UpdateCategory")

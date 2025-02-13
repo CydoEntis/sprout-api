@@ -73,13 +73,13 @@ public class CategoryService : ICategoryService
         return _mapper.Map<List<TaskListResponseDto>>(taskLists);
     }
 
-    public async Task<UpdateCategoryResponseDto> UpdateCategoryAsync(int categoryId, UpdateCategoryRequestDto dto)
+    public async Task<UpdateCategoryResponseDto> UpdateCategoryAsync(UpdateCategoryRequestDto dto)
     {
         var userId = _userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var category = await _categoryRepository.GetAsync(categoryId);
+        var category = await _categoryRepository.GetAsync(dto.Id);
         if (category == null)
             throw new NotFoundException("Category not found.");
 
@@ -88,7 +88,7 @@ public class CategoryService : ICategoryService
 
         _mapper.Map(dto, category);
         await _categoryRepository.UpdateAsync(category);
-        return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully", CategoryId = categoryId };
+        return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully", CategoryId = category.Id };
     }
 
     public async Task DeleteCategoryAsync(int categoryId)
