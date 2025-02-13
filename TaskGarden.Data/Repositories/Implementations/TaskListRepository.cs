@@ -12,7 +12,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     {
     }
 
-    public async Task<TaskListOverview?> GetByIdAsync(string userId, int id)
+    public async Task<TaskListOverview?> GetByIdAsync(int id)
     {
         return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListOverview
         {

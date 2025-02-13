@@ -76,7 +76,7 @@ public class TaskListService : ITaskListService
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
     
-        var taskLists = await _taskListRepository.GetByIdAsync(userId, taskListId);
+        var taskLists = await _taskListRepository.GetByIdAsync(taskListId);
         return _mapper.Map<TaskListDetailsResponseDto>(taskLists);
     }
 
