@@ -16,7 +16,7 @@ public class TaskListMappingProfile : Profile
         CreateMap<NewTaskListResponseDto, TaskList>().ReverseMap();
         CreateMap<TaskListResponseDto, TaskList>().ReverseMap();
         CreateMap<NewTaskListRequestDto, TaskList>().ReverseMap();
-
+        CreateMap<UpdateTaskListRequestDto, TaskList>().ReverseMap();
         
         CreateMap<TaskListDetails, TaskListDetailsResponseDto>().ReverseMap();
         CreateMap<TaskListOverview, TaskListResponseDto>().ReverseMap();
