@@ -32,5 +32,16 @@ public static class TaskListEndpoints
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
+
+        group.MapPut("/{taskListId:int}",
+                async (int taskListId, UpdateTaskListRequestDto dto, ITaskListService taskListService) =>
+                {
+                    var response = await taskListService.UpdateTaskListAsync(taskListId, dto);
+                    return Results.Ok(ApiResponse<UpdateTaskListResponseDto>.SuccessResponse(response));
+                })
+            .WithName("UpdateTaskList")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK);
     }
 }

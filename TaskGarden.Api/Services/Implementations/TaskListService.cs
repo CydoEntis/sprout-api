@@ -81,13 +81,13 @@ public class TaskListService : ITaskListService
         if (taskList == null)
             throw new NotFoundException("Task list not found");
         
-        var category = await _categoryRepository.GetByNameAsync(userId, dto.CategoryName);
-        if(category == null) 
-            throw new NotFoundException("Category not found");
+        // var category = await _categoryRepository.GetByNameAsync(userId, dto.CategoryName);
+        // if(category == null) 
+        //     throw new NotFoundException("Category not found");
         
         _mapper.Map(dto, taskList); 
 
-        taskList.CategoryId = category.Id;
+        // taskList.CategoryId = category.Id;
         taskList.UpdatedAt = DateTime.UtcNow; 
 
         await _taskListRepository.UpdateAsync(taskList);
