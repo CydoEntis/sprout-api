@@ -6,7 +6,5 @@ public interface ITaskListService
 {
     Task<TaskListDetailsResponseDto> GetTaskListByIdAsync(int taskListId);
     Task<NewTaskListResponseDto> CreateNewTaskListAsync(NewTaskListRequestDto dto);
-    // Task<List<TaskListResponseDto>> GetAllTaskListsByCategoryAsync(string category);
-    // Task<TaskListResponseDto> GetTaskListByIdAsync(int taskListId);
-    // Task UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto);
+    Task<UpdateTaskListResponseDto> UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto);
 }

@@ -60,7 +60,7 @@ public class TaskListService : ITaskListService
         return _mapper.Map<TaskListDetailsResponseDto>(taskLists);
     }
 
-    public async Task UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto)
+    public async Task<UpdateTaskListResponseDto> UpdateTaskListAsync(int taskListId, UpdateTaskListRequestDto dto)
     {
         var userId = _userContextService.GetUserId();
         if (userId == null)
@@ -91,7 +91,7 @@ public class TaskListService : ITaskListService
         taskList.UpdatedAt = DateTime.UtcNow; 
 
         await _taskListRepository.UpdateAsync(taskList);
-        
+        return new UpdateTaskListResponseDto() { Message = $"Task list with {taskList.Id} updated", TaskListId = taskList.Id };
     }
     
     
