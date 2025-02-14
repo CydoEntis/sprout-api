@@ -62,9 +62,9 @@ public static class CategoryEndpoints
         group.MapDelete("/{categoryId}",
                 async (int categoryId, ICategoryService categoryService) =>
                 {
-                    await categoryService.DeleteCategoryAsync(categoryId);
+                    var response = await categoryService.DeleteCategoryAsync(categoryId);
                     return Results.Ok(
-                        ApiResponse<DeleteCategoryResponseDto>.SuccessResponse("Category successfully deleted."));
+                        ApiResponse<DeleteCategoryResponseDto>.SuccessResponse(response));
                 })
             .WithName("DeleteCategory")
             .RequireAuthorization()

@@ -9,5 +9,5 @@ public interface ICategoryService
     Task<List<CategoryOverviewResponseDto>> GetAllCategoriesAsync();
     Task<List<TaskListResponseDto>> GetAllTaskListsInCategory(string categoryName);
     Task<UpdateCategoryResponseDto> UpdateCategoryAsync(UpdateCategoryRequestDto dto);
-    Task DeleteCategoryAsync(int categoryId);
+    Task<DeleteCategoryResponseDto> DeleteCategoryAsync(int categoryId);
 }

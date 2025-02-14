@@ -91,7 +91,7 @@ public class CategoryService : ICategoryService
         return new UpdateCategoryResponseDto { Message = $"{category.Name} category has been updated successfully", CategoryId = category.Id };
     }
 
-    public async Task DeleteCategoryAsync(int categoryId)
+    public async Task<DeleteCategoryResponseDto> DeleteCategoryAsync(int categoryId)
     {
         var userId = _userContextService.GetUserId();
         if (userId == null)
@@ -107,5 +107,7 @@ public class CategoryService : ICategoryService
         var result = await _categoryRepository.DeleteCategoryAndDependenciesAsync(category);
         if (!result)
             throw new ResourceModificationException("Category could not be deleted.");
+        
+        return new DeleteCategoryResponseDto { Message = $"{category.Name} category has been deleted successfully" };
     }
 }
