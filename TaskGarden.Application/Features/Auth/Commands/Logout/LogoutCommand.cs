@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using TaskGarden.Api.Constants;
-using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Common.Constants;
+using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Application.Services.Contracts;
 
@@ -12,25 +12,25 @@ public class LogoutResponse : BaseResponse;
 
 public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
 {
-    private readonly ICookieManager _cookieManager;
-    private readonly ISessionManager _sessionManager;
+    private readonly ICookieService _cookieService;
+    private readonly ISessionService _sessionService;
 
-    public LogoutCommandHandler(ICookieManager cookieManager, ISessionManager sessionManager)
+    public LogoutCommandHandler(ICookieService cookieService, ISessionService sessionService)
     {
-        _cookieManager = cookieManager;
-        _sessionManager = sessionManager;
+        _cookieService = cookieService;
+        _sessionService = sessionService;
     }
 
     public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = _cookieManager.Get(CookieConsts.RefreshToken);
+        var refreshToken = _cookieService.Get(CookieConsts.RefreshToken);
         if (string.IsNullOrEmpty(refreshToken))
             throw new NotFoundException("Token not found");
 
-        var session = await _sessionManager.GetSessionAsync(refreshToken);
-        await _sessionManager.InvalidateSessionAsync(session);
+        var session = await _sessionService.GetSessionAsync(refreshToken);
+        await _sessionService.InvalidateSessionAsync(session);
 
-        _cookieManager.Delete(CookieConsts.RefreshToken);
+        _cookieService.Delete(CookieConsts.RefreshToken);
         return new LogoutResponse { Message = "Logged out successfully." };
     }
 }

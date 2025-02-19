@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Data.Models;
+using TaskGarden.Domain.Entities;
+
 
 namespace TaskGarden.Application.Features.Auth.Commands.Register;
 

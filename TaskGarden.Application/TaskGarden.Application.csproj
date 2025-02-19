@@ -14,12 +14,16 @@
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.11.0" />
       <PackageReference Include="MediatR" Version="12.4.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
       <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.11" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TaskGarden.Api\TaskGarden.Api.csproj" />
-      <ProjectReference Include="..\TaskGarden.Data\TaskGarden.Data.csproj" />
+      <ProjectReference Include="..\TaskGarden.Domain\TaskGarden.Domain.csproj" />
     </ItemGroup>
+
+
+
+
 
 </Project>

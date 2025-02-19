@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Data.Models;
+﻿namespace TaskGarden.Infrastructure.Models;
 
 public class ApiResponse<T>
 {

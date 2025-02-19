@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-
-using TaskGarden.Data.Models;
+using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Application.Features.Auth.Commands.Login;
 
@@ -12,7 +11,7 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
     public LoginCommandValidator(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
-        
+
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Invalid email format");

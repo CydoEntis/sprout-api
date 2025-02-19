@@ -1,16 +1,15 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Auth.Commands.Login;
-using TaskGarden.Data.Models;
+using TaskGarden.Domain.Entities;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace TaskGarden.Application.Features.Auth.Commands.Register;
 
 public record RegisterCommand(string Email, string FirstName, string LastName, string Password)
     : IRequest<LoginResponse>;
-
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, LoginResponse>
 {

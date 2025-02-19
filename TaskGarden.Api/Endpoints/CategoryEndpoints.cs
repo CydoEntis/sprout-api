@@ -1,7 +1,7 @@
 ﻿using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Services.Contracts;
-using TaskGarden.Data.Models;
+using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;
 

@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Errors;
-using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Common.Constants;
+using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Application.Services.Contracts;
-using TaskGarden.Data.Models;
+using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Application.Features.Passwords.Commands.ChangePassword;
 

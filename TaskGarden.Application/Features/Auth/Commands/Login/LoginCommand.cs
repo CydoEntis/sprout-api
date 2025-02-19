@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Constants;
-using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Common.Constants;
+using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Services.Contracts;
-using TaskGarden.Data.Models;
+using TaskGarden.Domain.Entities;
 using ValidationException = FluentValidation.ValidationException;
 
 namespace TaskGarden.Application.Features.Auth.Commands.Login;
@@ -23,9 +23,9 @@ public class LoginResponse : BaseResponse
 
 public class LoginCommandHandler(
     UserManager<AppUser> userManager,
-    ITokenManager tokenManager,
-    ICookieManager cookieManager,
-    ISessionManager sessionManager,
+    ITokenService tokenService,
+    ICookieService cookieService,
+    ISessionService sessionService,
     IValidator<LoginCommand> validator)
     : IRequestHandler<LoginCommand, LoginResponse>
 {
@@ -40,11 +40,11 @@ public class LoginCommandHandler(
         if (user == null)
             throw new NotFoundException("User not found.");
 
-        var accessToken = tokenManager.GenerateAccessToken(user);
-        var refreshToken = tokenManager.GenerateRefreshToken();
+        var accessToken = tokenService.GenerateAccessToken(user);
+        var refreshToken = tokenService.GenerateRefreshToken();
 
-        await sessionManager.CreateSessionAsync(user.Id, refreshToken);
-        cookieManager.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
+        await sessionService.CreateSessionAsync(user.Id, refreshToken);
+        cookieService.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
 
         return new LoginResponse() { Message = "Logged in successfully", AccessToken = accessToken };
     }
