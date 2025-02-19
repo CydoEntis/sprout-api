@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using TaskGarden.Api.Services.Implementations.Auth.Commands.Login;
 using TaskGarden.Application.Exceptions;
 using TaskGarden.Data.Models;
 using ValidationException = FluentValidation.ValidationException;
@@ -8,15 +9,10 @@ using ValidationException = FluentValidation.ValidationException;
 namespace TaskGarden.Application.Features.Auth.Commands.Register;
 
 public record RegisterCommand(string Email, string FirstName, string LastName, string Password)
-    : IRequest<RegisterResponse>;
+    : IRequest<LoginResponse>;
 
-public class RegisterResponse
-{
-    public bool Success { get; set; }
-    public string Message { get; set; }
-}
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterResponse>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, LoginResponse>
 {
     private readonly IMediator _mediator;
     private readonly UserManager<AppUser> _userManager;
@@ -31,9 +27,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
         _validator = validator;
     }
 
-    public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = _validator.Validate(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
