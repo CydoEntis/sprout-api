@@ -1,6 +1,7 @@
-﻿using TaskGarden.Api.Constants;
+﻿using Microsoft.AspNetCore.Http;
+using TaskGarden.Api.Constants;
 
-namespace TaskGarden.Api.Errors;
+namespace TaskGarden.Application.Exceptions;
 
 public class ResourceCreationException(string message) : BaseException(StatusCodes.Status500InternalServerError,
     ExceptionTitles.ResourceCreationException, message)

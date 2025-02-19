@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskGarden.Api", "TaskGarde
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskGarden.Data", "TaskGarden.Data\TaskGarden.Data.csproj", "{F4F0F109-E18A-44C3-94B1-61CCEC03A85B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskGarden.Application", "TaskGarden.Application\TaskGarden.Application.csproj", "{F3E29E36-FADD-4C5B-B4D7-B0AE7941CFBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{F4F0F109-E18A-44C3-94B1-61CCEC03A85B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4F0F109-E18A-44C3-94B1-61CCEC03A85B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4F0F109-E18A-44C3-94B1-61CCEC03A85B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3E29E36-FADD-4C5B-B4D7-B0AE7941CFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E29E36-FADD-4C5B-B4D7-B0AE7941CFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E29E36-FADD-4C5B-B4D7-B0AE7941CFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E29E36-FADD-4C5B-B4D7-B0AE7941CFBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

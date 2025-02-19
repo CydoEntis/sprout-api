@@ -1,11 +1,14 @@
-﻿using TaskGarden.Api.Constants;
+﻿using Microsoft.AspNetCore.Http;
+using TaskGarden.Api.Constants;
+using TaskGarden.Api.Errors;
 using TaskGarden.Data.Models;
 
-namespace TaskGarden.Api.Errors;
+namespace TaskGarden.Application.Exceptions;
+
 
 public class ValidationException : BaseException
 {
-    public List<ErrorField> Errors { get; set; } = new List<ErrorField>();
+    private List<ErrorField> Errors { get; set; } = [];
 
     public ValidationException(string field, string fieldMessage)
         : base(StatusCodes.Status400BadRequest, ExceptionTitles.ValidationException, ExceptionMessages.ValidationFailed)

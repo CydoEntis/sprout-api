@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Errors;
+﻿namespace TaskGarden.Application.Exceptions;
 
 public class BaseException : Exception
 {
