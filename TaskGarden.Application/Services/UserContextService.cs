@@ -1,4 +1,7 @@
-﻿namespace TaskGarden.Api.Helpers;
+﻿using Microsoft.AspNetCore.Http;
+using TaskGarden.Application.Services.Contracts;
+
+namespace TaskGarden.Application.Services;
 
 public class UserContextService : IUserContextService
 {

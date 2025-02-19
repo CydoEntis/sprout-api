@@ -7,8 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Passwords\Commands\ChangePassword\" />
-      <Folder Include="Features\Passwords\Commands\ForgotPassword\" />
       <Folder Include="Features\Passwords\Commands\ResetPassword\" />
       <Folder Include="MappingProfiles\" />
     </ItemGroup>

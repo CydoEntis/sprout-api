@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Helpers;
+﻿namespace TaskGarden.Application.Services.Contracts;
 
 public interface IUserContextService
 {
