@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using TaskGarden.Application.Exceptions;
 using TaskGarden.Data.Models;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace TaskGarden.Application.Features.Auth.Commands.Register;
 
@@ -29,7 +31,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, RegisterR
         _validator = validator;
     }
 
-    public Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var validationResult = _validator.Validate(request);
         if (!validationResult.IsValid)
