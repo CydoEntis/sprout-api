@@ -5,11 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Endpoints;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Common.Constants;
+using TaskGarden.Application.Services;
+using TaskGarden.Application.Services.Contracts;
+using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 using TaskGarden.Infrastructure.Models;
 using TaskGarden.Infrastructure.Repositories;
 using TaskGarden.Infrastructure.Repositories.Contracts;
 using TaskGarden.Infrastructure.Repositories.Implementations;
+using TaskGarden.Infrastructure.Services.Email;
+using TaskGarden.Infrastructure.Services.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -33,13 +39,13 @@ builder.Services.AddCors(options =>
 });
 
 
-// var conn = builder.Configuration[ProjectConsts.ConnectionString];
-// builder.Services.AddDbContext<AppDbContext>(options =>
-//     options.UseNpgsql(conn, options => options.CommandTimeout(360)));
+var conn = builder.Configuration[ProjectConsts.ConnectionString];
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(conn, options => options.CommandTimeout(360)));
 
-// builder.Services.AddIdentityCore<AppUser>()
-//     .AddRoles<IdentityRole>()
-//     .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentityCore<AppUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -47,16 +53,16 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    // options.TokenValidationParameters = new TokenValidationParameters
-    // {
-    //     ValidateIssuer = true,
-    //     ValidIssuer = builder.Configuration[JwtConsts.Issuer],
-    //     ValidateAudience = true,
-    //     ValidAudience = builder.Configuration[JwtConsts.Audience],
-    //     ValidateLifetime = true,
-    //     ClockSkew = TimeSpan.Zero,
-    //     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration[JwtConsts.Secret]))
-    // };
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration[JwtConsts.Issuer],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration[JwtConsts.Audience],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration[JwtConsts.Secret]))
+    };
 });
 
 
@@ -69,12 +75,12 @@ builder.Services.AddScoped<ITaskListItemRepository, TaskListItemRepository>();
 
 
 // Services
-// builder.Services.AddScoped<IUserContextService, UserContextService>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
 // builder.Services.AddScoped<IAuthManager, AuthManager>();
-// builder.Services.AddScoped<ICookieManager, CookieManager>();
-// builder.Services.AddScoped<ITokenManager, TokenManager>();
-// builder.Services.AddScoped<ISessionManager, SessionManager>();
-// builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
+builder.Services.AddScoped<ICookieService, CookieService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
+builder.Services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 // builder.Services.AddScoped<IEmailService, MailKitService>();
 // builder.Services.AddScoped<ICategoryService, CategoryService>();
 // builder.Services.AddScoped<ITaskListService, TaskListService>();
