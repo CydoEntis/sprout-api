@@ -1,8 +1,10 @@
 ﻿using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
-namespace TaskGarden.Api.Services.Implementations;
+namespace TaskGarden.Application.Services;
+
 
 public class SessionManager : ISessionManager
 {

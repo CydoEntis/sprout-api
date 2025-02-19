@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Services.Implementations.Auth.Commands.Login;
 using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Data.Models;
 using ValidationException = FluentValidation.ValidationException;
 

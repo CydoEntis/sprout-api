@@ -1,6 +1,9 @@
-﻿using TaskGarden.Api.Services.Contracts;
+﻿using Microsoft.AspNetCore.Http;
+using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Services.Contracts;
 
-namespace TaskGarden.Api.Services.Implementations;
+namespace TaskGarden.Application.Services;
+
 
 public class CookieManager : ICookieManager
 {

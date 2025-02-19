@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api.Dtos.Auth;
 
-namespace TaskGarden.Api.Services.Contracts;
+namespace TaskGarden.Application.Services.Contracts;
 
 public interface IAuthManager
 {

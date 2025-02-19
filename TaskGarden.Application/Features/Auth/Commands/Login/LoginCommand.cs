@@ -2,10 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api.Constants;
-using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Data.Models;
+using ValidationException = FluentValidation.ValidationException;
 
-namespace TaskGarden.Api.Services.Implementations.Auth.Commands.Login;
+namespace TaskGarden.Application.Features.Auth.Commands.Login;
 
 public record LoginCommand(string Email, string Password) : IRequest<LoginResponse>;
 
@@ -34,6 +36,10 @@ public class LoginCommandHandler(
             throw new ValidationException(validationResult.Errors);
 
         var user = await userManager.FindByEmailAsync(request.Email);
+
+        if (user == null)
+            throw new NotFoundException("User not found.");
+
         var accessToken = tokenManager.GenerateAccessToken(user);
         var refreshToken = tokenManager.GenerateRefreshToken();
 

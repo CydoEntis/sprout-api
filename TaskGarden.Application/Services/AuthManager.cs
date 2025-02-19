@@ -1,17 +1,14 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Constants;
-using TaskGarden.Api.Dtos;
 using TaskGarden.Api.Dtos.Auth;
 using TaskGarden.Api.Errors;
-using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Exceptions;
+using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Data.Models;
 
-namespace TaskGarden.Api.Services.Implementations;
+namespace TaskGarden.Application.Services;
 
 public class AuthManager : IAuthManager
 {
@@ -26,7 +23,8 @@ public class AuthManager : IAuthManager
     private AppUser? _user;
 
     public AuthManager(UserManager<AppUser> userManager,
-        IMapper mapper, ITokenManager tokenManager, ICookieManager cookieManager, ISessionManager sessionManager, IEmailTemplateService emailTemplateService, IEmailService emailService)
+        IMapper mapper, ITokenManager tokenManager, ICookieManager cookieManager, ISessionManager sessionManager,
+        IEmailTemplateService emailTemplateService, IEmailService emailService)
     {
         _userManager = userManager;
         _mapper = mapper;

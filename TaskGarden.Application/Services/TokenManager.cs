@@ -1,13 +1,15 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Constants;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Data.Models;
 using TaskGarden.Data.Repositories.Contracts;
 
-namespace TaskGarden.Api.Services.Implementations;
+namespace TaskGarden.Application.Services;
 
 public class TokenManager : ITokenManager
 {
