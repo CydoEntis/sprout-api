@@ -1,7 +1,7 @@
 ﻿using TaskGarden.Application.Common;
+using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
-using TaskGarden.Infrastructure.Repositories.Contracts;
 
 namespace TaskGarden.Infrastructure.Services.Identity;
 

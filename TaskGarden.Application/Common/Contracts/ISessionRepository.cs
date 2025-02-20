@@ -1,8 +1,7 @@
 ﻿
 using TaskGarden.Domain.Entities;
 
-namespace TaskGarden.Infrastructure.Repositories.Contracts;
-
+namespace TaskGarden.Application.Common.Contracts;
 
 public interface ISessionRepository : IBaseRepository<Session>
 {

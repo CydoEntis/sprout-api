@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Domain.Entities;
-using TaskGarden.Infrastructure.Repositories.Contracts;
 
 namespace TaskGarden.Infrastructure.Repositories.Implementations;
 

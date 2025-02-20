@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Application.Common;
 using TaskGarden.Application.Common.Constants;
+using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
-using TaskGarden.Infrastructure.Repositories.Contracts;
 
 public class TokenService : ITokenService
 {
