@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Auth.Commands.Login;
+using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 
-namespace TaskGarden.Application.Features.Passwords.Commands.ChangePassword;
+namespace TaskGarden.Application.Features.Auth.Commands.ChangePassword;
 
 public record ChangePasswordCommand(string CurrentPassword, string NewPassword) : IRequest<ChangePasswordResponse>;
 

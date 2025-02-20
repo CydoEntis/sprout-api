@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Auth.Commands.Login;
+using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Application.Features.Auth.Commands.ResetPassword;

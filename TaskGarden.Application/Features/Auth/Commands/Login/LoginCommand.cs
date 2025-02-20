@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
+using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using ValidationException = FluentValidation.ValidationException;
@@ -11,10 +12,6 @@ namespace TaskGarden.Application.Features.Auth.Commands.Login;
 
 public record LoginCommand(string Email, string Password) : IRequest<LoginResponse>;
 
-public class BaseResponse
-{
-    public string Message { get; set; } = string.Empty;
-}
 
 public class LoginResponse : BaseResponse
 {

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Auth.Commands.Login;
+using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.Auth.Commands.Logout;
