@@ -9,3 +9,12 @@ public class UpdateCategoryResponse : BaseResponse
 {
     public int CategoryId { get; set; }
 }
+
+public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
+{
+    //TODO: Implement Logic.
+    public Task<UpdateCategoryResponse> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+}
