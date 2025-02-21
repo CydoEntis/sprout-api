@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
@@ -20,7 +21,7 @@ public class TaskListMappingProfile : Profile
         CreateMap<UpdateTaskListCommand, TaskList>().ReverseMap();
         
         // CreateMap<TaskListDetails, TaskListDetailsResponseDto>().ReverseMap();
-        // CreateMap<TaskListOverview, TaskListResponseDto>().ReverseMap();
+        CreateMap<TaskListOverview, GetAllTaskListsForCategoryResponse>().ReverseMap();
         CreateMap<TaskListAssignments, MemberResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>

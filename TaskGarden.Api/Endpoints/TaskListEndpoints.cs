@@ -1,7 +1,4 @@
 ﻿using MediatR;
-using TaskGarden.Api.Dtos.Category;
-using TaskGarden.Api.Dtos.TaskList;
-using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
 using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;

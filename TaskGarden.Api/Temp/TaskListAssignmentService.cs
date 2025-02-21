@@ -1,4 +1,7 @@
-﻿// using TaskGarden.Api.Services.Contracts;
+﻿// TODO: Going to remove these when add TaskListAssignment using CQRS
+
+
+// using TaskGarden.Api.Services.Contracts;
 // using TaskGarden.Infrastructure.Enums;
 // using TaskGarden.Infrastructure.Models;
 // using TaskGarden.Infrastructure.Repositories.Contracts;

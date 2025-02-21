@@ -1,8 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Api.Dtos.Category;
-using TaskGarden.Api.Dtos.TaskList;
-using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
 using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
 using TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
