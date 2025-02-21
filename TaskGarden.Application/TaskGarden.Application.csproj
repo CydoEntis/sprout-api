@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\TaskList\" />
       <Folder Include="Features\Tokens\Commands\" />
       <Folder Include="MappingProfiles\" />
     </ItemGroup>
