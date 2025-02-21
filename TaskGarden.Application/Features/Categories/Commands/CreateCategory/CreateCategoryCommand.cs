@@ -20,7 +20,6 @@ public class CreateCategoryCommandHandler(
     ICategoryRepository categoryRepository,
     IMapper mapper) : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
 {
-    //TODO: Implement Logic.
     public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
