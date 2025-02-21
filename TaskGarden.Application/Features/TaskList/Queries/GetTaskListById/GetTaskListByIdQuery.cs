@@ -6,7 +6,7 @@ using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
 
-public record GetTaskListByIdQuery(int TaskListId) : IRequest<List<GetTaskListByIdQueryResponse>>;
+public record GetTaskListByIdQuery(int TaskListId) : IRequest<GetTaskListByIdQueryResponse>;
 
 public class GetTaskListByIdQueryResponse : BaseResponse
 {
@@ -17,6 +17,7 @@ public class GetTaskListByIdQueryResponse : BaseResponse
     public int TotalTasksCount { get; set; }
     public bool IsCompleted { get; set; }
     public DateTime CreatedAt { get; set; }
+
     public List<MemberResponse> Members { get; set; } = [];
     // public List<TaskListItemResponse> TaskListItems { get; set; } = [];
 }
@@ -25,16 +26,16 @@ public class GetTaskListByIdQueryHandler(
     IUserContextService userContextService,
     ITaskListRepository taskListRepository,
     IMapper mapper)
-    : IRequestHandler<GetTaskListByIdQuery, List<GetTaskListByIdQueryResponse>>
+    : IRequestHandler<GetTaskListByIdQuery, GetTaskListByIdQueryResponse>
 {
-    public async Task<List<GetTaskListByIdQueryResponse>> Handle(GetTaskListByIdQuery request,
+    public async Task<GetTaskListByIdQueryResponse> Handle(GetTaskListByIdQuery request,
         CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
-    
+
         var taskLists = await taskListRepository.GetByIdAsync(request.TaskListId);
-        return mapper.Map<List<GetTaskListByIdQueryResponse>>(taskLists);
+        return mapper.Map<GetTaskListByIdQueryResponse>(taskLists);
     }
 }

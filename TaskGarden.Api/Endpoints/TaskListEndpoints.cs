@@ -1,6 +1,10 @@
-﻿using TaskGarden.Api.Dtos.Category;
+﻿using MediatR;
+using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
+using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;
@@ -12,10 +16,10 @@ public static class TaskListEndpoints
         var group = routes.MapGroup("/api/task-list").WithTags("Task List");
 
         group.MapGet("/{taskListId:int}",
-                async (int taskListId, ITaskListService taskListService) =>
+                async (GetTaskListByIdQuery query, IMediator mediator) =>
                 {
-                    var response = await taskListService.GetTaskListByIdAsync(taskListId);
-                    return Results.Ok(ApiResponse<TaskListDetailsResponseDto>.SuccessResponse(response));
+                    var response = await mediator.Send(query);
+                    return Results.Ok(ApiResponse<GetTaskListByIdQueryResponse>.SuccessResponse(response));
                 })
             .WithName("GetTaskListById")
             .RequireAuthorization()
@@ -23,10 +27,10 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status200OK);
 
         group.MapPost("/",
-                async (NewTaskListRequestDto dto, ITaskListService taskListService) =>
+                async (CreateTaskListCommand command, IMediator mediator) =>
                 {
-                    var response = await taskListService.CreateNewTaskListAsync(dto);
-                    return Results.Ok(ApiResponse<NewTaskListResponseDto>.SuccessResponse(response));
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<CreateTaskListResponse>.SuccessResponse(response));
                 })
             .WithName("CreateTaskList")
             .RequireAuthorization()
@@ -34,10 +38,10 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status200OK);
 
         group.MapPut("/{taskListId:int}",
-                async (int taskListId, UpdateTaskListRequestDto dto, ITaskListService taskListService) =>
+                async (UpdateTaskListCommand command, IMediator mediator) =>
                 {
-                    var response = await taskListService.UpdateTaskListAsync(taskListId, dto);
-                    return Results.Ok(ApiResponse<UpdateTaskListResponseDto>.SuccessResponse(response));
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<UpdateTaskListResponse>.SuccessResponse(response));
                 })
             .WithName("UpdateTaskList")
             .RequireAuthorization()
