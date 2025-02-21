@@ -3,6 +3,10 @@ using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
+using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
+using TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
+using TaskGarden.Application.Features.Categories.Queries.GetAllCategories;
+using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;
@@ -25,10 +29,10 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status200OK);
 
         group.MapGet("/",
-                async (ICategoryService categoryService) =>
+                async (IMediator mediator) =>
                 {
-                    var response = await categoryService.GetAllCategoriesAsync();
-                    return Results.Ok(ApiResponse<List<CategoryOverviewResponseDto>>.SuccessResponse(response));
+                    var response = await mediator.Send(new GetAllCategoriesQuery());
+                    return Results.Ok(ApiResponse<List<GetAllCategoriesQueryResponse>>.SuccessResponse(response));
                 })
             .WithName("GetAllCategories")
             .RequireAuthorization()
@@ -36,22 +40,21 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status200OK);
 
         group.MapGet("/{category}",
-                async (string category, ICategoryService categoryService) =>
+                async (GetAllTaskListsForCategoryQuery query, IMediator mediator) =>
                 {
-                    var response = await categoryService.GetAllTaskListsInCategory(category);
-                    return Results.Ok(ApiResponse<List<TaskListResponseDto>>.SuccessResponse(response));
+                    var response = await mediator.Send(query);
+                    return Results.Ok(ApiResponse<List<GetAllTaskListsForCategoryResponse>>.SuccessResponse(response));
                 })
             .WithName("GetTaskListByCategory")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
-        // Update Category Endpoint
         group.MapPut("/",
-                async (UpdateCategoryRequestDto updateDto, ICategoryService categoryService) =>
+                async (UpdateCategoryCommand command, IMediator mediator) =>
                 {
-                    var response = await categoryService.UpdateCategoryAsync(updateDto);
-                    return Results.Ok(ApiResponse<UpdateCategoryResponseDto>.SuccessResponse(response));
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<UpdateCategoryResponse>.SuccessResponse(response));
                 })
             .WithName("UpdateCategory")
             .RequireAuthorization()
@@ -62,11 +65,11 @@ public static class CategoryEndpoints
 
         // Delete Category Endpoint
         group.MapDelete("/{categoryId}",
-                async (int categoryId, ICategoryService categoryService) =>
+                async (DeleteCategoryCommand command, IMediator mediator) =>
                 {
-                    var response = await categoryService.DeleteCategoryAsync(categoryId);
+                    var response = await mediator.Send(command);
                     return Results.Ok(
-                        ApiResponse<DeleteCategoryResponseDto>.SuccessResponse(response));
+                        ApiResponse<DeleteCategoryResponse>.SuccessResponse(response));
                 })
             .WithName("DeleteCategory")
             .RequireAuthorization()
