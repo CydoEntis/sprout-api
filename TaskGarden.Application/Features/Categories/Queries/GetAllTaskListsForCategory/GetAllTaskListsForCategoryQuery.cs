@@ -3,7 +3,7 @@ using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services;
+using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory
 {
@@ -24,7 +24,7 @@ namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForC
     }
 
     public class GetAllTaskListsForCategoryQueryHandler(
-        UserContextService userContextService,
+        IUserContextService userContextService,
         ICategoryRepository categoryRepository,
         ITaskListRepository taskListRepository,
         IMapper mapper)

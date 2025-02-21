@@ -2,7 +2,7 @@
 using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services;
+using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.Categories.Queries.GetAllCategories;
 
@@ -17,7 +17,7 @@ public class GetAllCategoriesQueryResponse : BaseResponse
 }
 
 public class GetAllCategoriesQueryHandler(
-    UserContextService userContextService,
+    IUserContextService userContextService,
     ICategoryRepository categoryRepository,
     IMapper mapper)
     : IRequestHandler<GetAllCategoriesQuery, List<GetAllCategoriesQueryResponse>>

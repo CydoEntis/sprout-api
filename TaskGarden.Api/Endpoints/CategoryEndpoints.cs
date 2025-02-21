@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Services.Contracts;
@@ -40,8 +41,9 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status200OK);
 
         group.MapGet("/{category}",
-                async (GetAllTaskListsForCategoryQuery query, IMediator mediator) =>
+                async (string category, IMediator mediator) =>
                 {
+                    var query = new GetAllTaskListsForCategoryQuery(category);
                     var response = await mediator.Send(query);
                     return Results.Ok(ApiResponse<List<GetAllTaskListsForCategoryResponse>>.SuccessResponse(response));
                 })
@@ -65,8 +67,9 @@ public static class CategoryEndpoints
 
         // Delete Category Endpoint
         group.MapDelete("/{categoryId}",
-                async (DeleteCategoryCommand command, IMediator mediator) =>
+                async (int categoryId, IMediator mediator) =>
                 {
+                    var command = new DeleteCategoryCommand(categoryId);
                     var response = await mediator.Send(command);
                     return Results.Ok(
                         ApiResponse<DeleteCategoryResponse>.SuccessResponse(response));

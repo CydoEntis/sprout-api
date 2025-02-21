@@ -16,8 +16,9 @@ public static class TaskListEndpoints
         var group = routes.MapGroup("/api/task-list").WithTags("Task List");
 
         group.MapGet("/{taskListId:int}",
-                async (GetTaskListByIdQuery query, IMediator mediator) =>
+                async (int taskListId, IMediator mediator) =>
                 {
+                    var query = new GetTaskListByIdQuery(taskListId);
                     var response = await mediator.Send(query);
                     return Results.Ok(ApiResponse<GetTaskListByIdQueryResponse>.SuccessResponse(response));
                 })
@@ -37,7 +38,7 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapPut("/{taskListId:int}",
+        group.MapPut("/",
                 async (UpdateTaskListCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
