@@ -1,6 +1,8 @@
-﻿using TaskGarden.Api.Dtos.Category;
+﻿using MediatR;
+using TaskGarden.Api.Dtos.Category;
 using TaskGarden.Api.Dtos.TaskList;
 using TaskGarden.Api.Services.Contracts;
+using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;
@@ -12,10 +14,10 @@ public static class CategoryEndpoints
         var group = routes.MapGroup("/api/category").WithTags("Category");
 
         group.MapPost("/",
-                async (NewCategoryRequestDto newCategoryRequestDto, ICategoryService categoryService) =>
+                async (CreateCategoryCommand command, IMediator mediator) =>
                 {
-                    var response = await categoryService.CreateNewCategoryAsync(newCategoryRequestDto);
-                    return Results.Ok(ApiResponse<NewCategoryResponseDto>.SuccessResponse(response));
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<CreateCategoryResponse>.SuccessResponse(response));
                 })
             .WithName("AddCategory")
             .RequireAuthorization()
