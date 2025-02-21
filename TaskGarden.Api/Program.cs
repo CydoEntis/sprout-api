@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api;
 using TaskGarden.Api.Endpoints;
+using TaskGarden.Api.Middleware;
 using TaskGarden.Api.Services.Contracts;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Contracts;
@@ -29,9 +30,9 @@ builder.Services.AddHttpContextAccessor();
 // builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddAuthorization();
 
-builder.Services.AddCorsService(); 
-builder.Services.AddDatabaseService(builder.Configuration); 
-builder.Services.AddAuthenticationService(builder.Configuration); 
+builder.Services.AddCorsService();
+builder.Services.AddDatabaseService(builder.Configuration);
+builder.Services.AddAuthenticationService(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddRepositoryService();
 
@@ -54,9 +55,9 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-// app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-// app.MapAuthEndpoints();
+app.MapAuthEndpoints();
 app.MapCategoryEndpoints();
 app.MapTaskListEndpoints();
 

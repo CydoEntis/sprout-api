@@ -6,7 +6,7 @@ namespace TaskGarden.Application.Common.Exceptions;
 
 public class AlreadyExistsException : BaseException
 {
-    private List<ErrorField> Errors { get; set; } = new();
+    public List<ErrorField> Errors { get; set; } = new();
 
     public AlreadyExistsException(string field, string fieldMessage)
         : base(StatusCodes.Status409Conflict, ExceptionTitles.AlreadyExists, ExceptionMessages.AlreadyExists)
