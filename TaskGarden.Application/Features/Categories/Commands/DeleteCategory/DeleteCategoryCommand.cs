@@ -14,7 +14,6 @@ public class DeleteCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository) : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
 {
-    //TODO: Implement Logic.
     public async Task<DeleteCategoryResponse> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
