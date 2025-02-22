@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Domain.Entities;
-using ValidationException = FluentValidation.ValidationException;
 
 namespace TaskGarden.Application.Features.Auth.Commands.Register;
 
@@ -30,7 +29,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, LoginResp
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+            throw new FluentValidation.ValidationException(validationResult.Errors);
 
         var user = new AppUser
         {

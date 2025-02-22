@@ -143,8 +143,9 @@
 // }
 
 
-using TaskGarden.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using TaskGarden.Application.Common.Exceptions;
+using TaskGarden.Application.Common.Models;
 
 namespace TaskGarden.Api.Middleware
 {
@@ -165,58 +166,89 @@ namespace TaskGarden.Api.Middleware
             {
                 await _next(context);
             }
-            catch (AlreadyExistsException ex)
-            {
-                LogException(context, ex, "Already exists error occurred.");
-                await HandleExceptionAsync(context, ex, "Already exists", ex.StatusCode);
-            }
-            catch (ValidationException ex)
-            {
-                LogException(context, ex, "Validation error occurred.");
-                await HandleExceptionAsync(context, ex, "Validation error", ex.StatusCode);
-            }
-            catch (NotFoundException ex)
-            {
-                LogException(context, ex, "Resource not found.");
-                await HandleExceptionAsync(context, ex, "Resource not found", ex.StatusCode);
-            }
-            catch (ConflictException ex)
-            {
-                LogException(context, ex, "Conflict error.");
-                await HandleExceptionAsync(context, ex, "Conflict error", ex.StatusCode);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                LogException(context, ex, "Unauthorized access error.");
-                await HandleExceptionAsync(context, ex, "Unauthorized", StatusCodes.Status401Unauthorized);
-            }
             catch (Exception ex)
             {
-                LogException(context, ex, "An unexpected error occurred.");
-                await HandleExceptionAsync(context, ex, "Internal Server Error", StatusCodes.Status500InternalServerError);
+                await HandleExceptionAsync(context, ex);
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Exception ex, string title, int statusCode)
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var problemDetails = new ProblemDetails
-            {
-                Title = title,
-                Status = statusCode,
-                Detail = ex.Message,
-                Instance = context.Request.Path
-            };
+            var statusCode = StatusCodes.Status500InternalServerError;
+            string title = "An unexpected error occurred.";
+            var details = ex.Message;
+            var errors = new List<ErrorField>(); // List to store the validation error details
 
-            // Optional: Add custom errors or validation messages for specific exceptions
-            if (ex is ValidationException validationEx)
+            switch (ex)
             {
-                problemDetails.Extensions.Add("errors", validationEx.Errors.Select(e => new { e.Field, e.Message }));
+                case AlreadyExistsException aeEx:
+                    statusCode = StatusCodes.Status409Conflict;
+                    title = "Already exists";
+                    errors.Add(new ErrorField { Field = "general", Message = aeEx.Message });
+                    break;
+
+                case ValidationException veEx:
+                    statusCode = StatusCodes.Status400BadRequest;
+                    title = "Validation error";
+                    errors = veEx.Errors
+                        .Select(e => new ErrorField { Field = e.Field, Message = e.Message })
+                        .ToList();
+                    break;
+                case FluentValidation.ValidationException veEx:
+                    statusCode = StatusCodes.Status400BadRequest;
+                    title = "Validation error";
+                    // Map FluentValidation.ValidationFailure to your custom ErrorField
+                    errors = veEx.Errors
+                        .Select(e => new ErrorField { Field = e.PropertyName, Message = e.ErrorMessage })
+                        .ToList();
+                    break;
+
+                case UnauthorizedAccessException uaeEx:
+                    statusCode = StatusCodes.Status401Unauthorized;
+                    title = "Unauthorized";
+                    errors.Add(new ErrorField { Field = "authorization", Message = "User is unauthorized." });
+                    break;
+
+                case NotFoundException nfEx:
+                    statusCode = StatusCodes.Status404NotFound;
+                    title = "Not Found";
+                    errors.Add(new ErrorField { Field = "general", Message = nfEx.Message });
+                    break;
+
+                case ConflictException cEx:
+                    statusCode = StatusCodes.Status409Conflict;
+                    title = "Conflict error";
+                    errors.Add(new ErrorField { Field = "general", Message = cEx.Message });
+                    break;
+
+                default:
+                    _logger.LogError(ex, "An unexpected error occurred.");
+                    break;
             }
 
+            var problemDetails = new ProblemDetails
+            {
+                Status = statusCode,
+                Title = title,
+                Detail = details,
+                Instance = context.Request.Path,
+            };
+
+            // Add errors to the ProblemDetails if any
+            if (errors.Any())
+            {
+                problemDetails.Extensions.Add("errors", errors);
+            }
+
+            // Add the requestId for tracing purposes
+            problemDetails.Extensions.Add("requestId", context.TraceIdentifier);
+
+            // Return the ProblemDetails as JSON response
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
+
 
         private void LogException(HttpContext context, Exception ex, string message)
         {
