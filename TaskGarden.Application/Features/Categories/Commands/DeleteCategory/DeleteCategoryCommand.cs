@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
@@ -12,10 +13,16 @@ public class DeleteCategoryResponse : BaseResponse;
 
 public class DeleteCategoryCommandHandler(
     IUserContextService userContextService,
-    ICategoryRepository categoryRepository) : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
+    ICategoryRepository categoryRepository,
+    IValidator<DeleteCategoryCommand> validator
+) : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
 {
     public async Task<DeleteCategoryResponse> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");

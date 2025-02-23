@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
@@ -17,10 +18,15 @@ public class UpdateCategoryResponse : BaseResponse
 public class UpdateCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository,
+    IValidator<UpdateCategoryCommand> validator,
     IMapper mapper) : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
 {
     public async Task<UpdateCategoryResponse> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
