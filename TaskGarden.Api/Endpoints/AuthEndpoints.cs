@@ -34,9 +34,9 @@ public static class AuthEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
 
-        group.MapPost("/refresh-tokens", async (RefreshTokensCommand command, IMediator mediator) =>
+        group.MapPost("/refresh-tokens", async (IMediator mediator) =>
             {
-                var response = await mediator.Send(command);
+                var response = await mediator.Send(new RefreshTokensCommand());
                 return Results.Ok(ApiResponse<RefreshTokensResponse>.SuccessResponse(response));
             })
             .WithName("RefreshTokens")

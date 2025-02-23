@@ -43,7 +43,8 @@ public class TokenService : ITokenService
             issuer: _jwtIssuer,
             audience: _jwtAudience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            // expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddMinutes(2),
             signingCredentials: credentials
         );
 
