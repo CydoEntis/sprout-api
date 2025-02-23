@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api;
 using TaskGarden.Api.Endpoints;
-using TaskGarden.Api.Middleware;
+using TaskGarden.Api.Extensions;
 using TaskGarden.Application;
 using TaskGarden.Application.Configurations;
 using TaskGarden.Application.Services;
@@ -9,18 +9,13 @@ using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 
-
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddAuthorization();
-
-
-
 
 builder.Services.AddCorsService();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
@@ -36,10 +31,13 @@ builder.Services.AddIdentityCore<AppUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
 
+// Add ProblemDetails services before any middleware is called
+builder.Services.AddProblemDetails(ExceptionExtensions.ConfigureProblemDetails);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -47,16 +45,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseHttpsRedirection();
-
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapAuthEndpoints();
 app.MapCategoryEndpoints();
 app.MapTaskListEndpoints();
-
 
 app.Run();

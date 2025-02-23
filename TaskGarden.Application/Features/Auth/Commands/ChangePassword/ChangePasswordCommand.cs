@@ -27,8 +27,9 @@ public class LogoutCommandHandler(UserManager<AppUser> userManager, IUserContext
             throw new NotFoundException(ExceptionMessages.UserNotFound);
 
         var isCurrentPasswordValid = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
-        if (!isCurrentPasswordValid)
-            throw new ValidationException("current-password", ExceptionMessages.CurrentPasswordMismatch);
+        // if (!isCurrentPasswordValid)
+        //     //TODO: Change this to a bad request exception.
+        //     throw new ValidationException("current-password", ExceptionMessages.CurrentPasswordMismatch);
 
         var updateResult =
             await userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
