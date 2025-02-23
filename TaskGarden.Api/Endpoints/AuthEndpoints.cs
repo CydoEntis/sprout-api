@@ -45,9 +45,9 @@ public static class AuthEndpoints
             .Produces(StatusCodes.Status200OK);
 
         group.MapPost("/logout",
-                async (LogoutCommand command, IMediator mediator) =>
+                async (IMediator mediator) =>
                 {
-                    var response = await mediator.Send(command);
+                    var response = await mediator.Send(new LogoutCommand());
                     return Results.Ok(ApiResponse<LogoutResponse>.SuccessResponse(response));
                 })
             .WithName("Logout")

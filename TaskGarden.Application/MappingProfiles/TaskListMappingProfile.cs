@@ -21,6 +21,7 @@ public class TaskListMappingProfile : Profile
         CreateMap<UpdateTaskListCommand, TaskList>().ReverseMap();
         
         // CreateMap<TaskListDetails, TaskListDetailsResponseDto>().ReverseMap();
+        CreateMap<TaskListDetails, GetTaskListByIdQueryResponse>();
         CreateMap<TaskListOverview, GetAllTaskListsForCategoryResponse>().ReverseMap();
         CreateMap<TaskListAssignments, MemberResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
