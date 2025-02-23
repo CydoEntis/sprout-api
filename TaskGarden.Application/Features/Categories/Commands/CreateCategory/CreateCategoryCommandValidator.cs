@@ -10,12 +10,23 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     public CreateCategoryCommandValidator(ICategoryRepository categoryRepository,
         IUserContextService userContextService)
     {
+        string[] validCategoryTags = [
+            "shopping-bag", "shopping-basket", "shopping-cart", "users", "messages-square", "plane", "map-pinned",
+            "receipt", "banknote", "hand-coins", "dumbbell", "heart-pulse", "roller-coaster", "ferris-wheel",
+            "drama", "theater", "film", "house", "spray-can", "briefcase", "building", "building-2", "university",
+            "book", "square-library"
+        ];
+
         Include(new AuthenticatedValidator<CreateCategoryCommand>(userContextService));
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Category name is required")
             .MaximumLength(50).WithMessage("Category name cannot exceed 100 characters");
 
+        RuleFor(x => x.Tag)
+            .NotEmpty().WithMessage("Category tag is required")
+            .Must(tag => validCategoryTags.Contains(tag))
+            .WithMessage("Category tag is not valid. Please select a valid tag.");
 
         RuleFor(x => x).MustAsync(async (command, _) =>
         {
@@ -23,6 +34,6 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
             if (userId == null) return false;
             var existingCategory = await categoryRepository.GetByNameAsync(userId, command.Name);
             return existingCategory == null;
-        });
+        }).WithMessage("A category with this name already exists.");
     }
 }
