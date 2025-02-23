@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
@@ -18,20 +19,19 @@ public class CreateCategoryResponse : BaseResponse
 public class CreateCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository,
+    IValidator<CreateCategoryCommand> createCategoryValidator,
     IMapper mapper) : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
 {
     public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
+        var validationResult = await createCategoryValidator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
-        var existingCategory = await categoryRepository.GetByNameAsync(userId, request.Name);
-        if (existingCategory is not null)
-            throw new ConflictException("Category already exists");
+        var userId = userContextService.GetUserId();
 
         var category = mapper.Map<Category>(request);
-        category.UserId = userId;
+        category.UserId = userId!;
 
         await categoryRepository.AddAsync(category);
         return new CreateCategoryResponse()
