@@ -29,6 +29,13 @@ public class CreateCategoryCommandHandler(
             throw new ValidationException(validationResult.Errors);
 
         var userId = userContextService.GetUserId();
+        if(userId == null)
+            throw new UnauthorizedException("Invalid user");
+        
+        var existingCategory = await categoryRepository.GetByNameAsync(userId, request.Name);
+        if(existingCategory != null)
+            throw new ConflictException($"Category with name {request.Name} already exists");
+        
 
         var category = mapper.Map<Category>(request);
         category.UserId = userId!;
