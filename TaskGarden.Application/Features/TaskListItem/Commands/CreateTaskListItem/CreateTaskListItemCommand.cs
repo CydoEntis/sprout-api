@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 
-public record CreateTaskListItemCommand(string Name, string Tag) : IRequest<CreateTaskListItemResponse>;
+public record CreateTaskListItemCommand(string Description, int TaskListId) : IRequest<CreateTaskListItemResponse>;
 
 public class CreateTaskListItemResponse : BaseResponse
 {
@@ -16,6 +17,8 @@ public class CreateTaskListItemResponse : BaseResponse
 
 public class CreateTaskListItemCommandHandler(
     IUserContextService userContextService,
+    ITaskListRepository taskListRepository,
+    ITaskListItemRepository taskListItemRepository,
     IValidator<CreateTaskListItemCommand> validator,
     IMapper mapper) : IRequestHandler<CreateTaskListItemCommand, CreateTaskListItemResponse>
 {
@@ -29,18 +32,16 @@ public class CreateTaskListItemCommandHandler(
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedException("Invalid user");
-        //     
-        //     var existingCategory = await categoryRepository.GetByNameAsync(userId, request.Name);
-        //     if(existingCategory != null)
-        //         throw new ConflictException($"Category with name {request.Name} already exists");
-        //     
-        //
-        //     var category = mapper.Map<Domain.Entities.TaskListItem>(request);
-        //     category.UserId = userId!;
-        //
-        //     await categoryRepository.AddAsync(category);
-        //     return new CreateTaskListItemResponse()
-        //         { Message = $"{category.Name} category has been created", CategoryId = category.Id };
+        
+        var taskList = await taskListRepository.GetByIdAsync(request.TaskListId);
+        if(taskList == null)
+            throw new NotFoundException($"Task list with id: {request.TaskListId} does not exist");
+        
+        var taskListItem = mapper.Map<Domain.Entities.TaskListItem>(request);
+        taskListItem.TaskListId = request.TaskListId;
+        
+        await taskListItemRepository.AddAsync(taskListItem);
+
         return new CreateTaskListItemResponse() { Message = $"Item added", TaskListId = 1 };
     }
 }
