@@ -14,4 +14,9 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
     {
         return await _context.TaskListItems.Where(t => t.TaskListId == taskListId).ToListAsync();
     }
+
+    public async Task<TaskListItem> GetByIdAsync(int taskListItemId)
+    {
+        return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
+    }
 }

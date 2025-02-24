@@ -9,7 +9,7 @@ public class TaskListItem : BaseEntity
     public required int TaskListId { get; set; }
     [ForeignKey("TaskListId")]
     public required TaskList TaskList { get; set; }
-    public string? CompletedById { get; set; } = string.Empty;
+    public string? CompletedById { get; set; }
     [ForeignKey("CompletedById")]
     public AppUser? CompletedBy { get; set; }
 }
