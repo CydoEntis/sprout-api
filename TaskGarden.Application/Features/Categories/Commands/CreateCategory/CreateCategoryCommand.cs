@@ -19,12 +19,12 @@ public class CreateCategoryResponse : BaseResponse
 public class CreateCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository,
-    IValidator<CreateCategoryCommand> createCategoryValidator,
+    IValidator<CreateCategoryCommand> validator,
     IMapper mapper) : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
 {
     public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await createCategoryValidator.ValidateAsync(request, cancellationToken);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 

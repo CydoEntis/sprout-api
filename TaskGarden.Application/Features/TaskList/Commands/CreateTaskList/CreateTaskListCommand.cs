@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
@@ -9,7 +10,8 @@ using TaskGarden.Domain.Enums;
 
 namespace TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 
-public record CreateTaskListCommand(string Name, string Description, string CategoryName) : IRequest<CreateTaskListResponse>;
+public record CreateTaskListCommand(string Name, string Description, string CategoryName)
+    : IRequest<CreateTaskListResponse>;
 
 public class CreateTaskListResponse : BaseResponse
 {
@@ -21,6 +23,7 @@ public class CreateTaskListCommandHandler(
     ITaskListRepository taskListRepository,
     ICategoryRepository categoryRepository,
     ITaskListAssignmentRepository taskListAssignmentRepository,
+    IValidator<CreateTaskListCommand> validator,
     IMapper mapper) : IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
 {
     public async Task<CreateTaskListResponse> Handle(CreateTaskListCommand request, CancellationToken cancellationToken)
@@ -28,6 +31,10 @@ public class CreateTaskListCommandHandler(
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
+
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
         var category = await categoryRepository.GetByNameAsync(userId, request.CategoryName);
 
@@ -43,7 +50,7 @@ public class CreateTaskListCommandHandler(
 
         return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", CategoryId = taskList.Id };
     }
-    
+
     // Potentially move into its own class for reusability.
     private async Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role)
     {
@@ -65,4 +72,3 @@ public class CreateTaskListCommandHandler(
         }
     }
 }
-
