@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
@@ -27,6 +28,7 @@ namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForC
         IUserContextService userContextService,
         ICategoryRepository categoryRepository,
         ITaskListRepository taskListRepository,
+        IValidator<GetAllTaskListsForCategoryQuery> validator,
         IMapper mapper)
         :
             IRequestHandler<GetAllTaskListsForCategoryQuery, List<GetAllTaskListsForCategoryResponse>>
@@ -38,6 +40,10 @@ namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForC
             var userId = userContextService.GetUserId();
             if (userId == null)
                 throw new UnauthorizedAccessException("User not authenticated");
+
+            var validationResult = await validator.ValidateAsync(request, cancellationToken);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
 
             var existingCategory = await categoryRepository.GetByNameAsync(userId, request.CategoryName);
             if (existingCategory is null)
