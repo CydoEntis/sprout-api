@@ -16,15 +16,17 @@ public class UpdateTaskListItemResponse : BaseResponse
 
 public class UpdateTaskListItemCommandHandler(
     IUserContextService userContextService,
-    IValidator<UpdateTaskListItemCommand> validator,
+    // IValidator<UpdateTaskListItemCommand> validator,
     IMapper mapper) : IRequestHandler<UpdateTaskListItemCommand, UpdateTaskListItemResponse>
 {
     public async Task<UpdateTaskListItemResponse> Handle(UpdateTaskListItemCommand request,
         CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        // TODO: Add validator file and reimplement validation logic.
+
+        // var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        // if (!validationResult.IsValid)
+        //     throw new ValidationException(validationResult.Errors);
 
         var userId = userContextService.GetUserId();
         if (userId == null)

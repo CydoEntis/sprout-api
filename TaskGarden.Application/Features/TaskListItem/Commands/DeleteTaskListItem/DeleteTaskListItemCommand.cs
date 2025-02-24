@@ -16,15 +16,18 @@ public class DeleteTaskListItemResponse : BaseResponse
 
 public class DeleteTaskListItemCommandHandler(
     IUserContextService userContextService,
-    IValidator<DeleteTaskListItemCommand> validator,
+    // IValidator<DeleteTaskListItemCommand> validator,
     IMapper mapper) : IRequestHandler<DeleteTaskListItemCommand, DeleteTaskListItemResponse>
 {
     public async Task<DeleteTaskListItemResponse> Handle(DeleteTaskListItemCommand request,
         CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        // TODO: Add validator file and reimplement validation logic.
+
+        
+        // var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        // if (!validationResult.IsValid)
+        //     throw new ValidationException(validationResult.Errors);
 
         var userId = userContextService.GetUserId();
         if (userId == null)
