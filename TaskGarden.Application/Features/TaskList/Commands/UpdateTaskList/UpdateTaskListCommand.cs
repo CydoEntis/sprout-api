@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
@@ -19,6 +20,7 @@ public class UpdateTaskListCommandHandler(
     IUserContextService userContextService,
     ITaskListRepository taskListRepository,
     ITaskListAssignmentRepository taskListAssignmentRepository,
+    IValidator<UpdateTaskListCommand> validator,
     IMapper mapper) : IRequestHandler<UpdateTaskListCommand, UpdateTaskListResponse>
 {
     public async Task<UpdateTaskListResponse> Handle(UpdateTaskListCommand request, CancellationToken cancellationToken)
@@ -27,6 +29,11 @@ public class UpdateTaskListCommandHandler(
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
+        
         var userRoleString = await taskListAssignmentRepository.GetAssignedRoleAsync(userId, request.TaskListId);
 
         if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
