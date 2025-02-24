@@ -7,6 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Folder Include="Features\TaskListAssignment\Commands\" />
+        <Folder Include="Features\TaskListAssignment\Queries\" />
+        <Folder Include="Features\TaskListItem\Queries\" />
         <Folder Include="Features\Tokens\Commands\"/>
     </ItemGroup>
 
