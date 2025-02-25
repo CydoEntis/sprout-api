@@ -9,7 +9,7 @@ using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Application.Features.Categories.Commands.CreateCategory;
 
-public record CreateCategoryCommand(string Name, string Tag) : IRequest<CreateCategoryResponse>;
+public record CreateCategoryCommand(string Name, string Tag, string Color) : IRequest<CreateCategoryResponse>;
 
 public class CreateCategoryResponse : BaseResponse
 {

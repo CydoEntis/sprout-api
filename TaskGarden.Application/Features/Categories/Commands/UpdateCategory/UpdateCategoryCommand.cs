@@ -8,7 +8,7 @@ using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
 
-public record UpdateCategoryCommand(int Id, string Name, string Tag) : IRequest<UpdateCategoryResponse>;
+public record UpdateCategoryCommand(int Id, string Name, string Tag, string Color) : IRequest<UpdateCategoryResponse>;
 
 public class UpdateCategoryResponse : BaseResponse
 {
@@ -26,7 +26,7 @@ public class UpdateCategoryCommandHandler(
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-        
+
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
