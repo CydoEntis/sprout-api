@@ -15,7 +15,7 @@ public record CreateTaskListCommand(string Name, string Description, string Cate
 
 public class CreateTaskListResponse : BaseResponse
 {
-    public int CategoryId { get; set; }
+    public int TaskListId { get; set; }
 }
 
 public class CreateTaskListCommandHandler(
@@ -48,7 +48,7 @@ public class CreateTaskListCommandHandler(
         if (!response)
             throw new ResourceCreationException("Unable to assign user to task list.");
 
-        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", CategoryId = taskList.Id };
+        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", TaskListId = taskList.Id };
     }
 
     // Potentially move into its own class for reusability.
