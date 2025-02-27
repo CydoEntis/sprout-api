@@ -35,7 +35,7 @@ public class GetTaskListByIdQueryHandler(
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var taskLists = await taskListRepository.GetByIdAsync(request.TaskListId);
+        var taskLists = await taskListRepository.GetDetailsByIdAsync(request.TaskListId);
         return mapper.Map<GetTaskListByIdQueryResponse>(taskLists);
     }
 }

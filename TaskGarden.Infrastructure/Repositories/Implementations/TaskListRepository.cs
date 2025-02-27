@@ -5,14 +5,20 @@ using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Infrastructure.Repositories.Implementations;
 
-
 public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
 {
     public TaskListRepository(AppDbContext context) : base(context)
     {
     }
 
-    public async Task<TaskListDetails?> GetByIdAsync(int id)
+    public async Task<TaskList?> GetByIdAsync(int id)
+    {
+        return await _context.TaskLists
+            .FirstOrDefaultAsync(q => q.Id == id);
+    }
+
+
+    public async Task<TaskListDetails?> GetDetailsByIdAsync(int id)
     {
         return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListDetails()
         {
@@ -65,5 +71,33 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
             })
             .ToListAsync();
     }
-    
+
+    public async Task<bool> DeleteTaskListAndDependenciesAsync(TaskList taskList)
+    {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            var taskListItems = await _context.TaskListItems.Where(q => q.TaskListId == taskList.Id).ToListAsync();
+
+
+            if (taskListItems.Count > 0)
+            {
+                _context.TaskListItems.RemoveRange(taskListItems);
+            }
+
+            // TODO: In future implement the deletion of associated members of the task list.
+
+            _context.TaskLists.Remove(taskList);
+            await _context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+
+            return true;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            return false;
+        }
+    }
 }

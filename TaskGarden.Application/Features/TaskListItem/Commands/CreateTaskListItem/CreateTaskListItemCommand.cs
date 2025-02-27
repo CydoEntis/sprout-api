@@ -35,7 +35,7 @@ public class CreateTaskListItemCommandHandler(
         if (userId == null)
             throw new UnauthorizedException("Invalid user");
         
-        var taskList = await taskListRepository.GetByIdAsync(request.TaskListId);
+        var taskList = await taskListRepository.GetDetailsByIdAsync(request.TaskListId);
         if(taskList == null)
             throw new NotFoundException($"Task list with id: {request.TaskListId} does not exist");
         
