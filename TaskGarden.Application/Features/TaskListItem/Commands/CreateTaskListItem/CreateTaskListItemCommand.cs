@@ -19,17 +19,16 @@ public class CreateTaskListItemCommandHandler(
     IUserContextService userContextService,
     ITaskListRepository taskListRepository,
     ITaskListItemRepository taskListItemRepository,
-    // IValidator<CreateTaskListItemCommand> validator,
+    IValidator<CreateTaskListItemCommand> validator,
     IMapper mapper) : IRequestHandler<CreateTaskListItemCommand, CreateTaskListItemResponse>
 {
     public async Task<CreateTaskListItemResponse> Handle(CreateTaskListItemCommand request,
         CancellationToken cancellationToken)
     {
-        // TODO: Add validator file and reimplement validation logic.
         
-        // var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        // if (!validationResult.IsValid)
-        //     throw new ValidationException(validationResult.Errors);
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
         var userId = userContextService.GetUserId();
         if (userId == null)

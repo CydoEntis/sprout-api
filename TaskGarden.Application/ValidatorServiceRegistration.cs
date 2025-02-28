@@ -9,6 +9,7 @@ using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCateg
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 
 namespace TaskGarden.Application;
@@ -20,24 +21,23 @@ public static class ValidatorServiceRegistration
         // Auth Validators
         services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
-        
+
         // Category Validators
         services.AddValidatorsFromAssemblyContaining<CreateCategoryCommand>();
         services.AddValidatorsFromAssemblyContaining<UpdateCategoryCommand>();
         services.AddValidatorsFromAssemblyContaining<DeleteCategoryCommand>();
-        
+
         // Task List Validators
         services.AddValidatorsFromAssemblyContaining<GetAllTaskListsForCategoryQueryValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateTaskListCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListCommandValidator>();
 
         // Task List Item Validators
-        // TODO: Add Validators
-        // services.AddValidatorsFromAssemblyContaining<CreateTaskListItemCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
 
-        
+
         return services;
     }
 }
