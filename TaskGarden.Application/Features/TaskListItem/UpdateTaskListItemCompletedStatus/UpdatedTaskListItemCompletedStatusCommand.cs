@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
@@ -16,13 +17,22 @@ public class UpdateTaskListItemCompletedStatusResponse : BaseResponse
 
 public class UpdateTaskListItemCompletedStatusCommandHandler(
     IUserContextService userContextService,
-    ITaskListItemRepository taskListItemRepository)
+    ITaskListItemRepository taskListItemRepository,
+    IValidator<UpdateTaskListItemCompletedStatusCommand> validator)
     : IRequestHandler<UpdateTaskListItemCompletedStatusCommand, UpdateTaskListItemCompletedStatusResponse>
 {
     public async Task<UpdateTaskListItemCompletedStatusResponse> Handle(
         UpdateTaskListItemCompletedStatusCommand request, CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
+        if (userId == null)
+            throw new UnauthorizedException("Invalid user");
+
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
+
         var taskListItem = await taskListItemRepository.GetByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task list item with id {request.Id} was not found");

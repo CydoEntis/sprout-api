@@ -11,6 +11,7 @@ using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
 using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
+using TaskGarden.Application.Features.TaskListItem.UpdateTaskListItemCompletedStatus;
 
 namespace TaskGarden.Application;
 
@@ -36,8 +37,9 @@ public static class ValidatorServiceRegistration
         services.AddValidatorsFromAssemblyContaining<CreateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
+        services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCompletedStatusCommand>();
 
-
+        
         return services;
     }
 }
