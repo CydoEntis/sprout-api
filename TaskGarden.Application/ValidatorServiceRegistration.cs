@@ -7,7 +7,9 @@ using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
 using TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
 using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
+using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 
 namespace TaskGarden.Application;
 
@@ -31,6 +33,9 @@ public static class ValidatorServiceRegistration
 
         // Task List Item Validators
         // TODO: Add Validators
+        // services.AddValidatorsFromAssemblyContaining<CreateTaskListItemCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
 
         
         return services;
