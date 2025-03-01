@@ -25,10 +25,11 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
     {
         var refreshToken = _cookieService.Get(CookieConsts.RefreshToken);
         if (string.IsNullOrEmpty(refreshToken))
-            throw new NotFoundException("Token not found");
+            return new LogoutResponse { Message = "Logged out successfully." };
 
         var session = await _sessionService.GetSessionAsync(refreshToken);
-        await _sessionService.InvalidateSessionAsync(session);
+        if (session != null)
+            await _sessionService.InvalidateSessionAsync(session);
 
         _cookieService.Delete(CookieConsts.RefreshToken);
         return new LogoutResponse { Message = "Logged out successfully." };

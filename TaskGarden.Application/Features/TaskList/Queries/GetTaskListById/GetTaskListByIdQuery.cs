@@ -39,3 +39,5 @@ public class GetTaskListByIdQueryHandler(
         return mapper.Map<GetTaskListByIdQueryResponse>(taskLists);
     }
 }
+
+
