@@ -10,11 +10,11 @@ using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Application.MappingProfiles;
 
-
 public class TaskListItemMappingProfile : Profile
 {
     public TaskListItemMappingProfile()
     {
         CreateMap<CreateTaskListItemCommand, TaskListItem>();
+        CreateMap<TaskListItemDetail, TaskListItemResponse>();
     }
 }

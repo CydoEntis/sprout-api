@@ -19,7 +19,7 @@ public class GetTaskListByIdQueryResponse : BaseResponse
     public DateTime CreatedAt { get; set; }
 
     public List<MemberResponse> Members { get; set; } = [];
-    // public List<TaskListItemResponse> TaskListItems { get; set; } = [];
+    public List<TaskListItemResponse> TaskListItems { get; set; } = [];
 }
 
 public class GetTaskListByIdQueryHandler(
