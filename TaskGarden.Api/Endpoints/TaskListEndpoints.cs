@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
+using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
 using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Infrastructure.Models;
@@ -45,5 +46,20 @@ public static class TaskListEndpoints
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
+
+        group.MapDelete("/{taskListId}",
+                async (int taskListId, IMediator mediator) =>
+                {
+                    var command = new DeleteTaskListCommand(taskListId);
+                    var response = await mediator.Send(command);
+                    return Results.Ok(
+                        ApiResponse<DeleteTaskListResponse>.SuccessResponse(response));
+                })
+            .WithName("DeleteTaskList")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
     }
 }
