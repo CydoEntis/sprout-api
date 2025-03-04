@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
+using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskListItem;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
 using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
+using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;
@@ -56,6 +59,48 @@ public static class TaskListEndpoints
                         ApiResponse<DeleteTaskListResponse>.SuccessResponse(response));
                 })
             .WithName("DeleteTaskList")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+        
+        
+        // Items
+        
+        group.MapPost("/{taskListId}/items",
+                async (CreateTaskListItemCommand command, IMediator mediator) =>
+                {
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<CreateTaskListItemResponse>.SuccessResponse(response));
+                })
+            .WithName("CreateTaskListItem")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK);
+
+        group.MapPut("/{taskListId}/items",
+                async (UpdateTaskListItemCommand command, IMediator mediator) =>
+                {
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<UpdateTaskListItemResponse>.SuccessResponse(response));
+                })
+            .WithName("UpdateTaskListItem")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
+        group.MapDelete("/{taskListId}/items/{itemId}",
+                async (int taskListId, IMediator mediator) =>
+                {
+                    var command = new DeleteTaskListItemCommand(itemId);
+                    var response = await mediator.Send(command);
+                    return Results.Ok(
+                        ApiResponse<DeleteTaskListItemResponse>.SuccessResponse(response));
+                })
+            .WithName("DeleteTaskListItem")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)
