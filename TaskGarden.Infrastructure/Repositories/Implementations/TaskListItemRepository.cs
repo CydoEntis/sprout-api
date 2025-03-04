@@ -20,5 +20,23 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
         return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
     }
 
+    public async Task ReorderTaskListItemsAsync(int taskListId, List<TaskListItem> orderedItems)
+    {
+        var taskListItems = await _context.TaskListItems
+            .Where(i => i.TaskListId == taskListId)
+            .ToListAsync();
+
+        foreach (var item in orderedItems)
+        {
+            var taskItem = taskListItems.FirstOrDefault(i => i.Id == item.Id);
+            if (taskItem != null)
+            {
+                taskItem.Position = item.Position;
+            }
+        }
+
+        await _context.SaveChangesAsync();
+    }
+    
 
 }

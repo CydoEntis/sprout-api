@@ -6,6 +6,7 @@ public class TaskListItem : BaseEntity
 {
     public string Description { get; set; }
     public bool IsCompleted { get; set; } = false;
+    public int Position { get; set; }
     public required int TaskListId { get; set; }
     [ForeignKey("TaskListId")]
     public required TaskList TaskList { get; set; }
