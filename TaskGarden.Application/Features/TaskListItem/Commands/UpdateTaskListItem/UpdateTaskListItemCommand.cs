@@ -12,7 +12,7 @@ public record UpdateTaskListItemCommand(int Id, string Description) : IRequest<U
 
 public class UpdateTaskListItemResponse : BaseResponse
 {
-    public int TaskListItemId { get; set; }
+    public int TaskListId { get; set; }
 }
 
 public class UpdateTaskListItemCommandHandler(
@@ -30,6 +30,6 @@ public class UpdateTaskListItemCommandHandler(
         await taskListItemRepository.UpdateAsync(taskListItem);
 
         return new UpdateTaskListItemResponse()
-            { Message = $"Task list item with id {taskListItem.Id} updated", TaskListItemId = taskListItem.Id };
+            { Message = $"Task list item with id {taskListItem.Id} updated", TaskListId = taskListItem.TaskListId };
     }
 }
