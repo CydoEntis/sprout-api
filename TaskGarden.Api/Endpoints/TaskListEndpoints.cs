@@ -64,10 +64,9 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
-        
-        
+
+
         // Items
-        
         group.MapPost("/{taskListId}/items",
                 async (CreateTaskListItemCommand command, IMediator mediator) =>
                 {
@@ -92,10 +91,10 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
 
-        group.MapDelete("/{taskListId}/items/{itemId}",
-                async (int taskListId, IMediator mediator) =>
+        group.MapDelete("/{taskListId}/items/{taskListItemId}",
+                async (int taskListItemId, IMediator mediator) =>
                 {
-                    var command = new DeleteTaskListItemCommand(itemId);
+                    var command = new DeleteTaskListItemCommand(taskListItemId);
                     var response = await mediator.Send(command);
                     return Results.Ok(
                         ApiResponse<DeleteTaskListItemResponse>.SuccessResponse(response));
