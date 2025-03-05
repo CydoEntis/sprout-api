@@ -7,6 +7,7 @@ using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
+using TaskGarden.Application.Features.TaskListItem.UpdateTaskListItemCompletedStatus;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;
@@ -114,6 +115,19 @@ public static class TaskListEndpoints
                     return Results.Ok(ApiResponse<ReorderTaskListItemResponse>.SuccessResponse(response));
                 })
             .WithName("ReorderTaskListItem")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+        
+        group.MapPut("/{taskListId}/items/status",
+                async (UpdateTaskListItemCompletedStatusCommand command, IMediator mediator) =>
+                {
+                    var response = await mediator.Send(command);
+                    return Results.Ok(ApiResponse<UpdateTaskListItemCompletedStatusResponse>.SuccessResponse(response));
+                })
+            .WithName("UpdateCompletedStatus")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)
