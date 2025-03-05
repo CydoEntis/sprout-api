@@ -36,11 +36,12 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                     Name = tla.User.FirstName + " " + tla.User.LastName,
                 })
                 .ToList(),
-            TaskListItems = tl.TaskListItems.Select(q => new TaskListItemDetail
+            TaskListItems = tl.TaskListItems.OrderBy(q => q.Position).Select(q => new TaskListItemDetail
             {
                 Id = q.Id,
                 Description = q.Description,
-                IsCompleted = q.IsCompleted
+                IsCompleted = q.IsCompleted,
+                Position = q.Position,
             }).ToList(),
         }).FirstOrDefaultAsync();
     }
