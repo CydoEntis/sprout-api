@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Application.Common.Contracts;
+using TaskGarden.Application.Common.Models;
 using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Infrastructure.Repositories.Implementations;
@@ -34,13 +35,13 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
         return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
     }
 
-    public async Task ReorderTaskListItemsAsync(int taskListId, List<TaskListItem> reorderedListItems)
+    public async Task ReorderTaskListItemsAsync(int taskListId, List<ListItemOrder> items)
     {
         var taskListItems = await _context.TaskListItems
             .Where(i => i.TaskListId == taskListId)
             .ToListAsync();
 
-        foreach (var item in reorderedListItems)
+        foreach (var item in items)
         {
             var taskItem = taskListItems.FirstOrDefault(i => i.Id == item.Id);
             if (taskItem != null)
