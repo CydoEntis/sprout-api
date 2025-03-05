@@ -15,7 +15,8 @@ public class ReorderTaskListItemResponse : BaseResponse
 }
 
 public class ReorderTaskListItemCommandHandler(
-    ITaskListItemRepository taskListItemRepository)
+    ITaskListItemRepository taskListItemRepository,
+    IMapper mapper)
     : IRequestHandler<ReorderTaskListItemCommand, ReorderTaskListItemResponse>
 {
     public async Task<ReorderTaskListItemResponse> Handle(ReorderTaskListItemCommand request,
@@ -26,7 +27,9 @@ public class ReorderTaskListItemCommandHandler(
             throw new NotFoundException($"Task list with id {request.TaskListId} was not found");
 
 
-        await taskListItemRepository.ReorderTaskListItemsAsync(request.TaskListId, request.Items);
+        var taskListItems = mapper.Map<List<Domain.Entities.TaskListItem>>(taskListItem);
+
+        await taskListItemRepository.ReorderTaskListItemsAsync(request.TaskListId, taskListItems);
 
         return new ReorderTaskListItemResponse() { TaskListId = request.TaskListId, Message = "Item order updated." };
     }
