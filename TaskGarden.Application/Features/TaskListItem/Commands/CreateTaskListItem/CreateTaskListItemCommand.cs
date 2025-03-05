@@ -41,7 +41,7 @@ public class CreateTaskListItemCommandHandler(
         var taskListItem = mapper.Map<Domain.Entities.TaskListItem>(request);
         taskListItem.TaskListId = request.TaskListId;
         
-        await taskListItemRepository.AddAsync(taskListItem);
+        await taskListItemRepository.AddTaskListItemAsync(taskListItem);
 
         return new CreateTaskListItemResponse() { Message = $"Item added", TaskListId = 1 };
     }

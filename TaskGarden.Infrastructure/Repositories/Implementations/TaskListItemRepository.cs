@@ -10,6 +10,20 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
     {
     }
 
+    public async Task AddTaskListItemAsync(TaskListItem taskListItem)
+    {
+        int maxPosition = await _context.TaskListItems
+            .Where(i => i.TaskListId == taskListItem.TaskListId)
+            .Select(i => (int?)i.Position)
+            .MaxAsync() ?? 0;
+
+        taskListItem.Position = maxPosition + 1;
+
+        await _context.TaskListItems.AddAsync(taskListItem);
+        await _context.SaveChangesAsync();
+    }
+
+
     public async Task<IEnumerable<TaskListItem>> GetAllTasksForTaskList(int taskListId)
     {
         return await _context.TaskListItems.Where(t => t.TaskListId == taskListId).ToListAsync();
@@ -37,6 +51,4 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
 
         await _context.SaveChangesAsync();
     }
-    
-
 }
