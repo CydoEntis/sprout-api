@@ -4,6 +4,8 @@ using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
 using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
+using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using TaskGarden.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure.Projections;
 
@@ -27,5 +29,12 @@ public class TaskListMappingProfile : Profile
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.User.FirstName} {src.User.LastName}"));
+        
+        
+        // Task List Items
+        CreateMap<CreateTaskListItemCommand, TaskListItem>();
+        CreateMap<TaskListItemDetail, TaskListItemResponse>();
+        CreateMap<ReorderTaskListItemCommand, TaskListItem>();
+
     }
 }
