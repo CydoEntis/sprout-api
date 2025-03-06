@@ -11,17 +11,17 @@ using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Application.MappingProfiles;
 
-
 public class TaskListMappingProfile : Profile
 {
     public TaskListMappingProfile()
     {
+        CreateMap<TaskList, TaskListDetails>().ReverseMap();
         CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
         CreateMap<CreateTaskListResponse, TaskList>().ReverseMap();
         CreateMap<GetTaskListByIdQueryResponse, TaskList>().ReverseMap();
         CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
         CreateMap<UpdateTaskListCommand, TaskList>().ReverseMap();
-        
+
         // CreateMap<TaskListDetails, TaskListDetailsResponseDto>().ReverseMap();
         CreateMap<TaskListDetails, GetTaskListByIdQueryResponse>();
         CreateMap<TaskListOverview, GetAllTaskListsForCategoryResponse>().ReverseMap();
@@ -29,12 +29,12 @@ public class TaskListMappingProfile : Profile
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.User.FirstName} {src.User.LastName}"));
-        
-        
+
+
         // Task List Items
         CreateMap<CreateTaskListItemCommand, TaskListItem>();
         CreateMap<TaskListItemDetail, TaskListItemResponse>();
         CreateMap<ReorderTaskListItemCommand, TaskListItem>();
-
+        CreateMap<TaskListItem, TaskListItemDetail>();
     }
 }

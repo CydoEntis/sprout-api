@@ -11,7 +11,7 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
     {
     }
 
-    public async Task AddTaskListItemAsync(TaskListItem taskListItem)
+    public async Task<TaskListItem> AddTaskListItemAsync(TaskListItem taskListItem)
     {
         int maxPosition = await _context.TaskListItems
             .Where(i => i.TaskListId == taskListItem.TaskListId)
@@ -20,8 +20,9 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
 
         taskListItem.Position = maxPosition + 1;
 
-        await _context.TaskListItems.AddAsync(taskListItem);
+        var result = await _context.TaskListItems.AddAsync(taskListItem);
         await _context.SaveChangesAsync();
+        return result.Entity;
     }
 
 

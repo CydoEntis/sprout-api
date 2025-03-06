@@ -5,6 +5,7 @@ using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
+using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 
@@ -13,6 +14,7 @@ public record CreateTaskListItemCommand(string Description, int TaskListId) : IR
 public class CreateTaskListItemResponse : BaseResponse
 {
     public int TaskListId { get; set; }
+    public TaskListItemDetail TaskListItemDetail { get; set; }
 }
 
 public class CreateTaskListItemCommandHandler(
@@ -25,7 +27,6 @@ public class CreateTaskListItemCommandHandler(
     public async Task<CreateTaskListItemResponse> Handle(CreateTaskListItemCommand request,
         CancellationToken cancellationToken)
     {
-        
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
@@ -33,16 +34,19 @@ public class CreateTaskListItemCommandHandler(
         var userId = userContextService.GetUserId();
         if (userId == null)
             throw new UnauthorizedException("Invalid user");
-        
+
         var taskList = await taskListRepository.GetDetailsByIdAsync(request.TaskListId);
-        if(taskList == null)
+        if (taskList == null)
             throw new NotFoundException($"Task list with id: {request.TaskListId} does not exist");
-        
+
         var taskListItem = mapper.Map<Domain.Entities.TaskListItem>(request);
         taskListItem.TaskListId = request.TaskListId;
-        
-        await taskListItemRepository.AddTaskListItemAsync(taskListItem);
 
-        return new CreateTaskListItemResponse() { Message = $"Item added", TaskListId = 1 };
+        var result = await taskListItemRepository.AddTaskListItemAsync(taskListItem);
+
+        var taskListItemDetail = mapper.Map<TaskListItemDetail>(result);
+
+        return new CreateTaskListItemResponse()
+            { Message = $"Item added", TaskListId = 1, TaskListItemDetail = taskListItemDetail };
     }
 }

@@ -7,6 +7,7 @@ using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
+using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 
@@ -15,7 +16,7 @@ public record CreateTaskListCommand(string Name, string Description, string Cate
 
 public class CreateTaskListResponse : BaseResponse
 {
-    public int TaskListId { get; set; }
+    public TaskListDetails TaskListDetails { get; set; }
 }
 
 public class CreateTaskListCommandHandler(
@@ -43,12 +44,14 @@ public class CreateTaskListCommandHandler(
         taskList.CategoryId = category.Id;
 
 
-        await taskListRepository.AddAsync(taskList);
+        var result = await taskListRepository.AddAsync(taskList);
         var response = await AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
         if (!response)
             throw new ResourceCreationException("Unable to assign user to task list.");
+        
+        var taskListDetails = mapper.Map<TaskListDetails>(taskList);
 
-        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", TaskListId = taskList.Id };
+        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", TaskListDetails = taskListDetails};
     }
 
     // Potentially move into its own class for reusability.
