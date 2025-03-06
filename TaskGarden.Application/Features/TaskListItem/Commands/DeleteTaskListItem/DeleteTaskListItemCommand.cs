@@ -9,7 +9,10 @@ namespace TaskGarden.Application.Features.TaskList.Commands.DeleteTaskListItem;
 
 public record DeleteTaskListItemCommand(int TaskListItemId) : IRequest<DeleteTaskListItemResponse>;
 
-public class DeleteTaskListItemResponse : BaseResponse;
+public class DeleteTaskListItemResponse : BaseResponse
+{
+    public int TaskListId { get; set; }
+}
 
 public class DeleteTaskListItemCommandHandler(
     IUserContextService userContextService,
@@ -38,6 +41,9 @@ public class DeleteTaskListItemCommandHandler(
             throw new ResourceModificationException("Category could not be deleted.");
 
         return new DeleteTaskListItemResponse()
-            { Message = $"Item with id: {taskListItem.Id}  has been deleted successfully" };
+        {
+            Message = $"Item with id: {taskListItem.Id}  has been deleted successfully",
+            TaskListId = taskListItem.TaskListId
+        };
     }
 }
