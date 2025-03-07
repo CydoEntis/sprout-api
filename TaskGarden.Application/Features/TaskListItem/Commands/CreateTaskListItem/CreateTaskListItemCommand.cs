@@ -14,7 +14,7 @@ public record CreateTaskListItemCommand(string Description, int TaskListId) : IR
 public class CreateTaskListItemResponse : BaseResponse
 {
     public int TaskListId { get; set; }
-    public TaskListItemDetail TaskListItemDetail { get; set; }
+    public Domain.Entities.TaskListItem TaskListItem { get; set; }
 }
 
 public class CreateTaskListItemCommandHandler(
@@ -44,9 +44,8 @@ public class CreateTaskListItemCommandHandler(
 
         var result = await taskListItemRepository.AddTaskListItemAsync(taskListItem);
 
-        var taskListItemDetail = mapper.Map<TaskListItemDetail>(result);
 
         return new CreateTaskListItemResponse()
-            { Message = $"Item added", TaskListId = 1, TaskListItemDetail = taskListItemDetail };
+            { Message = $"Item added", TaskListId = 1, TaskListItem = result };
     }
 }

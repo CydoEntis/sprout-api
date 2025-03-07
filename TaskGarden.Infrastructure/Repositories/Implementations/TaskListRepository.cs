@@ -46,11 +46,11 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
         }).FirstOrDefaultAsync();
     }
 
-    public async Task<List<TaskListOverview>> GetAllTaskListsInCategoryAsync(int categoryId)
+    public async Task<List<TaskListPreview>> GetAllTaskListsInCategoryAsync(int categoryId)
     {
         return await _context.TaskLists
             .Where(t => t.CategoryId == categoryId)
-            .Select(tl => new TaskListOverview
+            .Select(tl => new TaskListPreview
             {
                 Id = tl.Id,
                 Name = tl.Name,
@@ -68,7 +68,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                 CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
                 TaskCompletionPercentage = tl.TaskListItems.Count() == 0
                     ? 0
-                    : (double)tl.TaskListItems.Count(q => q.IsCompleted) / tl.TaskListItems.Count() * 100
+                    : tl.TaskListItems.Count(q => q.IsCompleted) / tl.TaskListItems.Count() * 100
             })
             .ToListAsync();
     }

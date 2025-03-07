@@ -1,4 +1,6 @@
-﻿namespace TaskGarden.Infrastructure.Projections;
+﻿using TaskGarden.Domain.Entities;
+
+namespace TaskGarden.Infrastructure.Projections;
 
 public class TaskListPreview
 {
@@ -10,6 +12,8 @@ public class TaskListPreview
     public bool IsCompleted { get; set; }
     public string CategoryName { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public int TaskCompletionPercentage { get; set; }
     public List<Member> Members { get; set; } = new List<Member>();
     public List<TaskListItemDetail> TaskListItems { get; set; } = new List<TaskListItemDetail>();
 }

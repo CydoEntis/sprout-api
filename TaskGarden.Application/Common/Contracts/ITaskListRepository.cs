@@ -7,6 +7,6 @@ public interface ITaskListRepository : IBaseRepository<TaskList>
 {
     Task<TaskList?> GetByIdAsync(int id);
     Task<TaskListPreview?> GetDetailsByIdAsync(int id);
-    Task<List<TaskListOverview>> GetAllTaskListsInCategoryAsync(int categoryId);
+    Task<List<TaskListPreview>> GetAllTaskListsInCategoryAsync(int categoryId);
     Task<bool> DeleteTaskListAndDependenciesAsync(TaskList taskList);
 }
