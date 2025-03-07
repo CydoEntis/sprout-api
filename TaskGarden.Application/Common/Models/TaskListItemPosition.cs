@@ -1,6 +1,6 @@
 ﻿namespace TaskGarden.Application.Common.Models;
 
-public class ListItemOrder
+public class TaskListItemPosition
 {
     public int Id { get; set; }
     public int TaskListId { get; set; }

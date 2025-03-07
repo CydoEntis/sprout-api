@@ -18,9 +18,9 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
     }
 
 
-    public async Task<TaskListDetails?> GetDetailsByIdAsync(int id)
+    public async Task<TaskListPreview?> GetDetailsByIdAsync(int id)
     {
-        return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListDetails()
+        return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListPreview()
         {
             Id = tl.Id,
             Name = tl.Name,

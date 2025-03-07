@@ -36,7 +36,7 @@ public class TaskListItemRepository : BaseRepository<TaskListItem>, ITaskListIte
         return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
     }
 
-    public async Task ReorderTaskListItemsAsync(int taskListId, List<ListItemOrder> items)
+    public async Task ReorderTaskListItemsAsync(int taskListId, List<TaskListItemPosition> items)
     {
         var taskListItems = await _context.TaskListItems
             .Where(i => i.TaskListId == taskListId)

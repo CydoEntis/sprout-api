@@ -13,12 +13,14 @@ public class GetTaskListByIdQueryResponse : BaseResponse
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public int CompletedTasksCount { get; set; }
-    public int TotalTasksCount { get; set; }
+    public string CategoryName { get; set; }
     public bool IsCompleted { get; set; }
-    public DateTime CreatedAt { get; set; }
-
     public List<MemberResponse> Members { get; set; } = [];
+    public int TotalTasksCount { get; set; }
+    public int CompletedTasksCount { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+
     public List<TaskListItemResponse> TaskListItems { get; set; } = [];
 }
 

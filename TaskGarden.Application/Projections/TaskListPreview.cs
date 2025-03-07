@@ -1,6 +1,6 @@
 ﻿namespace TaskGarden.Infrastructure.Projections;
 
-public class TaskListDetails
+public class TaskListPreview
 {
     public int Id { get; set; }
     public string Name { get; set; }

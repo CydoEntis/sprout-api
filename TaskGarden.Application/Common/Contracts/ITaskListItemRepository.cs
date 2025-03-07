@@ -8,5 +8,5 @@ public interface ITaskListItemRepository : IBaseRepository<TaskListItem>
     Task<TaskListItem> AddTaskListItemAsync(TaskListItem taskListItem);
     Task<IEnumerable<TaskListItem>> GetAllTasksForTaskList(int taskListId);
     Task<TaskListItem> GetByIdAsync(int taskListItemId);
-    Task ReorderTaskListItemsAsync(int taskListId, List<ListItemOrder> items);
+    Task ReorderTaskListItemsAsync(int taskListId, List<TaskListItemPosition> items);
 }

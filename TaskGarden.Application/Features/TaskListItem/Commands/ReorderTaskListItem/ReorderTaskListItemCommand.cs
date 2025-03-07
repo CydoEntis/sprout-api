@@ -7,7 +7,7 @@ using TaskGarden.Application.Features.Shared.Models;
 
 namespace TaskGarden.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 
-public record ReorderTaskListItemCommand(int TaskListId, List<ListItemOrder> Items)
+public record ReorderTaskListItemCommand(int TaskListId, List<TaskListItemPosition> Items)
     : IRequest<ReorderTaskListItemResponse>;
 
 public class ReorderTaskListItemResponse : BaseResponse

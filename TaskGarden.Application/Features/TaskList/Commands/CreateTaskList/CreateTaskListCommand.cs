@@ -16,7 +16,7 @@ public record CreateTaskListCommand(string Name, string Description, string Cate
 
 public class CreateTaskListResponse : BaseResponse
 {
-    public TaskListDetails TaskListDetails { get; set; }
+    public TaskListPreview TaskListPreview { get; set; }
 }
 
 public class CreateTaskListCommandHandler(
@@ -49,9 +49,9 @@ public class CreateTaskListCommandHandler(
         if (!response)
             throw new ResourceCreationException("Unable to assign user to task list.");
         
-        var taskListDetails = mapper.Map<TaskListDetails>(taskList);
+        var taskListDetails = mapper.Map<TaskListPreview>(taskList);
 
-        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", TaskListDetails = taskListDetails};
+        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", TaskListPreview = taskListDetails};
     }
 
     // Potentially move into its own class for reusability.
