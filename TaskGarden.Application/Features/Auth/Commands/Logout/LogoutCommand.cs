@@ -16,10 +16,12 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
     private readonly ICookieService _cookieService;
     private readonly ISessionService _sessionService;
 
-    public LogoutCommandHandler(ICookieService cookieService, ISessionService sessionService)
+    public LogoutCommandHandler(ICookieService cookieService, ISessionService sessionService,
+        IUserContextService userContextService)
     {
         _cookieService = cookieService;
         _sessionService = sessionService;
+        _userContextService = userContextService;
     }
 
     public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
