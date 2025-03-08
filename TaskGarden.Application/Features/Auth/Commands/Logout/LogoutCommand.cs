@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.IdentityModel.Tokens.Jwt;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
@@ -15,25 +17,50 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
     private readonly IUserContextService _userContextService;
     private readonly ICookieService _cookieService;
     private readonly ISessionService _sessionService;
+    private readonly IHttpContextAccessor _httpContextAccessor; // Declare IHttpContextAccessor
 
+    // Inject IHttpContextAccessor in constructor
     public LogoutCommandHandler(ICookieService cookieService, ISessionService sessionService,
-        IUserContextService userContextService)
+        IUserContextService userContextService, IHttpContextAccessor httpContextAccessor)
     {
         _cookieService = cookieService;
         _sessionService = sessionService;
         _userContextService = userContextService;
+        _httpContextAccessor = httpContextAccessor; // Initialize it
     }
+
 
     public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
-        var userId = _userContextService.GetUserId();
-        if (userId == null) throw new NotFoundException("User is not logged in");
+        var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
+        var token = authorizationHeader.StartsWith("Bearer ") ? authorizationHeader.Substring(7) : authorizationHeader;
 
-        var session = await _sessionService.GetSessionByUserIdAsync(userId);
-        if (session != null)
-            await _sessionService.InvalidateSessionAsync(session);
+        try
+        {
+            var jwtHandler = new JwtSecurityTokenHandler();
+            var jwtToken = jwtHandler.ReadJwtToken(token);
 
-        _cookieService.Delete(CookieConsts.RefreshToken);
-        return new LogoutResponse { Message = "Logged out successfully." };
+            var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "userId")?.Value;
+
+            if (userId == null)
+            {
+                throw new NotFoundException("User is not logged in");
+            }
+
+            var session = await _sessionService.GetSessionByUserIdAsync(userId);
+            if (session != null)
+            {
+                await _sessionService.InvalidateSessionAsync(session);
+            }
+
+            _cookieService.Delete(CookieConsts.RefreshToken);
+            return new LogoutResponse { Message = "Logged out successfully." };
+        }
+        catch (Exception ex)
+        {
+            throw new NotFoundException("Invalid or expired token");
+        }
     }
+
+
 }
