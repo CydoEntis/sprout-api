@@ -20,4 +20,9 @@ public class SessionRepository : BaseRepository<Session>, ISessionRepository
     {
         return await _context.Sessions.FirstOrDefaultAsync(s => s.RefreshToken == refreshToken);
     }
+
+    public async Task<List<Session>> GetAllByUserId(string userId)
+    {
+        return await _context.Sessions.Where(s => s.UserId == userId).ToListAsync();
+    }
 }

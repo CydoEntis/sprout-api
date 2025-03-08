@@ -10,4 +10,5 @@ public interface ISessionService
     Task CreateSessionAsync(string userId, RefreshToken refreshToken);
     Task InvalidateSessionAsync(Session session);
     Task<bool> ValidateRefreshToken(string refreshToken);
+    Task InvalidateAllSessionsByUserIdAsync(string userId);
 }
