@@ -47,11 +47,8 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
                 throw new NotFoundException("User is not logged in");
             }
 
-            var session = await _sessionService.GetSessionByUserIdAsync(userId);
-            if (session != null)
-            {
-                await _sessionService.InvalidateSessionAsync(session);
-            }
+
+            await _sessionService.InvalidateAllSessionsByUserIdAsync(userId);
 
             _cookieService.Delete(CookieConsts.RefreshToken);
             return new LogoutResponse { Message = "Logged out successfully." };
@@ -61,6 +58,4 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
             throw new NotFoundException("Invalid or expired token");
         }
     }
-
-
 }
