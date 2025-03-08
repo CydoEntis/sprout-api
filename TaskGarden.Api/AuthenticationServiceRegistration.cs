@@ -39,7 +39,7 @@ public static class AuthenticationServiceRegistration
             {
                 options.ClientId = configuration["Authentication:Google:ClientId"];
                 options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-                options.CallbackPath = "/auth/google/callback"; // Matches your redirect URI
+                options.CallbackPath = "/auth/google-login"; 
             });
         ;
 

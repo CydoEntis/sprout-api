@@ -11,6 +11,8 @@ public static class IdentityServiceRegistration
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+
 
         return services;
     }

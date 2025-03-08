@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using TaskGarden.Application.Features.Auth.Commands.ChangePassword;
 using TaskGarden.Application.Features.Auth.Commands.ForgotPassword;
+using TaskGarden.Application.Features.Auth.Commands.GoogleLogin;
 using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Application.Features.Auth.Commands.Logout;
 using TaskGarden.Application.Features.Auth.Commands.RefreshTokens;
@@ -33,6 +35,14 @@ public static class AuthEndpoints
             .WithName("Login")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
+
+        group.MapPost("/google-login", async (
+            [FromBody] GoogleLoginCommand command,
+            IMediator mediator) =>
+        {
+            var result = await mediator.Send(command);
+            return Results.Ok(result);
+        });
 
         group.MapPost("/refresh-tokens", async (IMediator mediator) =>
             {
