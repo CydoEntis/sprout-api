@@ -43,7 +43,8 @@ public class TokenService : ITokenService
             issuer: _jwtIssuer,
             audience: _jwtAudience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(1),
+            // expires: DateTime.UtcNow.AddHours(1),
+            expires: DateTime.UtcNow.AddSeconds(30),
             signingCredentials: credentials
         );
 
@@ -52,7 +53,7 @@ public class TokenService : ITokenService
 
     public RefreshToken GenerateRefreshToken()
     {
-        var expirationDate = DateTime.UtcNow.AddHours(16);
+        var expirationDate = DateTime.UtcNow.AddMinutes(1);
         var token = Guid.NewGuid().ToString();
 
         return new RefreshToken() { Token = token, ExpiryDate = expirationDate };

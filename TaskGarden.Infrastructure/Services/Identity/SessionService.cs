@@ -14,9 +14,14 @@ public class SessionService : ISessionService
         _sessionRepository = sessionRepository;
     }
 
-    public async Task<Session> GetSessionAsync(string refreshToken)
+    public async Task<Session> GetSessionByRefreshTokenAsync(string refreshToken)
     {
         return await _sessionRepository.GetByRefreshToken(refreshToken);
+    }
+
+    public async Task<Session> GetSessionByUserIdAsync(string userId)
+    {
+        return await _sessionRepository.GetByUserId(userId);
     }
 
     public async Task CreateSessionAsync(string userId, RefreshToken refreshToken)

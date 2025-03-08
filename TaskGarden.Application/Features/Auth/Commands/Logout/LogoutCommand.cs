@@ -12,6 +12,7 @@ public class LogoutResponse : BaseResponse;
 
 public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
 {
+    private readonly IUserContextService _userContextService;
     private readonly ICookieService _cookieService;
     private readonly ISessionService _sessionService;
 
@@ -23,11 +24,10 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutRespons
 
     public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = _cookieService.Get(CookieConsts.RefreshToken);
-        if (string.IsNullOrEmpty(refreshToken))
-            return new LogoutResponse { Message = "Logged out successfully." };
+        var userId = _userContextService.GetUserId();
+        if (userId == null) throw new NotFoundException("User is not logged in");
 
-        var session = await _sessionService.GetSessionAsync(refreshToken);
+        var session = await _sessionService.GetSessionByUserIdAsync(userId);
         if (session != null)
             await _sessionService.InvalidateSessionAsync(session);
 

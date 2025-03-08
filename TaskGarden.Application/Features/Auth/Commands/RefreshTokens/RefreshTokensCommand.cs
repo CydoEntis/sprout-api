@@ -29,7 +29,7 @@ public class RefreshTokensCommandHandler(
         if (string.IsNullOrEmpty(refreshToken))
             throw new NotFoundException("Token not found");
 
-        var session = await sessionService.GetSessionAsync(refreshToken);
+        var session = await sessionService.GetSessionByRefreshTokenAsync(refreshToken);
         if (session == null)
             throw new NotFoundException("Session not found");
 
