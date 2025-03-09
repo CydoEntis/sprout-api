@@ -40,8 +40,8 @@ public static class AuthEndpoints
             [FromBody] GoogleLoginCommand command,
             IMediator mediator) =>
         {
-            var result = await mediator.Send(command);
-            return Results.Ok(result);
+            var response = await mediator.Send(command);
+            return Results.Ok(ApiResponse<GoogleLoginResponse>.SuccessResponse(response));
         });
 
         group.MapPost("/refresh-tokens", async (IMediator mediator) =>
