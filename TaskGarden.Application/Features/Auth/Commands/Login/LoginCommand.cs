@@ -12,7 +12,6 @@ namespace TaskGarden.Application.Features.Auth.Commands.Login;
 
 public record LoginCommand(string Email, string Password) : IRequest<LoginResponse>;
 
-
 public class LoginResponse : BaseResponse
 {
     public string AccessToken { get; set; } = string.Empty;
@@ -37,12 +36,19 @@ public class LoginCommandHandler(
         if (user == null)
             throw new NotFoundException("User not found.");
 
+        await sessionService.InvalidateAllSessionsByUserIdAsync(user.Id);
+        var activeSession = await sessionService.GetActiveSessionAsync(user.Id);
+        if (activeSession != null)
+        {
+            throw new ConflictException("User is already logged in.");
+        }
+
         var accessToken = tokenService.GenerateAccessToken(user);
         var refreshToken = tokenService.GenerateRefreshToken();
 
         await sessionService.CreateSessionAsync(user.Id, refreshToken);
         cookieService.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
 
-        return new LoginResponse() { Message = "Logged in successfully", AccessToken = accessToken };
+        return new LoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
     }
 }

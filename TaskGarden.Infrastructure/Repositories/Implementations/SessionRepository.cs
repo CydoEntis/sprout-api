@@ -25,4 +25,13 @@ public class SessionRepository : BaseRepository<Session>, ISessionRepository
     {
         return await _context.Sessions.Where(s => s.UserId == userId).ToListAsync();
     }
+
+    public async Task<Session?> GetActiveSessionByUserIdAsync(string userId)
+    {
+        return await _context.Sessions
+            .FirstOrDefaultAsync(s =>
+                s.UserId == userId &&
+                s.IsVaild &&
+                s.RefreshTokenExpirationDate > DateTime.UtcNow);
+    }
 }

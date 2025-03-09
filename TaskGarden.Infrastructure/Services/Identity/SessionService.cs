@@ -48,11 +48,15 @@ public class SessionService : ISessionService
     public async Task InvalidateAllSessionsByUserIdAsync(string userId)
     {
         var sessions = await _sessionRepository.GetAllByUserId(userId);
+    
         foreach (var session in sessions)
         {
-            session.IsVaild = false;
-            session.RefreshTokenExpirationDate = DateTime.UtcNow;
-            await _sessionRepository.UpdateAsync(session); // Invalidate each session
+            if (session.RefreshTokenExpirationDate < DateTime.UtcNow)
+            {
+                session.IsVaild = false;
+                session.RefreshTokenExpirationDate = DateTime.UtcNow;
+                await _sessionRepository.UpdateAsync(session);
+            }
         }
     }
 
@@ -60,5 +64,10 @@ public class SessionService : ISessionService
     {
         var session = await _sessionRepository.GetByRefreshToken(refreshToken);
         return session != null && session.RefreshTokenExpirationDate > DateTime.UtcNow;
+    }
+    
+    public async Task<Session?> GetActiveSessionAsync(string userId)
+    {
+        return await _sessionRepository.GetActiveSessionByUserIdAsync(userId);
     }
 }
