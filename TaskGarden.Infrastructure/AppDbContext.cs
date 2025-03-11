@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Domain.Entities;
+using TaskGarden.Infrastructure.Configurations;
 
 namespace TaskGarden.Infrastructure;
 
@@ -23,6 +25,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyConfiguration(new InvitationConfiguration());
+        
         builder.Entity<TaskListMember>()
             .HasKey(ut => new { ut.UserId, ut.TaskListId });
 
