@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Invitation\Commands\DeclineInvite\" />
         <Folder Include="Features\Invitation\Queries\" />
         <Folder Include="Features\TaskListAssignment\Commands\" />
         <Folder Include="Features\TaskListAssignment\Queries\" />
