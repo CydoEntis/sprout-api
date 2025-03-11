@@ -13,8 +13,10 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Category> Categories { get; set; }
     public DbSet<TaskList> TaskLists { get; set; }
 
-    public DbSet<TaskListMember> TaskListMembers { get; set; }
     public DbSet<TaskListItem> TaskListItems { get; set; }
+    public DbSet<TaskListMember> TaskListMembers { get; set; }
+
+    public DbSet<Invitation> Invitations { get; set; }
 
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
