@@ -24,10 +24,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfiguration(new AppUserConfiguration());
-        builder.ApplyConfiguration(new TaskListMemberConfiguration());
-        builder.ApplyConfiguration(new InvitationConfiguration());
-        
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         // builder.Entity<TaskListMember>()
         //     .HasKey(ut => new { ut.UserId, ut.TaskListId });
         //
