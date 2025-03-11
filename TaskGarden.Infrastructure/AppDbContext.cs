@@ -24,21 +24,22 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
+        builder.ApplyConfiguration(new AppUserConfiguration());
+        builder.ApplyConfiguration(new TaskListMemberConfiguration());
         builder.ApplyConfiguration(new InvitationConfiguration());
         
-        builder.Entity<TaskListMember>()
-            .HasKey(ut => new { ut.UserId, ut.TaskListId });
-
-        builder.Entity<TaskListMember>()
-            .HasOne(ut => ut.User)
-            .WithMany(u => u.TaskListMembers)
-            .HasForeignKey(ut => ut.UserId);
-
-        builder.Entity<TaskListMember>()
-            .HasOne(ut => ut.TaskList)
-            .WithMany(t => t.TaskListAssignments)
-            .HasForeignKey(ut => ut.TaskListId);
+        // builder.Entity<TaskListMember>()
+        //     .HasKey(ut => new { ut.UserId, ut.TaskListId });
+        //
+        // builder.Entity<TaskListMember>()
+        //     .HasOne(ut => ut.User)
+        //     .WithMany(u => u.TaskListMembers)
+        //     .HasForeignKey(ut => ut.UserId);
+        //
+        // builder.Entity<TaskListMember>()
+        //     .HasOne(ut => ut.TaskList)
+        //     .WithMany(t => t.TaskListAssignments)
+        //     .HasForeignKey(ut => ut.TaskListId);
 
         // TODO: Add database seeding.
     }
