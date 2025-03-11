@@ -16,18 +16,18 @@ public class TaskListMappingProfile : Profile
     public TaskListMappingProfile()
     {
         CreateMap<TaskList, TaskListPreview>().ReverseMap();
-        
+
         CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
         CreateMap<CreateTaskListResponse, TaskList>().ReverseMap();
-        
+
         CreateMap<GetTaskListByIdQueryResponse, TaskList>().ReverseMap();
-        
+
         CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
         CreateMap<UpdateTaskListCommand, TaskList>().ReverseMap();
 
         CreateMap<TaskListPreview, GetAllTaskListsForCategoryResponse>().ReverseMap();
         CreateMap<TaskListPreview, GetTaskListByIdQueryResponse>();
-        CreateMap<TaskListAssignments, MemberResponse>()
+        CreateMap<TaskListMember, MemberResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.User.FirstName} {src.User.LastName}"));

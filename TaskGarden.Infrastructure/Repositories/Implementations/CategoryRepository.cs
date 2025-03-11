@@ -4,8 +4,6 @@ using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Infrastructure.Repositories.Implementations;
 
-
-
 public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 {
     public CategoryRepository(AppDbContext context) : base(context)
@@ -43,7 +41,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 
             if (taskListIds.Count > 0)
             {
-                await _context.TaskListAssignments
+                await _context.TaskListMembers
                     .Where(tla => taskListIds.Contains(tla.TaskListId))
                     .ExecuteDeleteAsync();
 
@@ -69,5 +67,4 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
             return false;
         }
     }
-
 }

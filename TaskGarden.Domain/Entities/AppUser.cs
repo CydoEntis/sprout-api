@@ -8,5 +8,5 @@ public class AppUser : IdentityUser
     public string LastName { get; set; }
 
     public List<Category> Categories { get; set; }
-    public ICollection<TaskListAssignments> TaskListAssignments { get; set; }
+    public ICollection<TaskListMember> TaskListMembers { get; set; }
 }

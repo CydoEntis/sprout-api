@@ -48,10 +48,11 @@ public class CreateTaskListCommandHandler(
         var response = await AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
         if (!response)
             throw new ResourceCreationException("Unable to assign user to task list.");
-        
+
         var taskListDetails = mapper.Map<TaskListPreview>(taskList);
 
-        return new CreateTaskListResponse() { Message = $"Task list created: {taskList.Id}", TaskListPreview = taskListDetails};
+        return new CreateTaskListResponse()
+            { Message = $"Task list created: {taskList.Id}", TaskListPreview = taskListDetails };
     }
 
     // Potentially move into its own class for reusability.
@@ -59,11 +60,11 @@ public class CreateTaskListCommandHandler(
     {
         try
         {
-            var userTaskList = new TaskListAssignments
+            var userTaskList = new TaskListMember
             {
                 UserId = userId,
                 TaskListId = taskListId,
-                Role = role.ToString()
+                Role = role
             };
 
             await taskListAssignmentRepository.AddAsync(userTaskList);

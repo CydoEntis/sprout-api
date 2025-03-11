@@ -2,7 +2,7 @@
 
 public enum TaskListRole
 {
-    Owner,
-    Editor,
-    Viewer
+    Owner = 0,
+    Editor = 1,
+    Viewer = 2
 }
