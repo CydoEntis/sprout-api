@@ -60,10 +60,9 @@ namespace TaskGarden.Application.Features.Invitation.Commands.InviteUser
 
             var placeholders = new Dictionary<string, string>
             {
-                { "InvitationToken", invitation.Token },
-                { "TaskListId", request.TaskListId.ToString() },
-                { "AcceptInviteLink", acceptUrl },
-                { "DeclineInviteLink", declineUrl }
+                { "Recipient's Email", request.InvitedUserEmail },
+                { "Accept Invite Link", acceptUrl },
+                { "Decline Invite Link", declineUrl }
             };
 
             var emailBody = _emailTemplateService.GetEmailTemplate("InviteUserTemplate", placeholders);
