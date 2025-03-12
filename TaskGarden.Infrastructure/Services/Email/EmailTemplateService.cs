@@ -1,5 +1,6 @@
 ﻿using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Services.Contracts;
+using System.IO;
 
 namespace TaskGarden.Infrastructure.Services.Email;
 
@@ -10,8 +11,8 @@ public class EmailTemplateService : IEmailTemplateService
     public EmailTemplateService()
     {
         var solutionDirectory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\"));
-        _templateDirectory = Path.Combine(solutionDirectory, ProjectConsts.ProjectApi, ProjectConsts.EmailDir,
-            ProjectConsts.EmailTemplatesDir);
+        _templateDirectory =
+            Path.Combine(solutionDirectory, "TaskGarden.Infrastructure", "Services", "Email", "Templates");
     }
 
     public string GetEmailTemplate(string templateName, Dictionary<string, string> placeholders)
