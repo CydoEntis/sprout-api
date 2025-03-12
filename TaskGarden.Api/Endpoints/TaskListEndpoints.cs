@@ -1,4 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using TaskGarden.Application.Features.Invitation.Commands.AcceptInvite;
+using TaskGarden.Application.Features.Invitation.Commands.DeclineInvite;
+using TaskGarden.Application.Features.Invitation.Commands.InviteUser;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskListItem;
@@ -23,7 +27,7 @@ public static class TaskListEndpoints
                 {
                     var query = new GetTaskListByIdQuery(taskListId);
                     var response = await mediator.Send(query);
-                    return Results.Ok(ApiResponse<GetTaskListByIdQueryResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<GetTaskListByIdQueryResponse>.SuccessWithData(response));
                 })
             .WithName("GetTaskListById")
             .RequireAuthorization()
@@ -34,7 +38,7 @@ public static class TaskListEndpoints
                 async (CreateTaskListCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<CreateTaskListResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<CreateTaskListResponse>.SuccessWithData(response));
                 })
             .WithName("CreateTaskList")
             .RequireAuthorization()
@@ -45,7 +49,7 @@ public static class TaskListEndpoints
                 async (UpdateTaskListCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<UpdateTaskListResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<UpdateTaskListResponse>.SuccessWithData(response));
                 })
             .WithName("UpdateTaskList")
             .RequireAuthorization()
@@ -57,8 +61,7 @@ public static class TaskListEndpoints
                 {
                     var command = new DeleteTaskListCommand(taskListId);
                     var response = await mediator.Send(command);
-                    return Results.Ok(
-                        ApiResponse<DeleteTaskListResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<DeleteTaskListResponse>.SuccessWithData(response));
                 })
             .WithName("DeleteTaskList")
             .RequireAuthorization()
@@ -67,13 +70,12 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
 
-
         // Items
         group.MapPost("/{taskListId}/items",
                 async (CreateTaskListItemCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<CreateTaskListItemResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<CreateTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("CreateTaskListItem")
             .RequireAuthorization()
@@ -84,7 +86,7 @@ public static class TaskListEndpoints
                 async (UpdateTaskListItemCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<UpdateTaskListItemResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<UpdateTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("UpdateTaskListItem")
             .RequireAuthorization()
@@ -98,8 +100,7 @@ public static class TaskListEndpoints
                 {
                     var command = new DeleteTaskListItemCommand(taskListItemId);
                     var response = await mediator.Send(command);
-                    return Results.Ok(
-                        ApiResponse<DeleteTaskListItemResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<DeleteTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("DeleteTaskListItem")
             .RequireAuthorization()
@@ -112,7 +113,7 @@ public static class TaskListEndpoints
                 async (ReorderTaskListItemCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<ReorderTaskListItemResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<ReorderTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("ReorderTaskListItem")
             .RequireAuthorization()
@@ -120,14 +121,68 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
-        
+
         group.MapPut("/{taskListId}/items/status",
                 async (UpdateTaskListItemCompletedStatusCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<UpdateTaskListItemCompletedStatusResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<UpdateTaskListItemCompletedStatusResponse>.SuccessWithData(response));
                 })
             .WithName("UpdateCompletedStatus")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
+        // Invitations
+        group.MapPost("/tasklists/{taskListId}/invite",
+                async (int taskListId, InviteUserCommand command, IMediator mediator) =>
+                {
+                    var inviteCommand = new InviteUserCommand
+                    {
+                        InvitedUserEmail = command.InvitedUserEmail,
+                        TaskListId = taskListId
+                    };
+
+                    var result = await mediator.Send(inviteCommand);
+                    return result
+                        ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation sent successfully."))
+                        : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to send invitation."));
+                })
+            .WithName("InviteUser")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
+        group.MapPost("/invitations/{token}/accept",
+                async (string token, IMediator mediator) =>
+                {
+                    var command = new AcceptInviteCommand(token);
+                    var result = await mediator.Send(command);
+                    return result
+                        ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation accepted successfully."))
+                        : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to accept invitation."));
+                })
+            .WithName("AcceptInvitation")
+            .RequireAuthorization()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
+
+        group.MapPost("/invitations/{token}/decline",
+                async (string token, IMediator mediator) =>
+                {
+                    var command = new DeclineInviteCommand(token);
+                    var result = await mediator.Send(command);
+                    return result
+                        ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation declined successfully."))
+                        : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to decline invitation."));
+                })
+            .WithName("DeclineInvitation")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

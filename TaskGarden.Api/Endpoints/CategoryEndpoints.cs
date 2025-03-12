@@ -18,7 +18,7 @@ public static class CategoryEndpoints
                 async (CreateCategoryCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<CreateCategoryResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<CreateCategoryResponse>.SuccessWithData(response));
                 })
             .WithName("AddCategory")
             .RequireAuthorization()
@@ -29,7 +29,7 @@ public static class CategoryEndpoints
                 async (IMediator mediator) =>
                 {
                     var response = await mediator.Send(new GetAllCategoriesQuery());
-                    return Results.Ok(ApiResponse<List<GetAllCategoriesQueryResponse>>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<List<GetAllCategoriesQueryResponse>>.SuccessWithData(response));
                 })
             .WithName("GetAllCategories")
             .RequireAuthorization()
@@ -41,7 +41,7 @@ public static class CategoryEndpoints
                 {
                     var query = new GetAllTaskListsForCategoryQuery(category);
                     var response = await mediator.Send(query);
-                    return Results.Ok(ApiResponse<List<GetAllTaskListsForCategoryResponse>>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<List<GetAllTaskListsForCategoryResponse>>.SuccessWithData(response));
                 })
             .WithName("GetTaskListByCategory")
             .RequireAuthorization()
@@ -52,7 +52,7 @@ public static class CategoryEndpoints
                 async (UpdateCategoryCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<UpdateCategoryResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<UpdateCategoryResponse>.SuccessWithData(response));
                 })
             .WithName("UpdateCategory")
             .RequireAuthorization()
@@ -68,7 +68,7 @@ public static class CategoryEndpoints
                     var command = new DeleteCategoryCommand(categoryId);
                     var response = await mediator.Send(command);
                     return Results.Ok(
-                        ApiResponse<DeleteCategoryResponse>.SuccessResponse(response));
+                        ApiResponse<DeleteCategoryResponse>.SuccessWithData(response));
                 })
             .WithName("DeleteCategory")
             .RequireAuthorization()

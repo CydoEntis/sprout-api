@@ -21,7 +21,7 @@ public static class AuthEndpoints
         group.MapPost("/register", async (RegisterCommand command, IMediator mediator) =>
             {
                 var response = await mediator.Send(command);
-                return Results.Ok(ApiResponse<LoginResponse>.SuccessResponse(response));
+                return Results.Ok(ApiResponse<LoginResponse>.SuccessWithData(response));
             })
             .WithName("Register")
             .Produces(StatusCodes.Status400BadRequest)
@@ -30,7 +30,7 @@ public static class AuthEndpoints
         group.MapPost("/login", async (LoginCommand command, IMediator mediator) =>
             {
                 var response = await mediator.Send(command);
-                return Results.Ok(ApiResponse<LoginResponse>.SuccessResponse(response));
+                return Results.Ok(ApiResponse<LoginResponse>.SuccessWithData(response));
             })
             .WithName("Login")
             .Produces(StatusCodes.Status400BadRequest)
@@ -41,13 +41,13 @@ public static class AuthEndpoints
             IMediator mediator) =>
         {
             var response = await mediator.Send(command);
-            return Results.Ok(ApiResponse<GoogleLoginResponse>.SuccessResponse(response));
+            return Results.Ok(ApiResponse<GoogleLoginResponse>.SuccessWithData(response));
         });
 
         group.MapPost("/refresh-tokens", async (IMediator mediator) =>
             {
                 var response = await mediator.Send(new RefreshTokensCommand());
-                return Results.Ok(ApiResponse<RefreshTokensResponse>.SuccessResponse(response));
+                return Results.Ok(ApiResponse<RefreshTokensResponse>.SuccessWithData(response));
             })
             .WithName("RefreshTokens")
             .Produces(StatusCodes.Status400BadRequest)
@@ -58,7 +58,7 @@ public static class AuthEndpoints
                 async (IMediator mediator) =>
                 {
                     var response = await mediator.Send(new LogoutCommand());
-                    return Results.Ok(ApiResponse<LogoutResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<LogoutResponse>.SuccessWithData(response));
                 })
             .WithName("Logout")
             .Produces(StatusCodes.Status400BadRequest)
@@ -68,7 +68,7 @@ public static class AuthEndpoints
         group.MapPost("/forgot-password", async (ForgotPasswordCommand command, IMediator mediator) =>
             {
                 var response = await mediator.Send(command);
-                return Results.Ok(ApiResponse<ForgotPasswordResponse>.SuccessResponse(response));
+                return Results.Ok(ApiResponse<ForgotPasswordResponse>.SuccessWithData(response));
             })
             .WithName("ForgotPassword")
             .Produces(StatusCodes.Status400BadRequest)
@@ -78,7 +78,7 @@ public static class AuthEndpoints
         group.MapPost("/reset-password", async (ResetPasswordCommand command, IMediator mediator) =>
             {
                 var response = await mediator.Send(command);
-                return Results.Ok(ApiResponse<ResetPasswordResponse>.SuccessResponse(response));
+                return Results.Ok(ApiResponse<ResetPasswordResponse>.SuccessWithData(response));
             })
             .WithName("ResetPassword")
             .Produces(StatusCodes.Status400BadRequest)
@@ -89,7 +89,7 @@ public static class AuthEndpoints
                 async (ChangePasswordCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
-                    return Results.Ok(ApiResponse<ChangePasswordResponse>.SuccessResponse(response));
+                    return Results.Ok(ApiResponse<ChangePasswordResponse>.SuccessWithData(response));
                 })
             .WithName("ChangePassword")
             .Produces(StatusCodes.Status400BadRequest)

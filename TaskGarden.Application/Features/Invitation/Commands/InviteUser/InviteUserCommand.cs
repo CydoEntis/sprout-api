@@ -5,7 +5,12 @@ using TaskGarden.Infrastructure.Repositories;
 
 namespace TaskGarden.Application.Features.Invitation.Commands.InviteUser;
 
-public record InviteUserCommand(string InvitedUserEmail, int TaskListId) : IRequest<bool>;
+public record InviteUserCommand : IRequest<bool>
+{
+    public string InvitedUserEmail { get; init; } = default!;
+    public int TaskListId { get; init; }
+}
+
 
 public class InviteUserCommandHandler(
     IInvitationRepository invitationRepository,
