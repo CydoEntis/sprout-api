@@ -42,7 +42,7 @@ public class InviteUserCommandHandler(
             { "TaskListId", request.TaskListId.ToString() }
         };
 
-        var emailBody = emailTemplateService.GetEmailTemplate("InviteTemplate", placeholders);
+        var emailBody = emailTemplateService.GetEmailTemplate("InviteUserTemplate", placeholders);
         await emailService.SendEmailAsync("Task Garden", request.InvitedUserEmail, "You’ve been invited!", emailBody);
 
         return true;

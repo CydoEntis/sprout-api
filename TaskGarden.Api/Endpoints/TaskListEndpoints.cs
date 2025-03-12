@@ -136,7 +136,7 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status404NotFound);
 
         // Invitations
-        group.MapPost("/tasklists/{taskListId}/invite",
+        group.MapPost("/{taskListId}/invite",
                 async (int taskListId, InviteUserCommand command, IMediator mediator) =>
                 {
                     var inviteCommand = new InviteUserCommand
