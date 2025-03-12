@@ -5,14 +5,14 @@ using TaskGarden.Infrastructure.Repositories;
 
 namespace TaskGarden.Application.Features.Invitation.Commands.AcceptInvite;
 
-public record AcceptInvitationCommand(string Token) : IRequest<bool>;
+public record AcceptInviteCommand(string Token) : IRequest<bool>;
 
-public class AcceptInvitationCommandHandler(
+public class AcceptInviteCommandHandler(
     IInvitationRepository invitationRepository,
     IUserContextService userContextService)
-    : IRequestHandler<AcceptInvitationCommand, bool>
+    : IRequestHandler<AcceptInviteCommand, bool>
 {
-    public async Task<bool> Handle(AcceptInvitationCommand request, CancellationToken cancellationToken)
+    public async Task<bool> Handle(AcceptInviteCommand request, CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
         var invitation = await invitationRepository.GetByTokenAsync(request.Token);
