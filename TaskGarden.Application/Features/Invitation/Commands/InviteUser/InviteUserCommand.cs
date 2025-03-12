@@ -54,15 +54,12 @@ namespace TaskGarden.Application.Features.Invitation.Commands.InviteUser
             };
 
             await _invitationRepository.AddAsync(invitation);
-
-            var acceptUrl = $"{_baseUrl}/api/task-list/invitations/{invitation.Token}/accept";
-            var declineUrl = $"{_baseUrl}/api/task-list/invitations/{invitation.Token}/decline";
+            var inviteUrl = $"{_baseUrl}/api/task-list/invitations/{invitation.Token}/accept";
 
             var placeholders = new Dictionary<string, string>
             {
                 { "Recipient's Email", request.InvitedUserEmail },
-                { "Accept Invite Link", acceptUrl },
-                { "Decline Invite Link", declineUrl }
+                { "Invite Link", inviteUrl },
             };
 
             var emailBody = _emailTemplateService.GetEmailTemplate("InviteUserTemplate", placeholders);
