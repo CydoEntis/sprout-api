@@ -15,11 +15,14 @@ public record InviteUserCommand : IRequest<bool>
 public class InviteUserCommandHandler(
     IInvitationRepository invitationRepository,
     IEmailService emailService,
-    IEmailTemplateService emailTemplateService)
+    IEmailTemplateService emailTemplateService,
+    IUserContextService userContextService)
     : IRequestHandler<InviteUserCommand, bool>
 {
     public async Task<bool> Handle(InviteUserCommand request, CancellationToken cancellationToken)
     {
+        var inviterUserId = userContextService.GetUserId();
+        
         if (await invitationRepository.InvitationExistsAsync(request.InvitedUserEmail, request.TaskListId))
         {
             throw new InvalidOperationException("An invitation already exists for this user.");
@@ -29,6 +32,7 @@ public class InviteUserCommandHandler(
         {
             TaskListId = request.TaskListId,
             InvitedUserEmail = request.InvitedUserEmail,
+            InviterUserId = inviterUserId,
             Token = Guid.NewGuid().ToString(),
             Status = InvitationStatus.Pending,
             ExpiresAt = DateTime.UtcNow.AddDays(7)
