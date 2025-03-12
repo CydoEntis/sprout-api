@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Services.Contracts;
@@ -99,18 +100,16 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
 
         var claims = new List<System.Security.Claims.Claim>
         {
-            new System.Security.Claims.Claim("inviter", inviter.FirstName + " " + inviter.LastName),
-            new System.Security.Claims.Claim("inviter", inviter.Email),
+            new System.Security.Claims.Claim("inviter", $"{inviter.FirstName} {inviter.LastName}"),
+            new System.Security.Claims.Claim("inviterEmail", inviter.Email),
             new System.Security.Claims.Claim("taskListName", taskList.Name),
             new System.Security.Claims.Claim("category", taskList.CategoryName),
             new System.Security.Claims.Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
         };
 
-        foreach (var member in taskList.Members)
-        {
-            claims.Add(new System.Security.Claims.Claim("memberName",
-                member.Name));
-        }
+        var memberNames = taskList.Members.Select(m => m.Name).ToList();
+        var membersJson = JsonConvert.SerializeObject(memberNames);
+        claims.Add(new System.Security.Claims.Claim("members", membersJson));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
