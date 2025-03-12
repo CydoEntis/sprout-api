@@ -25,6 +25,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
             Id = tl.Id,
             Name = tl.Name,
             Description = tl.Description,
+            CategoryName = tl.Category.Name,
             CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
             TotalTasksCount = tl.TaskListItems.Count(),
             IsCompleted = tl.IsCompleted,
