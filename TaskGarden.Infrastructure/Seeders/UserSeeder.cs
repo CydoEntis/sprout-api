@@ -15,7 +15,7 @@ public class UserSeeder : IEntityTypeConfiguration<AppUser>
         {
             new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "1b503418-dc0f-4187-93c0-2e30070b2835",
                 FirstName = "Demo",
                 LastName = "One",
                 Email = "demo1@demo.com",
@@ -26,7 +26,7 @@ public class UserSeeder : IEntityTypeConfiguration<AppUser>
             },
             new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "9e22a16c-da04-4232-b479-95c3a7b89259",
                 FirstName = "Demo",
                 LastName = "Two",
                 Email = "demo2@demo.com",
@@ -37,7 +37,7 @@ public class UserSeeder : IEntityTypeConfiguration<AppUser>
             },
             new AppUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                 FirstName = "Demo",
                 LastName = "Three",
                 Email = "demo3@demo.com",
