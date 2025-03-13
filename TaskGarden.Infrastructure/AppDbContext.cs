@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure.Configurations;
+using TaskGarden.Infrastructure.Seeders;
 
 namespace TaskGarden.Infrastructure;
 
@@ -26,21 +27,14 @@ public class AppDbContext : IdentityDbContext<AppUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        // builder.Entity<TaskListMember>()
-        //     .HasKey(ut => new { ut.UserId, ut.TaskListId });
-        //
-        // builder.Entity<TaskListMember>()
-        //     .HasOne(ut => ut.User)
-        //     .WithMany(u => u.TaskListMembers)
-        //     .HasForeignKey(ut => ut.UserId);
-        //
-        // builder.Entity<TaskListMember>()
-        //     .HasOne(ut => ut.TaskList)
-        //     .WithMany(t => t.TaskListAssignments)
-        //     .HasForeignKey(ut => ut.TaskListId);
+        builder.ApplyConfiguration(new UserSeeder());  
+        builder.ApplyConfiguration(new CategorySeeder());  
 
-        // TODO: Add database seeding.
+        builder.ApplyConfiguration(new TaskListMemberConfiguration()); 
+        builder.ApplyConfiguration(new InvitationConfiguration()); 
+        builder.ApplyConfiguration(new AppUserConfiguration()); 
+        
+        
     }
 }

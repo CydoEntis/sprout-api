@@ -11,7 +11,7 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
         builder.HasKey(i => i.Id);
 
         builder.Property(i => i.Status)
-            .HasConversion<string>(); // Store the enum as a string
+            .HasConversion<string>(); 
 
         builder.HasOne(i => i.TaskList)
             .WithMany()

@@ -13,7 +13,7 @@ public class UserSeeder : IEntityTypeConfiguration<AppUser>
 
         var users = new List<AppUser>
         {
-            new AppUser
+            new()
             {
                 Id = "1b503418-dc0f-4187-93c0-2e30070b2835",
                 FirstName = "Demo",
@@ -24,7 +24,7 @@ public class UserSeeder : IEntityTypeConfiguration<AppUser>
                 NormalizedUserName = "DEMO1@DEMO.COM",
                 PasswordHash = hasher.HashPassword(null, "Demo@123")
             },
-            new AppUser
+            new()
             {
                 Id = "9e22a16c-da04-4232-b479-95c3a7b89259",
                 FirstName = "Demo",
@@ -35,7 +35,7 @@ public class UserSeeder : IEntityTypeConfiguration<AppUser>
                 NormalizedUserName = "DEMO2@DEMO.COM",
                 PasswordHash = hasher.HashPassword(null, "Demo@123")
             },
-            new AppUser
+            new()
             {
                 Id = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                 FirstName = "Demo",
