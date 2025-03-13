@@ -11,4 +11,4 @@ public class Category : BaseEntity
     [ForeignKey("UserId")]
     public AppUser User { get; set; }
     public ICollection<TaskList> TaskLists { get; set; } = new List<TaskList>();
-}
+}   
