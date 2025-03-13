@@ -30,7 +30,11 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
         builder.ApplyConfiguration(new UserSeeder());  
         builder.ApplyConfiguration(new CategorySeeder());  
+        builder.ApplyConfiguration(new TaskListSeeder());  
+        builder.ApplyConfiguration(new TaskListMemberSeeder());  
+        builder.ApplyConfiguration(new TaskListItemSeeder());  
 
+        
         builder.ApplyConfiguration(new TaskListMemberConfiguration()); 
         builder.ApplyConfiguration(new InvitationConfiguration()); 
         builder.ApplyConfiguration(new AppUserConfiguration()); 
