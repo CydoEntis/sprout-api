@@ -4,7 +4,7 @@ using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Infrastructure.Repositories.Implementations;
 
-public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskListAssignmentRepository
+public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskListMemberRepository
 {
     public TaskListMemberRepository(AppDbContext context) : base(context)
     {
@@ -36,10 +36,9 @@ public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskLis
             .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
     }
 
-    // public async Task<List<TaskListMember>> GetByTaskListIdsAsync(List<int> taskListIds)
-    // {
-    //     return await _context.TaskListMembers
-    //         .Where(t => taskListIds.Contains(t.TaskListId))
-    //         .ToListAsync();
-    // }
+    public async Task<TaskListMember?> GetByUserAndTaskListAsync(string userId, int taskListId)
+    {
+        return await _context.TaskListMembers.Where(ut => ut.UserId == userId && ut.TaskListId == taskListId)
+            .FirstOrDefaultAsync();
+    }
 }

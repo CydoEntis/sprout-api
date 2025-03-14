@@ -23,7 +23,7 @@ public class CreateTaskListCommandHandler(
     IUserContextService userContextService,
     ITaskListRepository taskListRepository,
     ICategoryRepository categoryRepository,
-    ITaskListAssignmentRepository taskListAssignmentRepository,
+    ITaskListMemberRepository taskListMemberRepository,
     IValidator<CreateTaskListCommand> validator,
     IMapper mapper) : IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
 {
@@ -67,7 +67,7 @@ public class CreateTaskListCommandHandler(
                 Role = role
             };
 
-            await taskListAssignmentRepository.AddAsync(userTaskList);
+            await taskListMemberRepository.AddAsync(userTaskList);
             return true;
         }
         catch

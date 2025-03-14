@@ -19,7 +19,7 @@ public class UpdateTaskListResponse : BaseResponse
 public class UpdateTaskListCommandHandler(
     IUserContextService userContextService,
     ITaskListRepository taskListRepository,
-    ITaskListAssignmentRepository taskListAssignmentRepository,
+    ITaskListMemberRepository taskListMemberRepository,
     IValidator<UpdateTaskListCommand> validator,
     IMapper mapper) : IRequestHandler<UpdateTaskListCommand, UpdateTaskListResponse>
 {
@@ -34,7 +34,7 @@ public class UpdateTaskListCommandHandler(
             throw new ValidationException(validationResult.Errors);
         
         
-        var userRoleString = await taskListAssignmentRepository.GetAssignedRoleAsync(userId, request.TaskListId);
+        var userRoleString = await taskListMemberRepository.GetAssignedRoleAsync(userId, request.TaskListId);
 
         if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
         {
