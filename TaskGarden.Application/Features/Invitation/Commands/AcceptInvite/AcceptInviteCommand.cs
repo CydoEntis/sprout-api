@@ -32,63 +32,107 @@ public class AcceptInviteCommandHandler(
         CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
-        var invitation = await invitationRepository.GetByTokenAsync(request.Token);
+        var invitation = await GetInvitationAsync(request.Token);
+        var taskListId = invitation.TaskListId;
 
+        await EnsureUserNotMemberOfTaskList(userId, taskListId);
+
+        var categoryInfo = await GetCategoryInfoAsync(request.CategoryId, request.NewCategory, userId);
+
+        if (categoryInfo.AssignedCategoryId.HasValue)
+        {
+            await AssignCategoryToUser(taskListId, userId, categoryInfo.AssignedCategoryId.Value);
+        }
+
+        await AcceptInvitation(invitation);
+
+        await AddNewMemberToTaskList(userId, taskListId);
+
+        return new AcceptInviteCommandResponse
+        {
+            Message = "Invite accepted",
+            TaskListId = taskListId,
+            CategoryName = categoryInfo.CategoryName ?? "No category assigned"
+        };
+    }
+
+    private async Task<Domain.Entities.Invitation> GetInvitationAsync(string token)
+    {
+        var invitation = await invitationRepository.GetByTokenAsync(token);
         if (invitation == null || invitation.Status != InvitationStatus.Pending ||
             invitation.ExpiresAt < DateTime.UtcNow)
             throw new NotFoundException("Invite has expired, or has already been accepted");
+        return invitation;
+    }
 
-        var taskListId = invitation.TaskListId;
-
+    private async Task EnsureUserNotMemberOfTaskList(string userId, int taskListId)
+    {
         var existingMember = await taskListMemberRepository.GetByUserAndTaskListAsync(userId, taskListId);
         if (existingMember != null)
             throw new ConflictException("User is already part of this task list");
+    }
 
-        int? assignedCategoryId = request.CategoryId;
-        string? categoryName = null;
-
-        if (request.NewCategory != null)
+    private async Task<(int? AssignedCategoryId, string? CategoryName)> GetCategoryInfoAsync(int? categoryId,
+        CreateCategoryCommand? newCategory, string userId)
+    {
+        if (newCategory != null)
         {
-            var newCategory = new Category
-            {
-                Name = request.NewCategory.Name,
-                Color = request.NewCategory.Color,
-                Tag = request.NewCategory.Tag,
-                UserId = userId
-            };
-
-            await categoryRepository.AddAsync(newCategory);
-            assignedCategoryId = newCategory.Id;
-            categoryName = newCategory.Name; // Set category name from newly created category
-        }
-        else if (assignedCategoryId.HasValue)
-        {
-            var existingCategory = await categoryRepository.GetByIdAsync(assignedCategoryId.Value);
-            if (existingCategory == null)
-                throw new NotFoundException("Category not found");
-
-            categoryName = existingCategory.Name; // Set category name from existing category
+            return await CreateNewCategoryAsync(newCategory, userId);
         }
 
-        if (assignedCategoryId.HasValue)
+        return await GetExistingCategoryAsync(categoryId);
+    }
+
+    private async Task<(int? AssignedCategoryId, string? CategoryName)> CreateNewCategoryAsync(
+        CreateCategoryCommand newCategory, string userId)
+    {
+        var category = new Category
         {
-            var taskList = await taskListRepository.GetByIdAsync(taskListId);
-            if (taskList == null)
-                throw new NotFoundException("Task list not found");
+            Name = newCategory.Name,
+            Color = newCategory.Color,
+            Tag = newCategory.Tag,
+            UserId = userId
+        };
+        await categoryRepository.AddAsync(category);
+        return (category.Id, category.Name);
+    }
 
-            var userTaskListCategory = new UserTaskListCategory
-            {
-                UserId = userId,
-                TaskListId = taskListId,
-                CategoryId = assignedCategoryId.Value
-            };
+    private async Task<(int? AssignedCategoryId, string? CategoryName)> GetExistingCategoryAsync(int? categoryId)
+    {
+        if (!categoryId.HasValue)
+            return (null, null);
 
-            await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
-        }
+        var category = await categoryRepository.GetByIdAsync(categoryId.Value);
+        if (category == null)
+            throw new NotFoundException("Category not found");
 
+        return (category.Id, category.Name);
+    }
+
+    private async Task AssignCategoryToUser(int taskListId, string userId, int categoryId)
+    {
+        var taskList = await taskListRepository.GetByIdAsync(taskListId);
+        if (taskList == null)
+            throw new NotFoundException("Task list not found");
+
+        var userTaskListCategory = new UserTaskListCategory
+        {
+            UserId = userId,
+            TaskListId = taskListId,
+            CategoryId = categoryId
+        };
+
+        await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
+    }
+
+    private async Task AcceptInvitation(Domain.Entities.Invitation invitation)
+    {
         invitation.Status = InvitationStatus.Accepted;
         await invitationRepository.UpdateAsync(invitation);
+    }
 
+    private async Task AddNewMemberToTaskList(string userId, int taskListId)
+    {
         var newMember = new TaskListMember
         {
             UserId = userId,
@@ -96,12 +140,5 @@ public class AcceptInviteCommandHandler(
             Role = TaskListRole.Viewer
         };
         await taskListMemberRepository.AddAsync(newMember);
-
-        return new AcceptInviteCommandResponse
-        {
-            Message = "Invite accepted",
-            TaskListId = taskListId,
-            CategoryName = categoryName ?? "No category assigned"
-        };
     }
 }

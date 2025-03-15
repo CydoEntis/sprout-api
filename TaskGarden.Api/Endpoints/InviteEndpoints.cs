@@ -16,18 +16,15 @@ public static class InviteEndpoints
         group.MapPost("/{inviteToken}/accept",
                 async (string inviteToken, [FromBody] AcceptInviteCommand command, IMediator mediator) =>
                 {
-                    // Ensure the command uses the correct inviteToken
                     var updatedCommand = command with { Token = inviteToken };
-
                     var response = await mediator.Send(updatedCommand);
-                    return response
-                        ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invite accepted."))
-                        : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Invite could not be accepted."));
+                    return Results.Ok(ApiResponse<AcceptInviteCommandResponse>.SuccessWithData(response));
                 })
             .WithName("AcceptInvite")
             .RequireAuthorization()
-            .Produces(StatusCodes.Status200OK)
+            .Produces<AcceptInviteCommandResponse>(StatusCodes.Status200OK) // Specify the correct response type
             .Produces(StatusCodes.Status400BadRequest);
+
 
         group.MapPost("/{inviteToken}/decline",
                 async (string inviteToken, IMediator mediator) =>
