@@ -6,5 +6,4 @@ public class Session : BaseEntity
     public AppUser User { get; set; }
     public required string RefreshToken { get; set; }
     public required DateTime RefreshTokenExpirationDate { get; set; }
-    public bool IsVaild { get; set; } = true;
 }

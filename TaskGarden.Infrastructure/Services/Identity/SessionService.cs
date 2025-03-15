@@ -40,7 +40,6 @@ public class SessionService : ISessionService
 
     public async Task InvalidateSessionAsync(Session session)
     {
-        session.IsVaild = false;
         session.RefreshTokenExpirationDate = DateTime.UtcNow;
         await _sessionRepository.UpdateAsync(session);
     }
@@ -53,7 +52,6 @@ public class SessionService : ISessionService
         {
             if (session.RefreshTokenExpirationDate < DateTime.UtcNow)
             {
-                session.IsVaild = false;
                 session.RefreshTokenExpirationDate = DateTime.UtcNow;
                 await _sessionRepository.UpdateAsync(session);
             }
