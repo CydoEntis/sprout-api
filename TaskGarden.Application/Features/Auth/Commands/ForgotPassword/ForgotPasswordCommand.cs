@@ -13,14 +13,14 @@ public record ForgotPasswordCommand(string Email) : IRequest<ForgotPasswordRespo
 public class ForgotPasswordResponse : BaseResponse;
 
 public class ForgotPasswordCommandHandler(
-    UserManager<AppUser> userManager,
+    IUserService userService,
     IEmailTemplateService emailTemplateService,
     IEmailService emailService)
     : IRequestHandler<ForgotPasswordCommand, ForgotPasswordResponse>
 {
     public async Task<ForgotPasswordResponse> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await userManager.FindByEmailAsync(request.Email);
+        var user = await userService.GetUserByEmailAsync(request.Email);
         if (user is null)
         {
             return new ForgotPasswordResponse
@@ -40,7 +40,7 @@ public class ForgotPasswordCommandHandler(
 
     private async Task<string> GeneratePasswordResetUrl(AppUser user)
     {
-        var resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
+        var resetToken = await userService.GeneratePasswordResetTokenAsync(user);
         var encodedToken = Uri.EscapeDataString(resetToken);
         return $"{ProjectConsts.DevUrl}/reset-password?token={encodedToken}";
     }
