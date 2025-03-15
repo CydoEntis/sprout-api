@@ -39,9 +39,11 @@ public class LoginCommandHandler(
         var accessToken = tokenService.GenerateAccessToken(user);
         var refreshToken = tokenService.GenerateRefreshToken();
 
-        await sessionService.CreateSessionAsync(user.Id, refreshToken);
+        var session = await sessionService.CreateSessionAsync(user.Id, refreshToken);
+
 
         cookieService.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
+        cookieService.Append(CookieConsts.SessionId, session.SessionId, true, refreshToken.ExpiryDate);
 
         return new LoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
     }

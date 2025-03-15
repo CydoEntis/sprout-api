@@ -24,7 +24,7 @@ public class SessionService : ISessionService
         return await _sessionRepository.GetByUserId(userId);
     }
 
-    public async Task CreateSessionAsync(string userId, RefreshToken refreshToken)
+    public async Task<Session> CreateSessionAsync(string userId, RefreshToken refreshToken)
     {
         var sessionId = Guid.NewGuid().ToString();
         var session = new Session
@@ -35,7 +35,7 @@ public class SessionService : ISessionService
             RefreshTokenExpirationDate = refreshToken.ExpiryDate,
         };
 
-        await _sessionRepository.AddAsync(session);
+        return await _sessionRepository.AddAsync(session);
     }
 
     public async Task InvalidateSessionAsync(Session session)
