@@ -12,29 +12,48 @@ public record ChangePasswordCommand(string CurrentPassword, string NewPassword) 
 
 public class ChangePasswordResponse : BaseResponse;
 
-public class LogoutCommandHandler(UserManager<AppUser> userManager, IUserContextService userContextService)
+public class ChangePasswordCommandHandler(UserManager<AppUser> userManager, IUserContextService userContextService)
     : IRequestHandler<ChangePasswordCommand, ChangePasswordResponse>
 {
     public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var user = await GetUserAsync();
 
-        if (userId == null)
-            throw new NotFoundException("User Id not found.");
+        ValidateCurrentPassword(user, request.CurrentPassword);
+
+        await ChangeUserPassword(user, request.CurrentPassword, request.NewPassword);
+
+        return new ChangePasswordResponse { Message = "Password has been changed." };
+    }
+
+    private async Task<AppUser> GetUserAsync()
+    {
+        var userId = userContextService.GetUserId() ?? throw new NotFoundException("User Id not found.");
 
         var user = await userManager.FindByIdAsync(userId);
-        if (user is null)
-            throw new NotFoundException(ExceptionMessages.UserNotFound);
+        return user ?? throw new NotFoundException(ExceptionMessages.UserNotFound);
+    }
 
-        var isCurrentPasswordValid = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
-        if (!isCurrentPasswordValid)
-            throw new BadRequestException("Invalid Password", "An invalid password was entered", "current-password", ExceptionMessages.CurrentPasswordMismatch);
+    private async void ValidateCurrentPassword(AppUser user, string currentPassword)
+    {
+        var isValid = await userManager.CheckPasswordAsync(user, currentPassword);
+        if (!isValid)
+        {
+            throw new BadRequestException(
+                "Invalid Password",
+                "An invalid password was entered",
+                "current-password",
+                ExceptionMessages.CurrentPasswordMismatch
+            );
+        }
+    }
 
-        var updateResult =
-            await userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
-        if (!updateResult.Succeeded)
+    private async Task ChangeUserPassword(AppUser user, string currentPassword, string newPassword)
+    {
+        var result = await userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        if (!result.Succeeded)
+        {
             throw new ResourceModificationException(ExceptionMessages.ChangePasswordFailed);
-
-        return new ChangePasswordResponse() { Message = "Password has been changed." };
+        }
     }
 }
