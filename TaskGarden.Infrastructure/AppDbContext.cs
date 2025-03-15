@@ -13,6 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Session> Sessions { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<TaskList> TaskLists { get; set; }
+    public DbSet<UserTaskListCategory> UserTaskListCategories { get; set; }
+
 
     public DbSet<TaskListItem> TaskListItems { get; set; }
     public DbSet<TaskListMember> TaskListMembers { get; set; }
@@ -28,17 +30,15 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
-        builder.ApplyConfiguration(new UserSeeder());  
-        builder.ApplyConfiguration(new CategorySeeder());  
-        builder.ApplyConfiguration(new TaskListSeeder());  
-        builder.ApplyConfiguration(new TaskListMemberSeeder());  
-        builder.ApplyConfiguration(new TaskListItemSeeder());  
+        builder.ApplyConfiguration(new UserSeeder());
+        builder.ApplyConfiguration(new CategorySeeder());
+        builder.ApplyConfiguration(new TaskListSeeder());
+        builder.ApplyConfiguration(new TaskListMemberSeeder());
+        builder.ApplyConfiguration(new TaskListItemSeeder());
 
-        
-        builder.ApplyConfiguration(new TaskListMemberConfiguration()); 
-        builder.ApplyConfiguration(new InvitationConfiguration()); 
-        builder.ApplyConfiguration(new AppUserConfiguration()); 
-        
-        
+
+        builder.ApplyConfiguration(new TaskListMemberConfiguration());
+        builder.ApplyConfiguration(new InvitationConfiguration());
+        builder.ApplyConfiguration(new AppUserConfiguration());
     }
 }

@@ -17,40 +17,46 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
             .FirstOrDefaultAsync(q => q.Id == id);
     }
 
-
     public async Task<TaskListPreview?> GetDetailsByIdAsync(int id)
     {
-        return await _context.TaskLists.Where(q => q.Id == id).Select(tl => new TaskListPreview()
-        {
-            Id = tl.Id,
-            Name = tl.Name,
-            Description = tl.Description,
-            CategoryName = tl.Category.Name,
-            CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
-            TotalTasksCount = tl.TaskListItems.Count(),
-            IsCompleted = tl.IsCompleted,
-            CreatedAt = tl.CreatedAt,
-            Members = tl.TaskListAssignments
-                .Select(tla => new Member
-                {
-                    Id = tla.User.Id,
-                    Name = tla.User.FirstName + " " + tla.User.LastName,
-                })
-                .ToList(),
-            TaskListItems = tl.TaskListItems.OrderBy(q => q.Position).Select(q => new TaskListItemDetail
+        return await _context.TaskLists
+            .Where(q => q.Id == id)
+            .Select(tl => new TaskListPreview()
             {
-                Id = q.Id,
-                Description = q.Description,
-                IsCompleted = q.IsCompleted,
-                Position = q.Position,
-            }).ToList(),
-        }).FirstOrDefaultAsync();
+                Id = tl.Id,
+                Name = tl.Name,
+                Description = tl.Description,
+                CategoryName = _context.UserTaskListCategories
+                    .Where(utc => utc.TaskListId == tl.Id)
+                    .Select(utc => utc.Category.Name)
+                    .FirstOrDefault(),
+                CompletedTasksCount = tl.TaskListItems.Count(q => q.IsCompleted),
+                TotalTasksCount = tl.TaskListItems.Count(),
+                IsCompleted = tl.IsCompleted,
+                CreatedAt = tl.CreatedAt,
+                Members = tl.TaskListAssignments
+                    .Select(tla => new Member
+                    {
+                        Id = tla.User.Id,
+                        Name = tla.User.FirstName + " " + tla.User.LastName,
+                    })
+                    .ToList(),
+                TaskListItems = tl.TaskListItems.OrderBy(q => q.Position).Select(q => new TaskListItemDetail
+                {
+                    Id = q.Id,
+                    Description = q.Description,
+                    IsCompleted = q.IsCompleted,
+                    Position = q.Position,
+                }).ToList(),
+            })
+            .FirstOrDefaultAsync();
     }
 
     public async Task<List<TaskListPreview>> GetAllTaskListsInCategoryAsync(int categoryId)
     {
-        return await _context.TaskLists
-            .Where(t => t.CategoryId == categoryId)
+        return await _context.UserTaskListCategories
+            .Where(utc => utc.CategoryId == categoryId)
+            .Select(utc => utc.TaskList)
             .Select(tl => new TaskListPreview
             {
                 Id = tl.Id,
@@ -79,8 +85,9 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            var taskListItems = await _context.TaskListItems.Where(q => q.TaskListId == taskList.Id).ToListAsync();
-
+            var taskListItems = await _context.TaskListItems
+                .Where(q => q.TaskListId == taskList.Id)
+                .ToListAsync();
 
             if (taskListItems.Count > 0)
             {

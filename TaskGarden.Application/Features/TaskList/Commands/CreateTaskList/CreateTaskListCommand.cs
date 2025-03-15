@@ -24,6 +24,7 @@ public class CreateTaskListCommandHandler(
     ITaskListRepository taskListRepository,
     ICategoryRepository categoryRepository,
     ITaskListMemberRepository taskListMemberRepository,
+    IUserTaskListCategoryRepository userTaskListCategoryRepository,
     IValidator<CreateTaskListCommand> validator,
     IMapper mapper) : IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
 {
@@ -41,38 +42,34 @@ public class CreateTaskListCommandHandler(
 
         var taskList = mapper.Map<Domain.Entities.TaskList>(request);
         taskList.CreatedById = userId;
-        taskList.CategoryId = category.Id;
 
+        var createdTaskList = await taskListRepository.AddAsync(taskList);
 
-        var result = await taskListRepository.AddAsync(taskList);
-        var response = await AssignUserToTaskListAsync(userId, taskList.Id, TaskListRole.Owner);
-        if (!response)
+        var userTaskListCategory = new UserTaskListCategory
+        {
+            UserId = userId,
+            TaskListId = createdTaskList.Id,
+            CategoryId = category.Id
+        };
+
+        await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
+
+        var result = await taskListMemberRepository.AddAsync(new TaskListMember
+        {
+            UserId = userId,
+            TaskListId = createdTaskList.Id,
+            Role = TaskListRole.Owner
+        });
+
+        if (result == null)
             throw new ResourceCreationException("Unable to assign user to task list.");
 
-        var taskListDetails = mapper.Map<TaskListPreview>(taskList);
+        var taskListDetails = mapper.Map<TaskListPreview>(createdTaskList);
 
         return new CreateTaskListResponse()
-            { Message = $"Task list created: {taskList.Id}", TaskListPreview = taskListDetails };
-    }
-
-    // Potentially move into its own class for reusability.
-    private async Task<bool> AssignUserToTaskListAsync(string userId, int taskListId, TaskListRole role)
-    {
-        try
         {
-            var userTaskList = new TaskListMember
-            {
-                UserId = userId,
-                TaskListId = taskListId,
-                Role = role
-            };
-
-            await taskListMemberRepository.AddAsync(userTaskList);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+            Message = $"Task list created: {createdTaskList.Id}",
+            TaskListPreview = taskListDetails
+        };
     }
 }

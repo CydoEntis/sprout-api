@@ -24,9 +24,12 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 
     public async Task<List<Category>> GetAllCategoriesTaskListsAsync(string userId)
     {
-        return await _context.Categories.Where(c => c.UserId == userId).Include(c => c.TaskLists).ToListAsync();
+        return await _context.Categories
+            .Where(c => c.UserId == userId)
+            .Include(c => c.UserTaskListCategories)
+            .ThenInclude(ut => ut.TaskList)
+            .ToListAsync();
     }
-
 
     public async Task<bool> DeleteCategoryAndDependenciesAsync(Category category)
     {
@@ -34,9 +37,11 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         try
         {
             var categoryId = category.Id;
-            var taskListIds = await _context.TaskLists
-                .Where(t => t.CategoryId == categoryId)
-                .Select(t => t.Id)
+
+            // Now, we need to delete based on the UserTaskListCategory relationship
+            var taskListIds = await _context.UserTaskListCategories
+                .Where(utc => utc.CategoryId == categoryId)
+                .Select(utc => utc.TaskListId)
                 .ToListAsync();
 
             if (taskListIds.Count > 0)

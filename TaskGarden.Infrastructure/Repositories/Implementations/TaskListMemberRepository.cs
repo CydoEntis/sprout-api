@@ -14,8 +14,11 @@ public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskLis
     {
         return await _context.TaskListMembers
             .Where(utl => utl.UserId == userId)
-            .Include(utl => utl.TaskList)
-            .Where(utl => utl.TaskList.Category.Name == categoryName)
+            .Join(_context.UserTaskListCategories,
+                utl => utl.TaskListId,
+                utc => utc.TaskListId,
+                (utl, utc) => new { utl, utc })
+            .Where(joined => joined.utc.Category.Name == categoryName)
             .CountAsync();
     }
 
@@ -32,13 +35,18 @@ public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskLis
     {
         return await _context.TaskListMembers
             .Where(ut => ut.UserId == userId)
-            .Include(ut => ut.TaskList)
-            .FirstOrDefaultAsync(ut => ut.TaskList.CategoryId == categoryId);
+            .Join(_context.UserTaskListCategories,
+                utl => utl.TaskListId,
+                utc => utc.TaskListId,
+                (utl, utc) => new { utl, utc })
+            .FirstOrDefaultAsync(joined => joined.utc.CategoryId == categoryId)
+            .ContinueWith(t => t.Result?.utl);
     }
 
     public async Task<TaskListMember?> GetByUserAndTaskListAsync(string userId, int taskListId)
     {
-        return await _context.TaskListMembers.Where(ut => ut.UserId == userId && ut.TaskListId == taskListId)
+        return await _context.TaskListMembers
+            .Where(ut => ut.UserId == userId && ut.TaskListId == taskListId)
             .FirstOrDefaultAsync();
     }
 }

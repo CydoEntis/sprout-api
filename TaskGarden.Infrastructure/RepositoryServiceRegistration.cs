@@ -12,6 +12,7 @@ public static class RepositoryServiceRegistration
         services.AddScoped<ISessionRepository, SessionRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ITaskListRepository, TaskListRepository>();
+        services.AddScoped<IUserTaskListCategoryRepository, UserTaskListCategoryRepository>();
         services.AddScoped<ITaskListMemberRepository, TaskListMemberRepository>();
         services.AddScoped<ITaskListItemRepository, TaskListItemRepository>();
         services.AddScoped<IInvitationRepository, InvitationRepository>();

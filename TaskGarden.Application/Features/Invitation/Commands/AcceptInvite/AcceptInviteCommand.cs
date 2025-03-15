@@ -9,7 +9,6 @@ using TaskGarden.Infrastructure.Repositories;
 
 namespace TaskGarden.Application.Features.Invitation.Commands.AcceptInvite;
 
-
 public record AcceptInviteCommand(string Token, int? CategoryId, CreateCategoryCommand? NewCategory) : IRequest<bool>;
 
 public class AcceptInviteCommandHandler(
@@ -17,7 +16,8 @@ public class AcceptInviteCommandHandler(
     IUserContextService userContextService,
     ITaskListMemberRepository taskListMemberRepository,
     ICategoryRepository categoryRepository,
-    ITaskListRepository taskListRepository)
+    ITaskListRepository taskListRepository,
+    IUserTaskListCategoryRepository userTaskListCategoryRepository)
     : IRequestHandler<AcceptInviteCommand, bool>
 {
     public async Task<bool> Handle(AcceptInviteCommand request, CancellationToken cancellationToken)
@@ -35,12 +35,10 @@ public class AcceptInviteCommandHandler(
         if (existingMember != null)
             throw new ConflictException("User is already part of this task list");
 
-        // Handle category assignment
         int? assignedCategoryId = request.CategoryId;
 
         if (request.NewCategory != null)
         {
-            // Create a new category
             var newCategory = new Category
             {
                 Name = request.NewCategory.Name,
@@ -59,15 +57,19 @@ public class AcceptInviteCommandHandler(
             if (taskList == null)
                 throw new NotFoundException("Task list not found");
 
-            taskList.CategoryId = assignedCategoryId.Value;
-            await taskListRepository.UpdateAsync(taskList);
+            var userTaskListCategory = new UserTaskListCategory
+            {
+                UserId = userId,
+                TaskListId = taskListId,
+                CategoryId = assignedCategoryId.Value
+            };
+
+            await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
         }
 
-        // Accept the invite
         invitation.Status = InvitationStatus.Accepted;
         await invitationRepository.UpdateAsync(invitation);
 
-        // Add user as a member
         var newMember = new TaskListMember
         {
             UserId = userId,
