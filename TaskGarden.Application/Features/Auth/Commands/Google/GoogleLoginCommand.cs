@@ -6,7 +6,7 @@ using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 
-namespace TaskGarden.Application.Features.Auth.Commands.GoogleLogin;
+namespace TaskGarden.Application.Features.Auth.Commands.Google;
 
 public record GoogleLoginCommand(string AuthorizationCode) : IRequest<GoogleLoginResponse>;
 
@@ -16,7 +16,7 @@ public class GoogleLoginResponse : BaseResponse
 }
 
 public class GoogleLoginCommandHandler(
-    UserManager<AppUser> userManager,
+    IUserService userService,
     IGoogleAuthService googleAuthService,
     IAuthSessionService authSessionService)
     : IRequestHandler<GoogleLoginCommand, GoogleLoginResponse>
@@ -34,7 +34,7 @@ public class GoogleLoginCommandHandler(
 
     private async Task<AppUser> GetOrCreateUserAsync(GoogleUserInfo googleUserInfo)
     {
-        var user = await userManager.FindByEmailAsync(googleUserInfo.Email);
+        var user = await userService.GetUserByEmailAsync(googleUserInfo.Email);
         if (user != null) return user;
 
         user = new AppUser
@@ -45,7 +45,7 @@ public class GoogleLoginCommandHandler(
             LastName = googleUserInfo.LastName
         };
 
-        await userManager.CreateAsync(user);
+        await userService.CreateUserAsync(user);
         return user;
     }
 }
