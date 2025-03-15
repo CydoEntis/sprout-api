@@ -1,5 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using TaskGarden.Application.Features.Auth.Commands.ChangePassword;
+using TaskGarden.Application.Features.Auth.Commands.ForgotPassword;
+using TaskGarden.Application.Features.Auth.Commands.Google;
 using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Application.Features.Auth.Commands.Register;
 using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
@@ -26,6 +29,10 @@ public static class ValidatorServiceRegistration
         // Auth Validators
         services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<ChangePasswordCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<ForgotPasswordCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<GoogleLoginCommandValidator>();
+
 
         // Category Validators
         services.AddValidatorsFromAssemblyContaining<CreateCategoryCommand>();
