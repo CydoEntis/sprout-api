@@ -1,61 +1,60 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 
-namespace TaskGarden.Application.Features.Auth.Commands.Logout;
-
-public record LogoutCommand : IRequest<LogoutResponse>;
-
-public class LogoutResponse : BaseResponse;
-
-public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
+namespace TaskGarden.Application.Features.Auth.Commands.Logout
 {
-    private readonly IUserContextService _userContextService;
-    private readonly ICookieService _cookieService;
-    private readonly ISessionService _sessionService;
-    private readonly IHttpContextAccessor _httpContextAccessor; // Declare IHttpContextAccessor
+    public record LogoutCommand : IRequest<LogoutResponse>;
 
-    // Inject IHttpContextAccessor in constructor
-    public LogoutCommandHandler(ICookieService cookieService, ISessionService sessionService,
-        IUserContextService userContextService, IHttpContextAccessor httpContextAccessor)
+    public class LogoutResponse : BaseResponse
     {
-        _cookieService = cookieService;
-        _sessionService = sessionService;
-        _userContextService = userContextService;
-        _httpContextAccessor = httpContextAccessor; // Initialize it
     }
 
-
-    public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
+    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, LogoutResponse>
     {
-        var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
-        var token = authorizationHeader.StartsWith("Bearer ") ? authorizationHeader.Substring(7) : authorizationHeader;
+        private readonly IUserContextService _userContextService;
+        private readonly ICookieService _cookieService;
+        private readonly ISessionService _sessionService;
+        private readonly ITokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        try
+        public LogoutCommandHandler(ICookieService cookieService, ISessionService sessionService,
+            IUserContextService userContextService, ITokenService tokenService,
+            IHttpContextAccessor httpContextAccessor)
         {
-            var jwtHandler = new JwtSecurityTokenHandler();
-            var jwtToken = jwtHandler.ReadJwtToken(token);
+            _cookieService = cookieService;
+            _sessionService = sessionService;
+            _userContextService = userContextService;
+            _tokenService = tokenService;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-            var userId = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "userId")?.Value;
+        public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
+        {
+            var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
+            var token = _tokenService.ExtractTokenFromAuthorizationHeader(authorizationHeader);
+
+            if (string.IsNullOrEmpty(token))
+                throw new UnauthorizedException("User is not logged in");
+
+            var userId = _tokenService.ExtractUserIdFromToken(token);
 
             if (userId == null)
-            {
-                throw new NotFoundException("User is not logged in");
-            }
+                throw new UnauthorizedException("User is not logged in");
 
+            var session = await _sessionService.GetSessionByRefreshTokenAsync(token);
 
-            await _sessionService.InvalidateAllSessionsByUserIdAsync(userId);
+            if (session == null)
+                throw new NotFoundException("Session not found");
+
+            await _sessionService.InvalidateSessionAsync(session);
 
             _cookieService.Delete(CookieConsts.RefreshToken);
+
             return new LogoutResponse { Message = "Logged out successfully." };
-        }
-        catch (Exception ex)
-        {
-            throw new NotFoundException("Invalid or expired token");
         }
     }
 }
