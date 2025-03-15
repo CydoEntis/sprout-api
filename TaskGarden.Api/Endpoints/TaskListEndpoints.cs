@@ -157,36 +157,36 @@ public static class TaskListEndpoints
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPost("/invitations/{token}/accept",
-                async (string token, IMediator mediator) =>
-                {
-                    var command = new AcceptInviteCommand(token);
-                    var result = await mediator.Send(command);
-                    return result
-                        ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation accepted successfully."))
-                        : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to accept invitation."));
-                })
-            .WithName("AcceptInvitation")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status403Forbidden)
-            .Produces(StatusCodes.Status404NotFound);
-
-        group.MapPost("/invitations/{token}/decline",
-                async (string token, IMediator mediator) =>
-                {
-                    var command = new DeclineInviteCommand(token);
-                    var result = await mediator.Send(command);
-                    return result
-                        ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation declined successfully."))
-                        : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to decline invitation."));
-                })
-            .WithName("DeclineInvitation")
-            .RequireAuthorization()
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status403Forbidden)
-            .Produces(StatusCodes.Status404NotFound);
+        // group.MapPost("/invitations/{token}/accept",
+        //         async (string token, IMediator mediator) =>
+        //         {
+        //             var command = new AcceptInviteCommand(token);
+        //             var result = await mediator.Send(command);
+        //             return result
+        //                 ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation accepted successfully."))
+        //                 : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to accept invitation."));
+        //         })
+        //     .WithName("AcceptInvitation")
+        //     .RequireAuthorization()
+        //     .Produces(StatusCodes.Status400BadRequest)
+        //     .Produces(StatusCodes.Status200OK)
+        //     .Produces(StatusCodes.Status403Forbidden)
+        //     .Produces(StatusCodes.Status404NotFound);
+        //
+        // group.MapPost("/invitations/{token}/decline",
+        //         async (string token, IMediator mediator) =>
+        //         {
+        //             var command = new DeclineInviteCommand(token);
+        //             var result = await mediator.Send(command);
+        //             return result
+        //                 ? Results.Ok(ApiResponse<string>.SuccessWithMessage("Invitation declined successfully."))
+        //                 : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to decline invitation."));
+        //         })
+        //     .WithName("DeclineInvitation")
+        //     .RequireAuthorization()
+        //     .Produces(StatusCodes.Status400BadRequest)
+        //     .Produces(StatusCodes.Status200OK)
+        //     .Produces(StatusCodes.Status403Forbidden)
+        //     .Produces(StatusCodes.Status404NotFound);
     }
 }

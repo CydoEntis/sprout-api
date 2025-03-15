@@ -16,6 +16,8 @@ public class DeclineInviteCommandHandler(IInvitationRepository invitationReposit
             return false;
 
         invitation.Status = InvitationStatus.Declined;
+        invitation.ExpiresAt = DateTime.UtcNow;
+        invitation.UpdatedAt = DateTime.UtcNow;
         await invitationRepository.UpdateAsync(invitation);
 
         return true;

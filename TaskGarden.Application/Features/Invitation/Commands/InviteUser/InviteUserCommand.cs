@@ -12,6 +12,7 @@ using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
 using TaskGarden.Infrastructure.Repositories;
+using System.Security.Claims;
 
 namespace TaskGarden.Application.Features.Invitation.Commands.InviteUser;
 
@@ -100,20 +101,21 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
 
         var claims = new List<System.Security.Claims.Claim>
         {
-            new System.Security.Claims.Claim("inviter", $"{inviter.FirstName} {inviter.LastName}"),
-            new System.Security.Claims.Claim("inviterEmail", inviter.Email),
-            new System.Security.Claims.Claim("taskListName", taskList.Name),
-            new System.Security.Claims.Claim("category", taskList.CategoryName),
-            new System.Security.Claims.Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
+            new Claim("inviter", $"{inviter.FirstName} {inviter.LastName}"),
+            new Claim("inviterEmail", inviter.Email),
+            new Claim("taskListName", taskList.Name),
+            new Claim("taskListId", taskList.Id.ToString()),
+            new Claim("category", taskList.CategoryName),
+            new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
         };
 
         var memberNames = taskList.Members.Select(m => m.Name).ToList();
         var membersJson = JsonConvert.SerializeObject(memberNames);
-        claims.Add(new System.Security.Claims.Claim("members", membersJson));
+        claims.Add(new Claim("members", membersJson));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new System.Security.Claims.ClaimsIdentity(claims),
+            Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = credentials
         };
