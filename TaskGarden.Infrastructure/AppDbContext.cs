@@ -30,15 +30,19 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyConfiguration(new UserTaskListCategoryConfiguration());
+        builder.ApplyConfiguration(new TaskListMemberConfiguration());
+        builder.ApplyConfiguration(new InvitationConfiguration());
+        builder.ApplyConfiguration(new AppUserConfiguration());
+        
         builder.ApplyConfiguration(new UserSeeder());
         builder.ApplyConfiguration(new CategorySeeder());
         builder.ApplyConfiguration(new TaskListSeeder());
+        builder.ApplyConfiguration(new UserTaskListCategorySeeder());
         builder.ApplyConfiguration(new TaskListMemberSeeder());
         builder.ApplyConfiguration(new TaskListItemSeeder());
 
 
-        builder.ApplyConfiguration(new TaskListMemberConfiguration());
-        builder.ApplyConfiguration(new InvitationConfiguration());
-        builder.ApplyConfiguration(new AppUserConfiguration());
+
     }
 }

@@ -230,7 +230,7 @@ namespace TaskGarden.Infrastructure.Migrations
                         {
                             Id = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6175d8ab-5dd1-40b2-b226-be0d541b0e7b",
+                            ConcurrencyStamp = "23db6bf5-1bbd-478d-9b13-5e7d39b9adf7",
                             Email = "demo1@demo.com",
                             EmailConfirmed = false,
                             FirstName = "Demo",
@@ -238,9 +238,9 @@ namespace TaskGarden.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DEMO1@DEMO.COM",
                             NormalizedUserName = "DEMO1@DEMO.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAKtiECaueqYdQ++bgQSy5qeGjclvBL6lge+Zb/Rq2aoiG6iPVYYFVYTkxMwBRSxQA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOQ3xIC3YXDJ6ezzInu4uZhl+7CRe22kaW+Zi2Nuki95d1uWbDg9cFzFk7xk6MWkdQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a55f72c4-5370-460f-846f-38215a2cffcf",
+                            SecurityStamp = "de08e79d-4a53-4f97-a188-9928beeafd0c",
                             TwoFactorEnabled = false,
                             UserName = "demo1@demo.com"
                         },
@@ -248,7 +248,7 @@ namespace TaskGarden.Infrastructure.Migrations
                         {
                             Id = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "662385aa-29ac-41dc-acde-b87e092ddcf4",
+                            ConcurrencyStamp = "b48e31f2-d0be-4ce2-add3-80fc5bee4a23",
                             Email = "demo2@demo.com",
                             EmailConfirmed = false,
                             FirstName = "Demo",
@@ -256,9 +256,9 @@ namespace TaskGarden.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DEMO2@DEMO.COM",
                             NormalizedUserName = "DEMO2@DEMO.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENDw7meyJSwJ5N/sp9yj4rRQDUXBWNs0N/4C64rE1uoxsDOO7YiVrcah1jC0e3MMpg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEkwhlXKwdaLZ4rR0CVDHF1swuXOkUoxtWMEED2cWwAezKoy+F4fProQ3zCiw1KLYg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8628106e-23c5-4979-a314-7303cbc7defb",
+                            SecurityStamp = "46166c3a-ccc7-41fb-9976-b11fd514ed54",
                             TwoFactorEnabled = false,
                             UserName = "demo2@demo.com"
                         },
@@ -266,7 +266,7 @@ namespace TaskGarden.Infrastructure.Migrations
                         {
                             Id = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d7a198a4-ea0a-45eb-8bfe-b1c9a6b39e74",
+                            ConcurrencyStamp = "502307c2-48f8-461f-9efc-09205823864a",
                             Email = "demo3@demo.com",
                             EmailConfirmed = false,
                             FirstName = "Demo",
@@ -274,9 +274,9 @@ namespace TaskGarden.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DEMO3@DEMO.COM",
                             NormalizedUserName = "DEMO3@DEMO.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKiWeAL/6B0HFtEMK/yhUPIGAOOkIaoQPmbEsd3RHdsX3RXQkYVckNbN1sqYWyfzsA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOGtq/sjmCRK5a2JdwgBK0c+dlrqjMepSkmxwOBk7lEPVdF1+cWqpIg26AZiQG3t4w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8d0c0beb-24d7-480d-9b5a-a0405f6c4c52",
+                            SecurityStamp = "01a6124c-ced6-4ea8-90ab-1458bc0748b0",
                             TwoFactorEnabled = false,
                             UserName = "demo3@demo.com"
                         });
@@ -323,100 +323,100 @@ namespace TaskGarden.Infrastructure.Migrations
                         {
                             Id = 1,
                             Color = "lime",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2982),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1876),
                             Name = "Groceries",
                             Tag = "shopping-cart",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2988),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1882),
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835"
                         },
                         new
                         {
                             Id = 2,
                             Color = "red",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2995),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1890),
                             Name = "Bills",
                             Tag = "banknote",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2995),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1891),
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835"
                         },
                         new
                         {
                             Id = 3,
                             Color = "blue",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2996),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1894),
                             Name = "Entertainment",
                             Tag = "roller-coaster",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2997),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1894),
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835"
                         },
                         new
                         {
                             Id = 4,
                             Color = "yellow",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2998),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1896),
                             Name = "Travel",
                             Tag = "plane",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(2998),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1897),
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835"
                         },
                         new
                         {
                             Id = 5,
                             Color = "grape",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3001),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1898),
                             Name = "School",
                             Tag = "university",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3001),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1899),
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835"
                         },
                         new
                         {
                             Id = 6,
                             Color = "cyan",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3003),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1901),
                             Name = "Groceries",
                             Tag = "shopping-cart",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3004),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1901),
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259"
                         },
                         new
                         {
                             Id = 7,
                             Color = "orange",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3005),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1902),
                             Name = "Bills",
                             Tag = "receipt",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3005),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1903),
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259"
                         },
                         new
                         {
                             Id = 8,
                             Color = "indigo",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3006),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1904),
                             Name = "Groceries",
                             Tag = "shopping-basket",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3007),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1904),
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00"
                         },
                         new
                         {
                             Id = 9,
                             Color = "teal",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3008),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1905),
                             Name = "Bills",
                             Tag = "hand-coins",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3008),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1906),
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00"
                         },
                         new
                         {
                             Id = 10,
                             Color = "pink",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3009),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1907),
                             Name = "Entertainment",
                             Tag = "theater",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3009),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(1907),
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00"
                         });
                 });
@@ -513,7 +513,7 @@ namespace TaskGarden.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -549,156 +549,142 @@ namespace TaskGarden.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3260),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2265),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "This week's shopping list for ShopRite",
                             IsCompleted = false,
                             Name = "ShopRite shopping list",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3260)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2265)
                         },
                         new
                         {
                             Id = 2,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3265),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2269),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "This week's shopping list for Walmart",
                             IsCompleted = false,
                             Name = "Walmart shopping list",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3265)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2269)
                         },
                         new
                         {
                             Id = 3,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3267),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2270),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "Monthly rent payment reminders",
                             IsCompleted = false,
                             Name = "Rent payment",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3267)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2271)
                         },
                         new
                         {
                             Id = 4,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3268),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2335),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "Electricity bill payment reminders",
                             IsCompleted = false,
                             Name = "Electricity Bill",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3268)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2335)
                         },
                         new
                         {
                             Id = 5,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3270),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2337),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "List of movies to watch this weekend",
                             IsCompleted = false,
                             Name = "Movie night",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3270)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2343)
                         },
                         new
                         {
                             Id = 6,
-                            CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3271),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2344),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "Track upcoming concerts and events",
                             IsCompleted = false,
                             Name = "Concert Tickets",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3271)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2345)
                         },
                         new
                         {
                             Id = 7,
-                            CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3272),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2350),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "Plan and book flights and hotels",
                             IsCompleted = false,
                             Name = "Vacation Planning",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3273)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2350)
                         },
                         new
                         {
                             Id = 8,
-                            CategoryId = 5,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3274),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2352),
                             CreatedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             Description = "Track deadlines for assignments",
                             IsCompleted = false,
                             Name = "Assignment Deadlines",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3274)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2352)
                         },
                         new
                         {
                             Id = 9,
-                            CategoryId = 6,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3275),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2353),
                             CreatedById = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             Description = "Weekly shopping list for Giant",
                             IsCompleted = false,
                             Name = "Giant shopping list",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3275)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2353)
                         },
                         new
                         {
                             Id = 10,
-                            CategoryId = 7,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3277),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2424),
                             CreatedById = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             Description = "Track Internet bill payments",
                             IsCompleted = false,
                             Name = "Internet Bill",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3277)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2424)
                         },
                         new
                         {
                             Id = 11,
-                            CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3278),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2425),
                             CreatedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             Description = "Grocery list for SuperMart",
                             IsCompleted = false,
                             Name = "SuperMart shopping list",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3278)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2426)
                         },
                         new
                         {
                             Id = 12,
-                            CategoryId = 8,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3279),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2427),
                             CreatedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             Description = "List of items for the local market",
                             IsCompleted = false,
                             Name = "Local Market shopping list",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3279)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2427)
                         },
                         new
                         {
                             Id = 13,
-                            CategoryId = 9,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3280),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2428),
                             CreatedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             Description = "Keep track of monthly mobile bills",
                             IsCompleted = false,
                             Name = "Mobile Bill",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3281)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2428)
                         },
                         new
                         {
                             Id = 14,
-                            CategoryId = 10,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3282),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2429),
                             CreatedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             Description = "List of fun things to do this weekend",
                             IsCompleted = false,
                             Name = "Weekend Fun Activities",
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3282)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2430)
                         });
                 });
 
@@ -744,347 +730,347 @@ namespace TaskGarden.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3812),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2956),
                             Description = "Buy apples",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 1,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3813)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2957)
                         },
                         new
                         {
                             Id = 2,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3814),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2963),
                             Description = "Buy bananas",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 1,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3814)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2963)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3815),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2965),
                             Description = "Buy oranges",
                             IsCompleted = false,
                             Position = 3,
                             TaskListId = 1,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3816)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2965)
                         },
                         new
                         {
                             Id = 4,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3817),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2966),
                             Description = "Buy milk",
                             IsCompleted = true,
                             Position = 4,
                             TaskListId = 1,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3817)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2966)
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3818),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2967),
                             Description = "Buy eggs",
                             IsCompleted = false,
                             Position = 5,
                             TaskListId = 1,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3818)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2967)
                         },
                         new
                         {
                             Id = 6,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3819),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2968),
                             Description = "Buy toothpaste",
                             IsCompleted = true,
                             Position = 1,
                             TaskListId = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3819)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2968)
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3820),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2969),
                             Description = "Buy toothbrush",
                             IsCompleted = false,
                             Position = 2,
                             TaskListId = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3820)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2970)
                         },
                         new
                         {
                             Id = 8,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3821),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2970),
                             Description = "Buy shampoo",
                             IsCompleted = false,
                             Position = 3,
                             TaskListId = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3821)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2970)
                         },
                         new
                         {
                             Id = 9,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3822),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2971),
                             Description = "Buy conditioner",
                             IsCompleted = true,
                             Position = 4,
                             TaskListId = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3822)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2971)
                         },
                         new
                         {
                             Id = 10,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3823),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2972),
                             Description = "Buy soap",
                             IsCompleted = false,
                             Position = 5,
                             TaskListId = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3823)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2973)
                         },
                         new
                         {
                             Id = 11,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3824),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2973),
                             Description = "Pay rent",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 3,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3824)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2974)
                         },
                         new
                         {
                             Id = 12,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3825),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2974),
                             Description = "Confirm payment",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 3,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3825)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2975)
                         },
                         new
                         {
                             Id = 13,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3826),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2976),
                             Description = "Pay electricity bill",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 4,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3826)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2976)
                         },
                         new
                         {
                             Id = 14,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3827),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2977),
                             Description = "Check bill amount",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 4,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3827)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2977)
                         },
                         new
                         {
                             Id = 15,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3828),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2978),
                             Description = "Buy popcorn",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 5,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3828)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2978)
                         },
                         new
                         {
                             Id = 16,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3829),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2979),
                             Description = "Pick movie",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 5,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3829)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2979)
                         },
                         new
                         {
                             Id = 17,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3830),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3011),
                             Description = "Prepare snacks",
                             IsCompleted = false,
                             Position = 3,
                             TaskListId = 5,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3831)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3012)
                         },
                         new
                         {
                             Id = 18,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3831),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3013),
                             Description = "Buy concert tickets",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 6,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3832)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3013)
                         },
                         new
                         {
                             Id = 19,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3832),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3013),
                             Description = "Confirm concert date",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 6,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3833)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3014)
                         },
                         new
                         {
                             Id = 20,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3833),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3015),
                             Description = "Book flights",
                             IsCompleted = true,
                             Position = 1,
                             TaskListId = 7,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3834)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3015)
                         },
                         new
                         {
                             Id = 21,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3835),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3016),
                             Description = "Reserve hotel",
                             IsCompleted = false,
                             Position = 2,
                             TaskListId = 7,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3835)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3016)
                         },
                         new
                         {
                             Id = 22,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3836),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3017),
                             Description = "Plan itinerary",
                             IsCompleted = false,
                             Position = 3,
                             TaskListId = 7,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3836)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3017)
                         },
                         new
                         {
                             Id = 23,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3837),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3018),
                             Description = "Submit math assignment",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 8,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3837)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3018)
                         },
                         new
                         {
                             Id = 24,
                             CompletedById = "1b503418-dc0f-4187-93c0-2e30070b2835",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3838),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3019),
                             Description = "Submit history assignment",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 8,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3838)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3019)
                         },
                         new
                         {
                             Id = 25,
                             CompletedById = "9e22a16c-da04-4232-b479-95c3a7b89259",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3839),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3020),
                             Description = "Buy bread",
                             IsCompleted = true,
                             Position = 1,
                             TaskListId = 9,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3839)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3020)
                         },
                         new
                         {
                             Id = 26,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3840),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3021),
                             Description = "Buy butter",
                             IsCompleted = false,
                             Position = 2,
                             TaskListId = 9,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3840)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3021)
                         },
                         new
                         {
                             Id = 27,
                             CompletedById = "9e22a16c-da04-4232-b479-95c3a7b89259",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3841),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3022),
                             Description = "Pay internet bill",
                             IsCompleted = true,
                             Position = 1,
                             TaskListId = 10,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3841)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3022)
                         },
                         new
                         {
                             Id = 28,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3842),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3023),
                             Description = "Buy sugar",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 11,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3842)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3024)
                         },
                         new
                         {
                             Id = 29,
                             CompletedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3843),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3024),
                             Description = "Buy rice",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 11,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3843)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3025)
                         },
                         new
                         {
                             Id = 30,
                             CompletedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3844),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3025),
                             Description = "Buy tomatoes",
                             IsCompleted = true,
                             Position = 1,
                             TaskListId = 12,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3844)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3026)
                         },
                         new
                         {
                             Id = 31,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3845),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3027),
                             Description = "Pay mobile bill",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 13,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3845)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3027)
                         },
                         new
                         {
                             Id = 32,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3846),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3028),
                             Description = "Plan weekend trip",
                             IsCompleted = false,
                             Position = 1,
                             TaskListId = 14,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3846)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3028)
                         },
                         new
                         {
                             Id = 33,
                             CompletedById = "40fcec36-7eef-42d8-8086-cd2226b88d00",
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3847),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3028),
                             Description = "Book tickets",
                             IsCompleted = true,
                             Position = 2,
                             TaskListId = 14,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3847)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(3029)
                         });
                 });
 
@@ -1122,263 +1108,263 @@ namespace TaskGarden.Infrastructure.Migrations
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 1,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3596),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2789),
                             Id = 1,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3596)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2789)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 2,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3604),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2798),
                             Id = 2,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3604)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2798)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 3,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3605),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2799),
                             Id = 3,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3605)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2799)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 4,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3606),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2800),
                             Id = 4,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3606)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2800)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 5,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3607),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2801),
                             Id = 5,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3607)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2801)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 6,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3608),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2802),
                             Id = 6,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3608)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2802)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 7,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3609),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2803),
                             Id = 7,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3609)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2803)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 8,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3610),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2804),
                             Id = 8,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3610)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2804)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 9,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3611),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2805),
                             Id = 9,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3611)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2805)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 10,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3612),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2806),
                             Id = 10,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3612)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2806)
                         },
                         new
                         {
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             TaskListId = 11,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3613),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2807),
                             Id = 11,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3613)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2807)
                         },
                         new
                         {
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             TaskListId = 12,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3614),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2808),
                             Id = 12,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3614)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2808)
                         },
                         new
                         {
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             TaskListId = 13,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3615),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2809),
                             Id = 13,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3615)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2809)
                         },
                         new
                         {
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             TaskListId = 14,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3616),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2809),
                             Id = 14,
                             Role = 0,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3616)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2810)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 1,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3616),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2810),
                             Id = 15,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3617)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2811)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 2,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3617),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2811),
                             Id = 16,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3618)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2812)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 3,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3618),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2812),
                             Id = 17,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3619)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2812)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 4,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3619),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2813),
                             Id = 18,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3619)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2813)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 5,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3620),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2814),
                             Id = 19,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3620)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2814)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 6,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3621),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2815),
                             Id = 20,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3621)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2815)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 7,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3622),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2816),
                             Id = 21,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3622)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2816)
                         },
                         new
                         {
                             UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
                             TaskListId = 8,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3623),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2817),
                             Id = 22,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3623)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2817)
                         },
                         new
                         {
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             TaskListId = 9,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3624),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2818),
                             Id = 23,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3624)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2818)
                         },
                         new
                         {
                             UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
                             TaskListId = 10,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3625),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2819),
                             Id = 24,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3625)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2819)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 11,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3626),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2820),
                             Id = 25,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3626)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2820)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 12,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3626),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2821),
                             Id = 26,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3627)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2821)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 13,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3627),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2821),
                             Id = 27,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3628)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2822)
                         },
                         new
                         {
                             UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
                             TaskListId = 14,
-                            CreatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3628),
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2822),
                             Id = 28,
                             Role = 2,
-                            UpdatedAt = new DateTime(2025, 3, 15, 2, 39, 25, 111, DateTimeKind.Utc).AddTicks(3628)
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2823)
                         });
                 });
 
             modelBuilder.Entity("TaskGarden.Domain.Entities.UserTaskListCategory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("TaskListId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
@@ -1386,25 +1372,130 @@ namespace TaskGarden.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("TaskListId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "TaskListId", "CategoryId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("TaskListId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("UserTaskListCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 1,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2639),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2640)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 2,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2641),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2641)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 3,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2642),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2642)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 4,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2643),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2643)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 5,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2644),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2644)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 6,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2644),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2645)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 7,
+                            CategoryId = 4,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2645),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2646)
+                        },
+                        new
+                        {
+                            UserId = "1b503418-dc0f-4187-93c0-2e30070b2835",
+                            TaskListId = 8,
+                            CategoryId = 5,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2646),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2646)
+                        },
+                        new
+                        {
+                            UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
+                            TaskListId = 9,
+                            CategoryId = 6,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2647),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2647)
+                        },
+                        new
+                        {
+                            UserId = "9e22a16c-da04-4232-b479-95c3a7b89259",
+                            TaskListId = 10,
+                            CategoryId = 7,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2648),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2648)
+                        },
+                        new
+                        {
+                            UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
+                            TaskListId = 11,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2649),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2649)
+                        },
+                        new
+                        {
+                            UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
+                            TaskListId = 12,
+                            CategoryId = 8,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2650),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2650)
+                        },
+                        new
+                        {
+                            UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
+                            TaskListId = 13,
+                            CategoryId = 9,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2650),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2651)
+                        },
+                        new
+                        {
+                            UserId = "40fcec36-7eef-42d8-8086-cd2226b88d00",
+                            TaskListId = 14,
+                            CategoryId = 10,
+                            CreatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2651),
+                            UpdatedAt = new DateTime(2025, 3, 15, 3, 15, 46, 972, DateTimeKind.Utc).AddTicks(2651)
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1461,7 +1552,7 @@ namespace TaskGarden.Infrastructure.Migrations
             modelBuilder.Entity("TaskGarden.Domain.Entities.Category", b =>
                 {
                     b.HasOne("TaskGarden.Domain.Entities.AppUser", "User")
-                        .WithMany("Categories")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1501,19 +1592,15 @@ namespace TaskGarden.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskGarden.Domain.Entities.TaskList", b =>
                 {
-                    b.HasOne("TaskGarden.Domain.Entities.Category", "Category")
+                    b.HasOne("TaskGarden.Domain.Entities.Category", null)
                         .WithMany("TaskLists")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("TaskGarden.Domain.Entities.AppUser", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
 
                     b.Navigation("CreatedBy");
                 });
@@ -1557,19 +1644,19 @@ namespace TaskGarden.Infrastructure.Migrations
             modelBuilder.Entity("TaskGarden.Domain.Entities.UserTaskListCategory", b =>
                 {
                     b.HasOne("TaskGarden.Domain.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("UserTaskListCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TaskGarden.Domain.Entities.TaskList", "TaskList")
-                        .WithMany()
+                        .WithMany("UserCategories")
                         .HasForeignKey("TaskListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TaskGarden.Domain.Entities.AppUser", "User")
-                        .WithMany()
+                        .WithMany("UserTaskListCategories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1583,14 +1670,16 @@ namespace TaskGarden.Infrastructure.Migrations
 
             modelBuilder.Entity("TaskGarden.Domain.Entities.AppUser", b =>
                 {
-                    b.Navigation("Categories");
-
                     b.Navigation("TaskListMembers");
+
+                    b.Navigation("UserTaskListCategories");
                 });
 
             modelBuilder.Entity("TaskGarden.Domain.Entities.Category", b =>
                 {
                     b.Navigation("TaskLists");
+
+                    b.Navigation("UserTaskListCategories");
                 });
 
             modelBuilder.Entity("TaskGarden.Domain.Entities.TaskList", b =>
@@ -1598,6 +1687,8 @@ namespace TaskGarden.Infrastructure.Migrations
                     b.Navigation("TaskListAssignments");
 
                     b.Navigation("TaskListItems");
+
+                    b.Navigation("UserCategories");
                 });
 #pragma warning restore 612, 618
         }

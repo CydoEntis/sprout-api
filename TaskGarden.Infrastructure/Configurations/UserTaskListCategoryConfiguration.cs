@@ -8,8 +8,10 @@ public class UserTaskListCategoryConfiguration : IEntityTypeConfiguration<UserTa
 {
     public void Configure(EntityTypeBuilder<UserTaskListCategory> builder)
     {
-        // Composite key for UserTaskListCategory
-        builder.HasKey(ut => new { ut.UserId, ut.TaskListId });
+        
+        builder.Ignore(ut => ut.Id);
+        
+        builder.HasKey(ut => new { ut.UserId, ut.TaskListId, ut.CategoryId });
 
         builder.HasOne(ut => ut.User)
             .WithMany(u => u.UserTaskListCategories)

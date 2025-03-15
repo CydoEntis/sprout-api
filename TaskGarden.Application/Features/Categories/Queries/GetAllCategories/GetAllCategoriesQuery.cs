@@ -19,7 +19,7 @@ public class GetAllCategoriesQueryResponse : BaseResponse
 
 public class GetAllCategoriesQueryHandler(
     IUserContextService userContextService,
-    ICategoryRepository categoryRepository,
+    IUserTaskListCategoryRepository userTaskListCategoryRepository,
     IMapper mapper)
     : IRequestHandler<GetAllCategoriesQuery, List<GetAllCategoriesQueryResponse>>
 {
@@ -30,7 +30,7 @@ public class GetAllCategoriesQueryHandler(
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
-        var categories = await categoryRepository.GetAllCategoriesTaskListsAsync(userId);
+        var categories = await userTaskListCategoryRepository.GetCategoryPreviewByUserId(userId);
         return mapper.Map<List<GetAllCategoriesQueryResponse>>(categories);
     }
 }
