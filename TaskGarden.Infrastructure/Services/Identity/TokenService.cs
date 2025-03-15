@@ -63,4 +63,18 @@ public class TokenService : ITokenService
         var session = await _sessionRepository.GetByRefreshToken(token);
         return session.RefreshTokenExpirationDate > DateTime.UtcNow;
     }
+
+    public string? ExtractTokenFromAuthorizationHeader(string authorizationHeader)
+    {
+        return authorizationHeader?.StartsWith("Bearer ") == true
+            ? authorizationHeader.Substring(7)
+            : authorizationHeader;
+    }
+
+    public string? ExtractUserIdFromToken(string token)
+    {
+        var jwtHandler = new JwtSecurityTokenHandler();
+        var jwtToken = jwtHandler.ReadJwtToken(token);
+        return jwtToken?.Claims?.FirstOrDefault(c => c.Type == "userId")?.Value;
+    }
 }
