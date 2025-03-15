@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
@@ -13,7 +12,7 @@ public record GoogleLoginCommand(string AuthorizationCode) : IRequest<GoogleLogi
 
 public class GoogleLoginResponse : BaseResponse
 {
-    public string AccessToken { get; set; } = string.Empty;
+    public string AccessToken { get; init; } = string.Empty;
 }
 
 public class GoogleLoginCommandHandler(
@@ -26,33 +25,41 @@ public class GoogleLoginCommandHandler(
 {
     public async Task<GoogleLoginResponse> Handle(GoogleLoginCommand request, CancellationToken cancellationToken)
     {
-        var googleUserInfo = await googleAuthService.GetUserInfoFromCodeAsync(request.AuthorizationCode);
+        var googleUserInfo = await googleAuthService.GetUserInfoFromCodeAsync(request.AuthorizationCode)
+                             ?? throw new InvalidTokenException("Token is not valid");
 
-        if (googleUserInfo == null)
-            throw new UnauthorizedAccessException("Invalid Google token.");
+        var user = await GetOrCreateUserAsync(googleUserInfo);
+        var accessToken = await GenerateAndStoreTokensAsync(user);
 
+        return new GoogleLoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
+    }
+
+    private async Task<AppUser> GetOrCreateUserAsync(GoogleUserInfo googleUserInfo)
+    {
         var user = await userManager.FindByEmailAsync(googleUserInfo.Email);
-        if (user == null)
-        {
-            user = new AppUser
-            {
-                UserName = googleUserInfo.Email,
-                Email = googleUserInfo.Email,
-                FirstName = googleUserInfo.FirstName,
-                LastName = googleUserInfo.LastName
-            };
-            await userManager.CreateAsync(user);
-        }
+        if (user != null) return user;
 
+        user = new AppUser
+        {
+            UserName = googleUserInfo.Email,
+            Email = googleUserInfo.Email,
+            FirstName = googleUserInfo.FirstName,
+            LastName = googleUserInfo.LastName
+        };
+
+        await userManager.CreateAsync(user);
+        return user;
+    }
+
+    private async Task<string> GenerateAndStoreTokensAsync(AppUser user)
+    {
         var accessToken = tokenService.GenerateAccessToken(user);
         var refreshToken = tokenService.GenerateRefreshToken();
-
         var session = await sessionService.CreateSessionAsync(user.Id, refreshToken);
 
         cookieService.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
         cookieService.Append(CookieConsts.SessionId, session.SessionId, true, refreshToken.ExpiryDate);
 
-
-        return new GoogleLoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
+        return accessToken;
     }
 }
