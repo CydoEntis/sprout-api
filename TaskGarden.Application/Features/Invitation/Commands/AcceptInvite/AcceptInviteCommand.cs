@@ -35,18 +35,18 @@ public class AcceptInviteCommandHandler(
         var invitation = await GetInvitationAsync(request.Token);
         var taskListId = invitation.TaskListId;
 
-        await EnsureUserNotMemberOfTaskList(userId, taskListId);
+        await EnsureUserIsNotAMemberOfTaskListAsync(userId, taskListId);
 
-        var categoryInfo = await GetCategoryInfoAsync(request.CategoryId, request.NewCategory, userId);
+        var categoryInfo = await GetCategoryAsync(request.CategoryId, request.NewCategory, userId);
 
         if (categoryInfo.AssignedCategoryId.HasValue)
         {
-            await AssignCategoryToUser(taskListId, userId, categoryInfo.AssignedCategoryId.Value);
+            await AssignCategoryToUserAsync(taskListId, userId, categoryInfo.AssignedCategoryId.Value);
         }
 
-        await AcceptInvitation(invitation);
+        await AcceptInvitationAsync(invitation);
 
-        await AddNewMemberToTaskList(userId, taskListId);
+        await AddNewMemberToTaskListAsync(userId, taskListId);
 
         return new AcceptInviteCommandResponse
         {
@@ -65,14 +65,14 @@ public class AcceptInviteCommandHandler(
         return invitation;
     }
 
-    private async Task EnsureUserNotMemberOfTaskList(string userId, int taskListId)
+    private async Task EnsureUserIsNotAMemberOfTaskListAsync(string userId, int taskListId)
     {
         var existingMember = await taskListMemberRepository.GetByUserAndTaskListAsync(userId, taskListId);
         if (existingMember != null)
             throw new ConflictException("User is already part of this task list");
     }
 
-    private async Task<(int? AssignedCategoryId, string? CategoryName)> GetCategoryInfoAsync(int? categoryId,
+    private async Task<(int? AssignedCategoryId, string? CategoryName)> GetCategoryAsync(int? categoryId,
         CreateCategoryCommand? newCategory, string userId)
     {
         if (newCategory != null)
@@ -109,7 +109,7 @@ public class AcceptInviteCommandHandler(
         return (category.Id, category.Name);
     }
 
-    private async Task AssignCategoryToUser(int taskListId, string userId, int categoryId)
+    private async Task AssignCategoryToUserAsync(int taskListId, string userId, int categoryId)
     {
         var taskList = await taskListRepository.GetByIdAsync(taskListId);
         if (taskList == null)
@@ -125,13 +125,13 @@ public class AcceptInviteCommandHandler(
         await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
     }
 
-    private async Task AcceptInvitation(Domain.Entities.Invitation invitation)
+    private async Task AcceptInvitationAsync(Domain.Entities.Invitation invitation)
     {
         invitation.Status = InvitationStatus.Accepted;
         await invitationRepository.UpdateAsync(invitation);
     }
 
-    private async Task AddNewMemberToTaskList(string userId, int taskListId)
+    private async Task AddNewMemberToTaskListAsync(string userId, int taskListId)
     {
         var newMember = new TaskListMember
         {
