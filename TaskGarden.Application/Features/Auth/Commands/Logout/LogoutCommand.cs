@@ -34,18 +34,14 @@ namespace TaskGarden.Application.Features.Auth.Commands.Logout
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var authorizationHeader = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
-            var token = _tokenService.ExtractTokenFromAuthorizationHeader(authorizationHeader);
-
-            if (string.IsNullOrEmpty(token))
-                throw new UnauthorizedException("User is not logged in");
-
-            var userId = _tokenService.ExtractUserIdFromToken(token);
+            var userId = _userContextService.GetUserId();
 
             if (userId == null)
                 throw new UnauthorizedException("User is not logged in");
 
-            var session = await _sessionService.GetSessionByRefreshTokenAsync(token);
+            var refreshToken = _cookieService.Get(CookieConsts.RefreshToken);
+
+            var session = await _sessionService.GetSessionByRefreshTokenAsync(refreshToken);
 
             if (session == null)
                 throw new NotFoundException("Session not found");
