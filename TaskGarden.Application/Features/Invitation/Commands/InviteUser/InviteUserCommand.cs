@@ -35,7 +35,6 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
     public InviteUserCommandHandler(
         IInvitationRepository invitationRepository,
         IEmailService emailService,
-        IEmailTemplateService emailTemplateService,
         IUserContextService userContextService,
         IConfiguration configuration,
         UserManager<AppUser> userManager,
@@ -44,7 +43,6 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
     {
         _invitationRepository = invitationRepository;
         _emailService = emailService;
-        _emailTemplateService = emailTemplateService;
         _userContextService = userContextService;
         _jwtSecretKey = configuration["JwtSecret"];
         _userManager = userManager;
@@ -87,9 +85,9 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
             { "Invite Link", inviteUrl },
         };
 
-        var emailBody = _emailTemplateService.GetEmailTemplate("InviteUserTemplate", placeholders);
         await _emailService.SendEmailAsync("Task Garden", request.InvitedUserEmail, "You’ve been invited!",
-            emailBody);
+            "InviteUserTemplate",
+            placeholders);
 
         return true;
     }
