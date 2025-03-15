@@ -12,4 +12,10 @@ public class UserService(UserManager<AppUser> userManager) : IUserService
         return await userManager.FindByEmailAsync(email)
                ?? throw new NotFoundException("User not found.");
     }
+    
+    public async Task CreateUserAsync(AppUser user)
+    {
+        await userManager.CreateAsync(user);
+    }
+    
 }
