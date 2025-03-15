@@ -18,4 +18,8 @@ public class UserService(UserManager<AppUser> userManager) : IUserService
         await userManager.CreateAsync(user);
     }
     
+    public async Task<string> GeneratePasswordResetTokenAsync(AppUser user)
+    {
+        return await userManager.GeneratePasswordResetTokenAsync(user);
+    }
 }
