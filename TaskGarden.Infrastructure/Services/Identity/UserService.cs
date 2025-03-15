@@ -24,6 +24,16 @@ public class UserService(UserManager<AppUser> userManager) : IUserService
         await userManager.CreateAsync(user);
     }
 
+    public async Task CreateUserAsync(AppUser user, string password)
+    {
+        var result = await userManager.CreateAsync(user, password);
+
+        if (!result.Succeeded)
+        {
+            throw new ResourceCreationException("User creation failed.");
+        }
+    }
+
     public async Task<string> GeneratePasswordResetTokenAsync(AppUser user)
     {
         return await userManager.GeneratePasswordResetTokenAsync(user);
@@ -51,5 +61,28 @@ public class UserService(UserManager<AppUser> userManager) : IUserService
         {
             throw new ResourceModificationException("Failed to change the password.");
         }
+    }
+    
+    public async Task<bool> VerifyPasswordResetTokenAsync(AppUser user, string token)
+    {
+        var decodedToken = Uri.UnescapeDataString(token);
+        return await userManager.VerifyUserTokenAsync(
+            user,
+            userManager.Options.Tokens.PasswordResetTokenProvider,
+            "ResetPassword",
+            decodedToken
+        );
+    }
+
+    public async Task<PasswordVerificationResult> VerifyPasswordAsync(AppUser user, string password)
+    {
+        var passwordHasher = new PasswordHasher<AppUser>();
+        return passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+    }
+
+    public async Task<IdentityResult> ResetPasswordAsync(AppUser user, string token, string newPassword)
+    {
+        var decodedToken = Uri.UnescapeDataString(token);
+        return await userManager.ResetPasswordAsync(user, decodedToken, newPassword);
     }
 }

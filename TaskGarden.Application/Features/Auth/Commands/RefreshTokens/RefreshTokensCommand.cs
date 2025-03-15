@@ -6,7 +6,6 @@ using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 
-
 namespace TaskGarden.Application.Features.Auth.Commands.RefreshTokens;
 
 public record RefreshTokensCommand : IRequest<RefreshTokensResponse>;
@@ -27,23 +26,28 @@ public class RefreshTokensCommandHandler(
     {
         var refreshToken = cookieService.Get(CookieConsts.RefreshToken);
         if (string.IsNullOrEmpty(refreshToken))
-            throw new NotFoundException("Token not found");
+            throw new NotFoundException("Refresh token not found in cookies.");
 
         var session = await sessionService.GetSessionByRefreshTokenAsync(refreshToken);
         if (session == null)
-            throw new NotFoundException("Session not found");
+            throw new NotFoundException("Session not found for the provided refresh token.");
 
         var user = await userManager.FindByIdAsync(session.UserId);
         if (user == null)
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("User not found for the session.");
 
         var newAccessToken = tokenService.GenerateAccessToken(user);
         var newRefreshToken = tokenService.GenerateRefreshToken();
 
         await sessionService.InvalidateSessionAsync(session);
         await sessionService.CreateSessionAsync(user.Id, newRefreshToken);
+
         cookieService.Append(CookieConsts.RefreshToken, newRefreshToken.Token, true, newRefreshToken.ExpiryDate);
 
-        return new RefreshTokensResponse { Message = "Tokens refreshed successfully.", AccessToken = newAccessToken };
+        return new RefreshTokensResponse
+        {
+            Message = "Tokens refreshed successfully.",
+            AccessToken = newAccessToken
+        };
     }
 }

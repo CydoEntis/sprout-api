@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.Auth.Commands.ResetPassword;
 
@@ -11,40 +11,28 @@ public record ResetPasswordCommand(string Email, string Token, string NewPasswor
 
 public class ResetPasswordResponse : BaseResponse;
 
-public class ResetPasswordCommandHandler(UserManager<AppUser> userManager)
-    : IRequestHandler<ResetPasswordCommand, ResetPasswordResponse>
+public class ResetPasswordCommandHandler(
+    IUserService userService,
+    IValidationService validationService
+) : IRequestHandler<ResetPasswordCommand, ResetPasswordResponse>
 {
     public async Task<ResetPasswordResponse> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
-        var user = await userManager.FindByEmailAsync(request.Email);
-        if (user is null)
-            throw new NotFoundException(ExceptionMessages.UserNotFound);
+        await validationService.ValidateRequestAsync(request, cancellationToken);
+        var user = await userService.GetUserByEmailAsync(request.Email);
 
-        var decodedToken = Uri.UnescapeDataString(request.Token);
-
-        var tokenIsValid = await userManager.VerifyUserTokenAsync(
-            user,
-            userManager.Options.Tokens.PasswordResetTokenProvider,
-            "ResetPassword",
-            decodedToken
-        );
-
+        var tokenIsValid = await userService.VerifyPasswordResetTokenAsync(user, request.Token);
         if (!tokenIsValid)
             throw new InvalidTokenException(ExceptionMessages.TokenInvalid);
 
-        var currentPasswordHash = user.PasswordHash;
-        var passwordHasher = new PasswordHasher<AppUser>();
-        var passwordVerificationResult =
-            passwordHasher.VerifyHashedPassword(user, currentPasswordHash, request.NewPassword);
-
+        var passwordVerificationResult = await userService.VerifyPasswordAsync(user, request.NewPassword);
         if (passwordVerificationResult == PasswordVerificationResult.Success)
             throw new AlreadyExistsException("new-password", ExceptionMessages.OldPassword);
 
-        var resetPasswordResult = await userManager.ResetPasswordAsync(user, decodedToken, request.NewPassword);
+        var resetPasswordResult = await userService.ResetPasswordAsync(user, request.Token, request.NewPassword);
         if (!resetPasswordResult.Succeeded)
-            throw new OperationException(ExceptionTitles.PasswordResetException,
-                ExceptionMessages.PasswordResetFailed);
+            throw new OperationException(ExceptionTitles.PasswordResetException, ExceptionMessages.PasswordResetFailed);
 
-        return new ResetPasswordResponse() { Message = "Password has been reset." };
+        return new ResetPasswordResponse { Message = "Password has been reset." };
     }
 }
