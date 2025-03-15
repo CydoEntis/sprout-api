@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api;
 using TaskGarden.Api.Endpoints;
@@ -25,6 +26,11 @@ builder.Services.AddEmailService();
 builder.Services.AddIdentityService();
 builder.Services.AddApplicationServices();
 builder.Services.AddRepositoryService();
+
+
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
+
+
 builder.Services.AddValidatorService();
 
 builder.Services.AddIdentityCore<AppUser>()
@@ -35,7 +41,6 @@ builder.Services.AddIdentityCore<AppUser>()
 builder.Services.AddProblemDetails(ExceptionExtensions.ConfigureProblemDetails);
 
 var app = builder.Build();
-
 
 
 if (app.Environment.IsDevelopment())

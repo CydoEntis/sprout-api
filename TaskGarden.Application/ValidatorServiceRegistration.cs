@@ -27,12 +27,11 @@ public static class ValidatorServiceRegistration
         services.AddScoped<IValidationService, ValidationService>();
 
         // Auth Validators
-        services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
-        services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
-        services.AddValidatorsFromAssemblyContaining<ChangePasswordCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<ForgotPasswordCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<ChangePasswordCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<GoogleLoginCommandValidator>();
-
+        services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
 
         // Category Validators
         services.AddValidatorsFromAssemblyContaining<CreateCategoryCommand>();
@@ -43,15 +42,14 @@ public static class ValidatorServiceRegistration
         services.AddValidatorsFromAssemblyContaining<GetAllTaskListsForCategoryQueryValidator>();
         services.AddValidatorsFromAssemblyContaining<CreateTaskListCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListCommandValidator>();
+        // Remove these if no validation required
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
-
 
         // Task List Item Validators
         services.AddValidatorsFromAssemblyContaining<CreateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCompletedStatusCommand>();
-
 
         return services;
     }
