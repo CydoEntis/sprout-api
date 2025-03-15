@@ -14,37 +14,34 @@ public record LoginCommand(string Email, string Password) : IRequest<LoginRespon
 
 public class LoginResponse : BaseResponse
 {
-    public string AccessToken { get; set; } = string.Empty;
+    public string AccessToken { get; init; } = string.Empty;
 }
 
 public class LoginCommandHandler(
     UserManager<AppUser> userManager,
-    ITokenService tokenService,
-    ICookieService cookieService,
-    ISessionService sessionService,
+    IAuthSessionService authSessionService,
     IValidator<LoginCommand> validator)
     : IRequestHandler<LoginCommand, LoginResponse>
 {
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
+        await ValidateRequestAsync(request, cancellationToken);
+        var user = await GetUserByEmailAsync(request.Email);
+        var accessToken = await authSessionService.GenerateAndStoreTokensAsync(user);
+
+        return new LoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
+    }
+
+    private async Task ValidateRequestAsync(LoginCommand request, CancellationToken cancellationToken)
+    {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
+    }
 
-        var user = await userManager.FindByEmailAsync(request.Email);
-
-        if (user == null)
-            throw new NotFoundException("User not found.");
-
-        var accessToken = tokenService.GenerateAccessToken(user);
-        var refreshToken = tokenService.GenerateRefreshToken();
-
-        var session = await sessionService.CreateSessionAsync(user.Id, refreshToken);
-
-
-        cookieService.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
-        cookieService.Append(CookieConsts.SessionId, session.SessionId, true, refreshToken.ExpiryDate);
-
-        return new LoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
+    private async Task<AppUser> GetUserByEmailAsync(string email)
+    {
+        return await userManager.FindByEmailAsync(email)
+               ?? throw new NotFoundException("User not found.");
     }
 }

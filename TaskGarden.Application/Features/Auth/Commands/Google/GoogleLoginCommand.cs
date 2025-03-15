@@ -17,19 +17,17 @@ public class GoogleLoginResponse : BaseResponse
 
 public class GoogleLoginCommandHandler(
     UserManager<AppUser> userManager,
-    ITokenService tokenService,
-    ICookieService cookieService,
-    ISessionService sessionService,
-    IGoogleAuthService googleAuthService)
+    IGoogleAuthService googleAuthService,
+    IAuthSessionService authSessionService)
     : IRequestHandler<GoogleLoginCommand, GoogleLoginResponse>
 {
     public async Task<GoogleLoginResponse> Handle(GoogleLoginCommand request, CancellationToken cancellationToken)
     {
         var googleUserInfo = await googleAuthService.GetUserInfoFromCodeAsync(request.AuthorizationCode)
-                             ?? throw new InvalidTokenException("Token is not valid");
+                             ?? throw new InvalidTokenException("Invalid Google token");
 
         var user = await GetOrCreateUserAsync(googleUserInfo);
-        var accessToken = await GenerateAndStoreTokensAsync(user);
+        var accessToken = await authSessionService.GenerateAndStoreTokensAsync(user);
 
         return new GoogleLoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
     }
@@ -49,17 +47,5 @@ public class GoogleLoginCommandHandler(
 
         await userManager.CreateAsync(user);
         return user;
-    }
-
-    private async Task<string> GenerateAndStoreTokensAsync(AppUser user)
-    {
-        var accessToken = tokenService.GenerateAccessToken(user);
-        var refreshToken = tokenService.GenerateRefreshToken();
-        var session = await sessionService.CreateSessionAsync(user.Id, refreshToken);
-
-        cookieService.Append(CookieConsts.RefreshToken, refreshToken.Token, true, refreshToken.ExpiryDate);
-        cookieService.Append(CookieConsts.SessionId, session.SessionId, true, refreshToken.ExpiryDate);
-
-        return accessToken;
     }
 }
