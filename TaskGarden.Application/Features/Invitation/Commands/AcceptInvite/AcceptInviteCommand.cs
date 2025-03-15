@@ -2,6 +2,7 @@
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
+using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
@@ -9,7 +10,14 @@ using TaskGarden.Infrastructure.Repositories;
 
 namespace TaskGarden.Application.Features.Invitation.Commands.AcceptInvite;
 
-public record AcceptInviteCommand(string Token, int? CategoryId, CreateCategoryCommand? NewCategory) : IRequest<bool>;
+public record AcceptInviteCommand(string Token, int? CategoryId, CreateCategoryCommand? NewCategory)
+    : IRequest<AcceptInviteCommandResponse>;
+
+public class AcceptInviteCommandResponse : BaseResponse
+{
+    public string CategoryName { get; set; }
+    public int TaskListId { get; set; }
+}
 
 public class AcceptInviteCommandHandler(
     IInvitationRepository invitationRepository,
@@ -18,9 +26,10 @@ public class AcceptInviteCommandHandler(
     ICategoryRepository categoryRepository,
     ITaskListRepository taskListRepository,
     IUserTaskListCategoryRepository userTaskListCategoryRepository)
-    : IRequestHandler<AcceptInviteCommand, bool>
+    : IRequestHandler<AcceptInviteCommand, AcceptInviteCommandResponse>
 {
-    public async Task<bool> Handle(AcceptInviteCommand request, CancellationToken cancellationToken)
+    public async Task<AcceptInviteCommandResponse> Handle(AcceptInviteCommand request,
+        CancellationToken cancellationToken)
     {
         var userId = userContextService.GetUserId();
         var invitation = await invitationRepository.GetByTokenAsync(request.Token);
@@ -36,6 +45,7 @@ public class AcceptInviteCommandHandler(
             throw new ConflictException("User is already part of this task list");
 
         int? assignedCategoryId = request.CategoryId;
+        string? categoryName = null;
 
         if (request.NewCategory != null)
         {
@@ -49,6 +59,15 @@ public class AcceptInviteCommandHandler(
 
             await categoryRepository.AddAsync(newCategory);
             assignedCategoryId = newCategory.Id;
+            categoryName = newCategory.Name; // Set category name from newly created category
+        }
+        else if (assignedCategoryId.HasValue)
+        {
+            var existingCategory = await categoryRepository.GetByIdAsync(assignedCategoryId.Value);
+            if (existingCategory == null)
+                throw new NotFoundException("Category not found");
+
+            categoryName = existingCategory.Name; // Set category name from existing category
         }
 
         if (assignedCategoryId.HasValue)
@@ -78,6 +97,11 @@ public class AcceptInviteCommandHandler(
         };
         await taskListMemberRepository.AddAsync(newMember);
 
-        return true;
+        return new AcceptInviteCommandResponse
+        {
+            Message = "Invite accepted",
+            TaskListId = taskListId,
+            CategoryName = categoryName ?? "No category assigned"
+        };
     }
 }
