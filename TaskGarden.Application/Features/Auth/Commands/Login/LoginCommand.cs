@@ -18,7 +18,7 @@ public class LoginResponse : BaseResponse
 }
 
 public class LoginCommandHandler(
-    UserManager<AppUser> userManager,
+    IUserService userService,
     IAuthSessionService authSessionService,
     IValidator<LoginCommand> validator)
     : IRequestHandler<LoginCommand, LoginResponse>
@@ -26,7 +26,7 @@ public class LoginCommandHandler(
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         await ValidateRequestAsync(request, cancellationToken);
-        var user = await GetUserByEmailAsync(request.Email);
+        var user = await userService.GetUserByEmailAsync(request.Email);
         var accessToken = await authSessionService.GenerateAndStoreTokensAsync(user);
 
         return new LoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
@@ -37,11 +37,5 @@ public class LoginCommandHandler(
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-    }
-
-    private async Task<AppUser> GetUserByEmailAsync(string email)
-    {
-        return await userManager.FindByEmailAsync(email)
-               ?? throw new NotFoundException("User not found.");
     }
 }
