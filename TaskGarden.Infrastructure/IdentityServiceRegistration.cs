@@ -8,13 +8,12 @@ public static class IdentityServiceRegistration
 {
     public static IServiceCollection AddIdentityService(this IServiceCollection services)
     {
-
-        
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<ICookieService, CookieService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<IAuthSessionService, AuthSessionService>();
         services.AddScoped<IGoogleAuthService, GoogleAuthService>();
-
 
         return services;
     }
