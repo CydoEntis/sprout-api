@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskGarden.Application.Features.Auth.Commands.ChangePassword;
 using TaskGarden.Application.Features.Auth.Commands.ForgotPassword;
-using TaskGarden.Application.Features.Auth.Commands.GoogleLogin;
+using TaskGarden.Application.Features.Auth.Commands.Google;
 using TaskGarden.Application.Features.Auth.Commands.Login;
 using TaskGarden.Application.Features.Auth.Commands.Logout;
 using TaskGarden.Application.Features.Auth.Commands.RefreshTokens;
