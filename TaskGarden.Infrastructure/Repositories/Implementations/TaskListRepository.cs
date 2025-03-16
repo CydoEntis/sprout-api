@@ -34,7 +34,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                 TotalTasksCount = tl.TaskListItems.Count(),
                 IsCompleted = tl.IsCompleted,
                 CreatedAt = tl.CreatedAt,
-                Members = tl.TaskListAssignments
+                Members = tl.TaskListMembers
                     .Select(tla => new Member
                     {
                         Id = tla.User.Id,
@@ -64,7 +64,7 @@ public class TaskListRepository : BaseRepository<TaskList>, ITaskListRepository
                 Description = tl.Description,
                 CreatedAt = tl.CreatedAt,
                 UpdatedAt = tl.UpdatedAt,
-                Members = tl.TaskListAssignments
+                Members = tl.TaskListMembers
                     .Select(tla => new Member
                     {
                         Id = tla.User.Id,

@@ -26,9 +26,7 @@ public class GetAllCategoriesQueryHandler(
     public async Task<List<GetAllCategoriesQueryResponse>> Handle(GetAllCategoriesQuery request,
         CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
+        var userId = userContextService.GetAuthenticatedUserId();
 
         var categories = await userTaskListCategoryRepository.GetCategoryPreviewByUserId(userId);
         return mapper.Map<List<GetAllCategoriesQueryResponse>>(categories);

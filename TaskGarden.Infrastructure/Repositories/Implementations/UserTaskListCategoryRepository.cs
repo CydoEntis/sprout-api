@@ -2,6 +2,7 @@
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Projections;
 using TaskGarden.Domain.Entities;
+using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Infrastructure.Repositories.Implementations;
 
@@ -48,5 +49,38 @@ public class UserTaskListCategoryRepository : BaseRepository<UserTaskListCategor
         return await _context.UserTaskListCategories
             .Where(utl => utl.UserId == userId && utl.CategoryId == categoryId)
             .CountAsync();
+    }
+
+    public async Task<List<TaskListPreview>> GetAllTaskListsByUserIdAndCategoryId(string userId,
+        int categoryId)
+    {
+        var taskListsData = await _context.UserTaskListCategories
+            .Where(ut => ut.UserId == userId && ut.CategoryId == categoryId)
+            .Include(ut => ut.Category)
+            .Include(ut => ut.TaskList)
+            .ThenInclude(t => t.TaskListMembers)
+            .Include(ut => ut.TaskList)
+            .ThenInclude(t => t.TaskListItems)
+            .Select(ut => new TaskListPreview
+            {
+                Id = ut.TaskList.Id,
+                Name = ut.TaskList.Name,
+                Description = ut.TaskList.Description,
+                CreatedAt = ut.TaskList.CreatedAt,
+                UpdatedAt = ut.TaskList.UpdatedAt,
+                Members = ut.TaskList.TaskListMembers
+                    .Select(tlm => new Member()
+                    {
+                        Id = tlm.UserId,
+                        Name = tlm.User.LastName + " " + tlm.User.FirstName,
+                    }).ToList(),
+                TotalTasksCount = ut.TaskList.TaskListItems.Count,
+                CompletedTasksCount = ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
+                TaskCompletionPercentage = ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted) /
+                    ut.TaskList.TaskListItems.Count * 100
+            })
+            .ToListAsync();
+
+        return taskListsData;
     }
 }

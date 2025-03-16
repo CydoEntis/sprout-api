@@ -10,7 +10,7 @@ public class TaskList : BaseEntity
     public string CreatedById { get; set; }
     [ForeignKey("CreatedById")]
     public AppUser CreatedBy { get; set; }
-    public ICollection<TaskListMember> TaskListAssignments { get; set; } = new HashSet<TaskListMember>();
+    public ICollection<TaskListMember> TaskListMembers { get; set; } = new HashSet<TaskListMember>();
     public ICollection<TaskListItem> TaskListItems { get; set; } = new List<TaskListItem>();
     public bool IsCompleted { get; set; } = false;
 

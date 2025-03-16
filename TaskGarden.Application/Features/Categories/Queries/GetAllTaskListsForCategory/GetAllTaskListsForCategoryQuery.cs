@@ -27,8 +27,8 @@ namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForC
     public class GetAllTaskListsForCategoryQueryHandler(
         IUserContextService userContextService,
         ICategoryRepository categoryRepository,
-        ITaskListRepository taskListRepository,
-        IValidator<GetAllTaskListsForCategoryQuery> validator,
+        IUserTaskListCategoryRepository userTaskListCategoryRepository,
+        IValidationService validationService,
         IMapper mapper)
         :
             IRequestHandler<GetAllTaskListsForCategoryQuery, List<GetAllTaskListsForCategoryResponse>>
@@ -37,19 +37,15 @@ namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForC
             GetAllTaskListsForCategoryQuery request,
             CancellationToken cancellationToken)
         {
-            var userId = userContextService.GetUserId();
-            if (userId == null)
-                throw new UnauthorizedAccessException("User not authenticated");
-
-            var validationResult = await validator.ValidateAsync(request, cancellationToken);
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+            var userId = userContextService.GetAuthenticatedUserId();
+            await validationService.ValidateRequestAsync(request, cancellationToken);
 
             var existingCategory = await categoryRepository.GetByNameAsync(userId, request.CategoryName);
             if (existingCategory is null)
                 throw new NotFoundException("Category does not exist");
 
-            var taskLists = await taskListRepository.GetAllTaskListsInCategoryAsync(existingCategory.Id);
+            var taskLists =
+                await userTaskListCategoryRepository.GetAllTaskListsByUserIdAndCategoryId(userId, existingCategory.Id);
 
             return mapper.Map<List<GetAllTaskListsForCategoryResponse>>(taskLists);
         }
