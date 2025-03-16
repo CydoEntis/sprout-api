@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Features.Shared.Constants;
-using TaskGarden.Application.Features.Shared.Validators;
 using TaskGarden.Application.Services.Contracts;
 
 namespace TaskGarden.Application.Features.Categories.Commands.CreateCategory;

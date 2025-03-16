@@ -29,7 +29,7 @@
 // {
 //     public async Task<AssignTaskListToCategoryResponse> Handle(AssignTaskListToCategoryCommand request, CancellationToken cancellationToken)
 //     {
-//         var userId = userContextService.GetUserId();
+//         var userId = userContextService.GetAuthenticatedUserId();
 //         if (userId == null)
 //             throw new UnauthorizedAccessException("User not authenticated");
 //

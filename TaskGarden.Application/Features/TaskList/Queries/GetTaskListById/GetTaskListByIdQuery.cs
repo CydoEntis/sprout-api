@@ -33,7 +33,7 @@ public class GetTaskListByIdQueryHandler(
     public async Task<GetTaskListByIdQueryResponse> Handle(GetTaskListByIdQuery request,
         CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var userId = userContextService.GetAuthenticatedUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
@@ -41,5 +41,3 @@ public class GetTaskListByIdQueryHandler(
         return mapper.Map<GetTaskListByIdQueryResponse>(taskLists);
     }
 }
-
-

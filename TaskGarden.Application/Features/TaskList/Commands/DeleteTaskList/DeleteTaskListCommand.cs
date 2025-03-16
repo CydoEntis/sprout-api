@@ -19,7 +19,7 @@ public class DeleteTaskListCommandHandler(
 {
     public async Task<DeleteTaskListResponse> Handle(DeleteTaskListCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var userId = userContextService.GetAuthenticatedUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 

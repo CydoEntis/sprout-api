@@ -24,7 +24,7 @@ public class UpdateTaskListItemCompletedStatusCommandHandler(
     public async Task<UpdateTaskListItemCompletedStatusResponse> Handle(
         UpdateTaskListItemCompletedStatusCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var userId = userContextService.GetAuthenticatedUserId();
         if (userId == null)
             throw new UnauthorizedException("Invalid user");
 

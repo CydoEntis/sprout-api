@@ -30,7 +30,7 @@ public class CreateTaskListCommandHandler(
 {
     public async Task<CreateTaskListResponse> Handle(CreateTaskListCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var userId = userContextService.GetAuthenticatedUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 

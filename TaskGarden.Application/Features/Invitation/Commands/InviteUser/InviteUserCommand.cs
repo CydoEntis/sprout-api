@@ -56,7 +56,7 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
             throw new ConflictException("An invitation already exists for this user.");
         }
 
-        var inviterUserId = _userContextService.GetUserId();
+        var inviterUserId = _userContextService.GetAuthenticatedUserId();
         var inviter = await _userManager.FindByIdAsync(inviterUserId!);
 
         if (inviter == null)

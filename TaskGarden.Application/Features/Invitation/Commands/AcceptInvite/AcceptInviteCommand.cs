@@ -31,7 +31,7 @@ public class AcceptInviteCommandHandler(
     public async Task<AcceptInviteCommandResponse> Handle(AcceptInviteCommand request,
         CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var userId = userContextService.GetAuthenticatedUserId();
         var invitation = await GetInvitationAsync(request.Token);
         var taskListId = invitation.TaskListId;
 
@@ -80,7 +80,7 @@ public class AcceptInviteCommandHandler(
             return await CreateNewCategoryAsync(newCategory, userId);
         }
 
-        return await GetExistingCategoryAsync(categoryId);
+        return await GetExistingCategoryAsync(userId, categoryId);
     }
 
     private async Task<(int? AssignedCategoryId, string? CategoryName)> CreateNewCategoryAsync(
@@ -97,12 +97,13 @@ public class AcceptInviteCommandHandler(
         return (category.Id, category.Name);
     }
 
-    private async Task<(int? AssignedCategoryId, string? CategoryName)> GetExistingCategoryAsync(int? categoryId)
+    private async Task<(int? AssignedCategoryId, string? CategoryName)> GetExistingCategoryAsync(string userId,
+        int? categoryId)
     {
         if (!categoryId.HasValue)
             return (null, null);
 
-        var category = await categoryRepository.GetByIdAsync(categoryId.Value);
+        var category = await categoryRepository.GetByIdAsync(userId, categoryId.Value);
         if (category == null)
             throw new NotFoundException("Category not found");
 

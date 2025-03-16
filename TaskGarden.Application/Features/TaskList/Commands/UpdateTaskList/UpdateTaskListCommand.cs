@@ -25,15 +25,15 @@ public class UpdateTaskListCommandHandler(
 {
     public async Task<UpdateTaskListResponse> Handle(UpdateTaskListCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId();
+        var userId = userContextService.GetAuthenticatedUserId();
         if (userId == null)
             throw new UnauthorizedAccessException("User not authenticated");
 
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-        
-        
+
+
         var userRoleString = await taskListMemberRepository.GetAssignedRoleAsync(userId, request.TaskListId);
 
         if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
