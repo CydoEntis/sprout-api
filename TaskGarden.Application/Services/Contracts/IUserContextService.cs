@@ -2,5 +2,5 @@
 
 public interface IUserContextService
 {
-    string? GetUserId();
+    string GetAuthenticatedUserId();
 }

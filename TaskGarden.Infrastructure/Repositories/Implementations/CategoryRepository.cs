@@ -10,11 +10,12 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
     {
     }
 
-    public async Task<Category?> GetByIdAsync(int categoryId)
+    public async Task<Category?> GetByIdAsync(string userId, int categoryId)
     {
         return await _context.Categories
-            .FirstOrDefaultAsync(c => c.Id == categoryId);
+            .FirstOrDefaultAsync(c => c.Id == categoryId && c.UserId == userId);
     }
+
 
     public async Task<Category?> GetByNameAsync(string userId, string categoryName)
     {

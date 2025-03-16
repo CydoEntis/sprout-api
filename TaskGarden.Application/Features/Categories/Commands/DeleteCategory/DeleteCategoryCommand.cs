@@ -14,28 +14,17 @@ public class DeleteCategoryResponse : BaseResponse;
 public class DeleteCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository,
-    IValidator<DeleteCategoryCommand> validator
 ) : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
 {
     public async Task<DeleteCategoryResponse> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        var userId = userContextService.GetAuthenticatedUserId();
 
-        var userId = userContextService.GetUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
+        var category = await categoryRepository.GetByIdAsync(userId, request.CategoryId) ??
+                       throw new NotFoundException("Category not found or access denied.");
 
-        var category = await categoryRepository.GetAsync(request.CategoryId);
-        if (category == null)
-            throw new NotFoundException("Category not found.");
 
-        if (category.UserId != userId)
-            throw new PermissionException("You are not the owner of this category.");
-
-        var result = await categoryRepository.DeleteCategoryAndDependenciesAsync(category);
-        if (!result)
+        if (!await categoryRepository.DeleteCategoryAndDependenciesAsync(category))
             throw new ResourceModificationException("Category could not be deleted.");
 
         return new DeleteCategoryResponse() { Message = $"{category.Name} category has been deleted successfully" };
