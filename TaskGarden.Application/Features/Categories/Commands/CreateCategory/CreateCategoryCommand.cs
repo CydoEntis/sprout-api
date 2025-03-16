@@ -19,23 +19,18 @@ public class CreateCategoryResponse : BaseResponse
 public class CreateCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository,
-    IValidator<CreateCategoryCommand> validator,
+    IValidationService validationService,
     IMapper mapper) : IRequestHandler<CreateCategoryCommand, CreateCategoryResponse>
 {
     public async Task<CreateCategoryResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        await validationService.ValidateRequestAsync(request, cancellationToken);
 
-        var userId = userContextService.GetUserId();
-        if(userId == null)
-            throw new UnauthorizedException("Invalid user");
-        
-        var existingCategory = await categoryRepository.GetByNameAsync(userId, request.Name);
-        if(existingCategory != null)
-            throw new ConflictException($"Category with name {request.Name} already exists");
-        
+        var userId = userContextService.GetUserId() ?? throw new UnauthorizedException("Invalid user");
+
+        if (await categoryRepository.CategoryExistsAsync(userId, request.Name))
+            throw new ConflictException($"Category with name {request.Name} already exists.");
+
 
         var category = mapper.Map<Category>(request);
         category.UserId = userId!;

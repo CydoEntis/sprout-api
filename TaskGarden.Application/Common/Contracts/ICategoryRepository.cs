@@ -11,4 +11,5 @@ public interface ICategoryRepository : IBaseRepository<Category>
     Task<List<Category>> GetAllCategoriesTaskListsAsync(string userId);
 
     Task<bool> DeleteCategoryAndDependenciesAsync(Category category);
+    Task<bool> CategoryExistsAsync(string userId, string categoryName);
 }

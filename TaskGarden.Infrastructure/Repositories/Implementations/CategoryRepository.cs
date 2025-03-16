@@ -37,6 +37,13 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
             .ToListAsync();
     }
 
+    public async Task<bool> CategoryExistsAsync(string userId, string categoryName)
+    {
+        var existingCategory = await GetByNameAsync(userId, categoryName);
+        return existingCategory != null;
+    }
+
+
     public async Task<bool> DeleteCategoryAndDependenciesAsync(Category category)
     {
         await using var transaction = await _context.Database.BeginTransactionAsync();
@@ -44,7 +51,6 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         {
             var categoryId = category.Id;
 
-            // Now, we need to delete based on the UserTaskListCategory relationship
             var taskListIds = await _context.UserTaskListCategories
                 .Where(utc => utc.CategoryId == categoryId)
                 .Select(utc => utc.TaskListId)
