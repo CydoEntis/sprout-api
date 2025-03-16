@@ -13,7 +13,7 @@ public class DeleteCategoryResponse : BaseResponse;
 
 public class DeleteCategoryCommandHandler(
     IUserContextService userContextService,
-    ICategoryRepository categoryRepository,
+    ICategoryRepository categoryRepository
 ) : IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
 {
     public async Task<DeleteCategoryResponse> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)

@@ -18,7 +18,7 @@ public class ChangePasswordCommandHandler(
 {
     public async Task<ChangePasswordResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetUserId() ?? throw new NotFoundException("User Id not found.");
+        var userId = userContextService.GetAuthenticatedUserId();
 
         var user = await userService.GetUserByIdAsync(userId);
 

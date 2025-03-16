@@ -18,25 +18,17 @@ public class UpdateCategoryResponse : BaseResponse
 public class UpdateCategoryCommandHandler(
     IUserContextService userContextService,
     ICategoryRepository categoryRepository,
-    IValidator<UpdateCategoryCommand> validator,
+    IValidationService validationService,
     IMapper mapper) : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
 {
     public async Task<UpdateCategoryResponse> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        await validationService.ValidateRequestAsync(request, cancellationToken);
 
-        var userId = userContextService.GetUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
+        var userId = userContextService.GetAuthenticatedUserId();
 
-        var category = await categoryRepository.GetAsync(request.Id);
-        if (category == null)
-            throw new NotFoundException("Category not found.");
-
-        if (category.UserId != userId)
-            throw new PermissionException("You are not the owner of this category.");
+        var category = await categoryRepository.GetByIdAsync(userId, request.Id) ??
+                       throw new NotFoundException("Category not found or access denied.");
 
         mapper.Map(request, category);
         await categoryRepository.UpdateAsync(category);

@@ -34,7 +34,7 @@ namespace TaskGarden.Application.Features.Auth.Commands.Logout
 
         public async Task<LogoutResponse> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            var userId = _userContextService.GetUserId();
+            var userId = _userContextService.GetAuthenticatedUserId();
 
             if (userId == null)
                 throw new UnauthorizedException("User is not logged in");
