@@ -49,4 +49,9 @@ public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskLis
             .Where(ut => ut.UserId == userId && ut.TaskListId == taskListId)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<bool> IsUserAMemberAsync(string userId, int taskListId)
+    {
+        return await _context.TaskListMembers.Where(q => q.UserId == userId && q.TaskListId == taskListId).AnyAsync();
+    }
 }
