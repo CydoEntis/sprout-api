@@ -20,41 +20,55 @@ public class UpdateTaskListCommandHandler(
     IUserContextService userContextService,
     ITaskListRepository taskListRepository,
     ITaskListMemberRepository taskListMemberRepository,
-    IValidator<UpdateTaskListCommand> validator,
+    IValidationService validationService,
     IMapper mapper) : IRequestHandler<UpdateTaskListCommand, UpdateTaskListResponse>
 {
     public async Task<UpdateTaskListResponse> Handle(UpdateTaskListCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetAuthenticatedUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
+        var userId = userContextService.GetAuthenticatedUserId() ??
+                     throw new UnauthorizedAccessException("User not authenticated");
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        // Validate the request
+        await validationService.ValidateRequestAsync(request, cancellationToken);
 
+        await EnsureUserHasPermissionAsync(userId, request.TaskListId);
 
-        var userRoleString = await taskListMemberRepository.GetAssignedRoleAsync(userId, request.TaskListId);
-
-        if (!Enum.TryParse<TaskListRole>(userRoleString, out var userRole))
-        {
-            throw new PermissionException("Invalid role");
-        }
-
-        if (userRole != TaskListRole.Owner && userRole != TaskListRole.Editor)
-            throw new PermissionException("You do not have permission to update this task list");
-
-
-        var taskList = await taskListRepository.GetAsync(request.TaskListId);
-        if (taskList == null)
-            throw new NotFoundException("Task list not found");
-
+        var taskList = await GetTaskListAsync(request.TaskListId);
         mapper.Map(request, taskList);
-
         taskList.UpdatedAt = DateTime.UtcNow;
 
         await taskListRepository.UpdateAsync(taskList);
-        return new UpdateTaskListResponse()
-            { Message = $"Task list with {taskList.Id} updated", TaskListId = taskList.Id };
+
+        return new UpdateTaskListResponse
+        {
+            Message = $"Task list with ID {taskList.Id} updated successfully",
+            TaskListId = taskList.Id
+        };
+    }
+
+    private async Task EnsureUserHasPermissionAsync(string userId, int taskListId)
+    {
+        var userRole = await GetUserRoleAsync(userId, taskListId);
+
+        if (userRole is not (TaskListRole.Owner or TaskListRole.Editor))
+            throw new PermissionException("You do not have permission to update this task list");
+    }
+
+    private async Task<TaskListRole> GetUserRoleAsync(string userId, int taskListId)
+    {
+        var roleString = await taskListMemberRepository.GetAssignedRoleAsync(userId, taskListId);
+        if (!Enum.TryParse(roleString, out TaskListRole role))
+            throw new PermissionException("Invalid role");
+
+        return role;
+    }
+
+    private async Task<Domain.Entities.TaskList> GetTaskListAsync(int taskListId)
+    {
+        var taskList = await taskListRepository.GetAsync(taskListId);
+        if (taskList == null)
+            throw new NotFoundException("Task list not found");
+
+        return taskList;
     }
 }
