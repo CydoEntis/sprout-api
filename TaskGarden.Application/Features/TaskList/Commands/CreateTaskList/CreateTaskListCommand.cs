@@ -24,52 +24,69 @@ public class CreateTaskListCommandHandler(
     ITaskListRepository taskListRepository,
     ICategoryRepository categoryRepository,
     ITaskListMemberRepository taskListMemberRepository,
-    IUserTaskListCategoryRepository userTaskListCategoryRepository,
-    IValidator<CreateTaskListCommand> validator,
-    IMapper mapper) : IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
+    IMapper mapper,
+    IValidationService validationService,
+    IUserTaskListCategoryRepository userTaskListCategoryRepository
+) : IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
 {
     public async Task<CreateTaskListResponse> Handle(CreateTaskListCommand request, CancellationToken cancellationToken)
     {
         var userId = userContextService.GetAuthenticatedUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
+        await validationService.ValidateRequestAsync(request, cancellationToken);
 
-        var category = await categoryRepository.GetByNameAsync(userId, request.CategoryName);
+        var category = await GetCategoryAsync(userId, request.CategoryName);
+        var taskList = await CreateTaskListAsync(request, userId);
+        await AssignCategoryToTaskListAsync(userId, category, taskList);
+        await AssignUserToTaskListAsync(userId, taskList);
 
+        var taskListPreview = mapper.Map<TaskListPreview>(taskList);
+
+        return new CreateTaskListResponse
+        {
+            Message = $"Task list created: {taskList.Id}",
+            TaskListPreview = taskListPreview
+        };
+    }
+
+
+    private async Task<Category> GetCategoryAsync(string userId, string categoryName)
+    {
+        var category = await categoryRepository.GetByNameAsync(userId, categoryName);
+        if (category == null)
+            throw new NotFoundException($"Category {categoryName} not found.");
+        return category;
+    }
+
+    private async Task<Domain.Entities.TaskList> CreateTaskListAsync(CreateTaskListCommand request, string userId)
+    {
         var taskList = mapper.Map<Domain.Entities.TaskList>(request);
         taskList.CreatedById = userId;
+        return await taskListRepository.AddAsync(taskList);
+    }
 
-        var createdTaskList = await taskListRepository.AddAsync(taskList);
-
+    private async Task AssignCategoryToTaskListAsync(string userId, Category category,
+        Domain.Entities.TaskList taskList)
+    {
         var userTaskListCategory = new UserTaskListCategory
         {
             UserId = userId,
-            TaskListId = createdTaskList.Id,
+            TaskListId = taskList.Id,
             CategoryId = category.Id
         };
-
         await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
+    }
 
+    private async Task AssignUserToTaskListAsync(string userId, Domain.Entities.TaskList taskList)
+    {
         var result = await taskListMemberRepository.AddAsync(new TaskListMember
         {
             UserId = userId,
-            TaskListId = createdTaskList.Id,
+            TaskListId = taskList.Id,
             Role = TaskListRole.Owner
         });
 
         if (result == null)
             throw new ResourceCreationException("Unable to assign user to task list.");
-
-        var taskListDetails = mapper.Map<TaskListPreview>(createdTaskList);
-
-        return new CreateTaskListResponse()
-        {
-            Message = $"Task list created: {createdTaskList.Id}",
-            TaskListPreview = taskListDetails
-        };
     }
 }
