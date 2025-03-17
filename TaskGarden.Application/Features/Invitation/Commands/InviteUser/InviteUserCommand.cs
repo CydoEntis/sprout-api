@@ -26,27 +26,26 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
 {
     private readonly IInvitationRepository _invitationRepository;
     private readonly IEmailService _emailService;
-    private readonly IEmailTemplateService _emailTemplateService;
     private readonly IUserContextService _userContextService;
-    private readonly string _jwtSecretKey;
-    private readonly UserManager<AppUser> _userManager;
     private readonly ITaskListRepository _taskListRepository;
+    private readonly ITokenService _tokenService;
+    private readonly IUserService _userService;
 
     public InviteUserCommandHandler(
         IInvitationRepository invitationRepository,
         IEmailService emailService,
         IUserContextService userContextService,
-        IConfiguration configuration,
-        UserManager<AppUser> userManager,
-        ITaskListRepository taskListRepository
+        ITaskListRepository taskListRepository,
+        ITokenService tokenService,
+        IUserService userService
     )
     {
         _invitationRepository = invitationRepository;
         _emailService = emailService;
         _userContextService = userContextService;
-        _jwtSecretKey = configuration["JwtSecret"];
-        _userManager = userManager;
         _taskListRepository = taskListRepository;
+        _tokenService = tokenService;
+        _userService = userService;
     }
 
     public async Task<bool> Handle(InviteUserCommand request, CancellationToken cancellationToken)
@@ -57,69 +56,37 @@ public class InviteUserCommandHandler : IRequestHandler<InviteUserCommand, bool>
         }
 
         var inviterUserId = _userContextService.GetAuthenticatedUserId();
-        var inviter = await _userManager.FindByIdAsync(inviterUserId!);
+        var inviter = await _userService.GetUserByIdAsync(inviterUserId);
 
         if (inviter == null)
             throw new NotFoundException("Inviter not found");
 
         var taskList = await _taskListRepository.GetDetailsByIdAsync(request.TaskListId);
-        if (inviter == null)
-            throw new NotFoundException("Inviter not found");
+        if (taskList == null)
+            throw new NotFoundException("Task list not found");
 
         var invitation = new Domain.Entities.Invitation
         {
             TaskListId = request.TaskListId,
             InvitedUserEmail = request.InvitedUserEmail,
             InviterUserId = inviterUserId,
-            Token = GenerateInviteToken(inviter, taskList),
+            Token = _tokenService.GenerateInviteToken(inviter, taskList),
             Status = InvitationStatus.Pending,
             ExpiresAt = DateTime.UtcNow.AddDays(7)
         };
 
         await _invitationRepository.AddAsync(invitation);
-        var inviteUrl = $"https://localhost:5173/invite/{invitation.Token}";
 
+        var inviteUrl = $"https://localhost:5173/invite/{invitation.Token}";
         var placeholders = new Dictionary<string, string>
         {
             { "Recipient's Email", request.InvitedUserEmail },
-            { "Invite Link", inviteUrl },
+            { "Invite Link", inviteUrl }
         };
 
         await _emailService.SendEmailAsync("Task Garden", request.InvitedUserEmail, "You’ve been invited!",
-            "InviteUserTemplate",
-            placeholders);
+            "InviteUserTemplate", placeholders);
 
         return true;
-    }
-
-    private string GenerateInviteToken(AppUser inviter, TaskListPreview taskList)
-    {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecretKey));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-        var claims = new List<System.Security.Claims.Claim>
-        {
-            new Claim("inviter", $"{inviter.FirstName} {inviter.LastName}"),
-            new Claim("inviterEmail", inviter.Email),
-            new Claim("taskListName", taskList.Name),
-            new Claim("taskListId", taskList.Id.ToString()),
-            new Claim("category", taskList.CategoryName),
-            new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
-        };
-
-        var memberNames = taskList.Members.Select(m => m.Name).ToList();
-        var membersJson = JsonConvert.SerializeObject(memberNames);
-        claims.Add(new Claim("members", membersJson));
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = credentials
-        };
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
     }
 }
