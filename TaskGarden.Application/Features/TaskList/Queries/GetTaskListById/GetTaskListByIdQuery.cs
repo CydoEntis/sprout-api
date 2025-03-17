@@ -34,8 +34,6 @@ public class GetTaskListByIdQueryHandler(
         CancellationToken cancellationToken)
     {
         var userId = userContextService.GetAuthenticatedUserId();
-        if (userId == null)
-            throw new UnauthorizedAccessException("User not authenticated");
 
         var taskLists = await taskListRepository.GetDetailsByIdAsync(request.TaskListId);
         return mapper.Map<GetTaskListByIdQueryResponse>(taskLists);
