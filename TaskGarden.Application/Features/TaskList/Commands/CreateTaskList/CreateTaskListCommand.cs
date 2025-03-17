@@ -35,6 +35,8 @@ public class CreateTaskListCommandHandler(
 
         await validationService.ValidateRequestAsync(request, cancellationToken);
 
+        await CheckIfUserIsOwnerAsync(userId);
+
         var category = await GetCategoryAsync(userId, request.CategoryName);
         var taskList = await CreateTaskListAsync(request, userId);
         await AssignCategoryToTaskListAsync(userId, category, taskList);
@@ -49,6 +51,14 @@ public class CreateTaskListCommandHandler(
         };
     }
 
+    private async Task CheckIfUserIsOwnerAsync(string userId)
+    {
+        var member = await taskListMemberRepository.GetMemberByUserIdAsync(userId);
+        if (member == null || member.Role != TaskListRole.Owner)
+        {
+            throw new UnauthorizedAccessException("Only owners can create task lists.");
+        }
+    }
 
     private async Task<Category> GetCategoryAsync(string userId, string categoryName)
     {

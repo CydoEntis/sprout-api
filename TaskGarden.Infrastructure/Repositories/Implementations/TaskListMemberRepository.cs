@@ -10,6 +10,11 @@ public class TaskListMemberRepository : BaseRepository<TaskListMember>, ITaskLis
     {
     }
 
+    public async Task<TaskListMember> GetMemberByUserIdAsync(string userId)
+    {
+        return await _context.TaskListMembers.FirstOrDefaultAsync(m => m.UserId == userId);
+    }
+
     public async Task<int> GetCountAsync(string userId, string categoryName)
     {
         return await _context.TaskListMembers
