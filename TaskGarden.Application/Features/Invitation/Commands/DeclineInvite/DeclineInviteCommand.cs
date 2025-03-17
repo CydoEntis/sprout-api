@@ -12,14 +12,17 @@ public class DeclineInviteCommandHandler(IInvitationRepository invitationReposit
     public async Task<bool> Handle(DeclineInviteCommand request, CancellationToken cancellationToken)
     {
         var invitation = await invitationRepository.GetByTokenAsync(request.Token);
-        if (invitation == null || invitation.Status != InvitationStatus.Pending)
+        if (invitation is null || invitation.Status != InvitationStatus.Pending)
             return false;
 
-        invitation.Status = InvitationStatus.Declined;
-        invitation.ExpiresAt = DateTime.UtcNow;
-        invitation.UpdatedAt = DateTime.UtcNow;
-        await invitationRepository.UpdateAsync(invitation);
-
+        await DeclineInvitationAsync(invitation);
         return true;
+    }
+
+    private async Task DeclineInvitationAsync(Domain.Entities.Invitation invitation)
+    {
+        invitation.Status = InvitationStatus.Declined;
+        invitation.ExpiresAt = invitation.UpdatedAt = DateTime.UtcNow;
+        await invitationRepository.UpdateAsync(invitation);
     }
 }
