@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using TaskGarden.Application.Common.Contracts;
+using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services.Contracts;
+using TaskGarden.Domain.Entities;
+using TaskGarden.Infrastructure;
 
-namespace TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
+namespace TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
 
 public record UpdateCategoryCommand(int Id, string Name, string Tag, string Color) : IRequest<UpdateCategoryResponse>;
 
@@ -15,24 +17,47 @@ public class UpdateCategoryResponse : BaseResponse
     public int CategoryId { get; set; }
 }
 
-public class UpdateCategoryCommandHandler(
-    IUserContextService userContextService,
-    ICategoryRepository categoryRepository,
-    IValidationService validationService,
-    IMapper mapper) : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
+public class UpdateCategoryCommandHandler : AuthRequiredHandler,
+    IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
 {
+    private readonly AppDbContext _context;
+    private readonly IValidator<UpdateCategoryCommand> _validator;
+    private readonly IMapper _mapper;
+
+    public UpdateCategoryCommandHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
+        IValidator<UpdateCategoryCommand> validator, IMapper mapper) : base(httpContextAccessor)
+    {
+        _context = context;
+        _validator = validator;
+        _mapper = mapper;
+    }
+
     public async Task<UpdateCategoryResponse> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        await validationService.ValidateRequestAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
 
-        var userId = userContextService.GetAuthenticatedUserId();
+        var userId = GetAuthenticatedUserId();
 
-        var category = await categoryRepository.GetByIdAsync(userId, request.Id) ??
+        var category = await GetCategoryByIdAsync(userId, request.Id) ??
                        throw new NotFoundException("Category not found or access denied.");
 
-        mapper.Map(request, category);
-        await categoryRepository.UpdateAsync(category);
+        _mapper.Map(request, category);
+        await UpdateCategoryAsync(category);
         return new UpdateCategoryResponse()
             { Message = $"{category.Name} category has been updated successfully", CategoryId = category.Id };
+    }
+
+    private async Task<Category?> GetCategoryByIdAsync(string userId, int categoryId)
+    {
+        return await _context.Categories
+            .FirstOrDefaultAsync(c => c.Id == categoryId && c.UserId == userId);
+    }
+
+    private async Task UpdateCategoryAsync(Category category)
+    {
+        _context.Update(category);
+        await _context.SaveChangesAsync();
     }
 }
