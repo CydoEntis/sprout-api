@@ -22,7 +22,6 @@ builder.Services.AddCorsService();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddDatabaseService(builder.Configuration);
 builder.Services.AddAuthenticationService(builder.Configuration);
-builder.Services.AddEmailService();
 builder.Services.AddIdentityService();
 builder.Services.AddApplicationServices();
 builder.Services.AddRepositoryService();
