@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
 
-namespace TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
+namespace TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
 
 public class UpdateTaskListCommandValidator : AbstractValidator<UpdateTaskListCommand>
 {
