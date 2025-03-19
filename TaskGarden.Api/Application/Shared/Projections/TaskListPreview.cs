@@ -10,7 +10,7 @@ public class TaskListPreview
     public int CompletedTasksCount { get; set; }
     public int TotalTasksCount { get; set; }
     public bool IsCompleted { get; set; }
-    public string CategoryName { get; set; }
+    public string? CategoryName { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public int TaskCompletionPercentage { get; set; }

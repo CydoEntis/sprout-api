@@ -1,17 +1,20 @@
-﻿using MediatR;
-using TaskGarden.Application.Common.Contracts;
+﻿using AutoMapper;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
-using TaskGarden.Infrastructure.Repositories;
+using TaskGarden.Infrastructure;
 
-namespace TaskGarden.Application.Features.Invitation.Commands.AcceptInvite;
+namespace TaskGarden.Api.Application.Features.Invitation.Commands.AcceptInvite;
 
-public record AcceptInviteCommand(string Token, int? CategoryId, CreateCategoryCommand? NewCategory)
+public record AcceptInviteCommand(string Token, int? CategoryId, NewCategoryCommand? NewCategory)
     : IRequest<AcceptInviteCommandResponse>;
+
+public record NewCategoryCommand(string Name, string Tag, string Color);
 
 public class AcceptInviteCommandResponse : BaseResponse
 {
@@ -19,111 +22,131 @@ public class AcceptInviteCommandResponse : BaseResponse
     public int TaskListId { get; set; }
 }
 
-public class AcceptInviteCommandHandler(
-    IInvitationRepository invitationRepository,
-    IUserContextService userContextService,
-    ITaskListMemberRepository taskListMemberRepository,
-    ICategoryRepository categoryRepository,
-    ITaskListRepository taskListRepository,
-    IUserTaskListCategoryRepository userTaskListCategoryRepository)
-    : IRequestHandler<AcceptInviteCommand, AcceptInviteCommandResponse>
+public class AcceptInviteCommandHandler
+    : AuthRequiredHandler, IRequestHandler<AcceptInviteCommand, AcceptInviteCommandResponse>
 {
+    private readonly AppDbContext _context;
+    private readonly IValidator<AcceptInviteCommand> _validator;
+    private readonly IMapper _mapper;
+
+    public AcceptInviteCommandHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
+        IValidator<AcceptInviteCommand> validator, IMapper mapper) : base(httpContextAccessor)
+    {
+        _context = context;
+        _validator = validator;
+        _mapper = mapper;
+    }
+
     public async Task<AcceptInviteCommandResponse> Handle(AcceptInviteCommand request,
         CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetAuthenticatedUserId();
-        var invitation = await ValidateInvitationAsync(request.Token);
+        var userId = GetAuthenticatedUserId();
+        var invitation = await GetInvitationAsync(request.Token);
 
-        await EnsureUserIsNotAlreadyMemberAsync(userId, invitation.TaskListId);
+        if (invitation is null || invitation.Status != InvitationStatus.Pending ||
+            invitation.ExpiresAt < DateTime.UtcNow)
+            throw new NotFoundException("Invite has expired, has already been accepted, or does not exist");
 
-        var (assignedCategoryId, categoryName) =
-            await ProcessCategoryAsync(request.CategoryId, request.NewCategory, userId);
+        if (await IsUserAMemberOfTaskListAsync(userId, invitation.TaskListId))
+            throw new ConflictException("User is already part of this task list");
 
-        if (assignedCategoryId.HasValue)
+        Category? category = null;
+
+        if (request.NewCategory is not null)
         {
-            await AssignCategoryToUserAsync(invitation.TaskListId, userId, assignedCategoryId.Value);
+            var newCategory = _mapper.Map<Category>(request.NewCategory);
+            category = await CreateCategoryAsync(newCategory, userId);
+        }
+        else if (request.CategoryId.HasValue)
+        {
+            category = await GetCategoryByIdAsync(request.CategoryId.Value)
+                       ?? throw new NotFoundException("Category not found.");
         }
 
-        await AcceptInvitationAndAddMemberAsync(invitation, userId);
+        if (category is null)
+            throw new NotFoundException("Category not found.");
+
+        var categoryAssigned = await AssignCategoryAndTaskListToUserAsync(userId, invitation.TaskListId, category.Id);
+        if (!categoryAssigned)
+            throw new ApplicationException("Failed to assign category to the user.");
+
+        var inviteAccepted = await AcceptInviteAsync(invitation);
+        if (!inviteAccepted)
+            throw new ApplicationException("Failed to update invitation status.");
+
+        var addedToTaskList = await AddUserToTaskListAsync(userId, invitation.TaskListId);
+        if (!addedToTaskList)
+            throw new ApplicationException("Failed to add user to the task list.");
+
 
         return new AcceptInviteCommandResponse
         {
             Message = "Invite accepted",
             TaskListId = invitation.TaskListId,
-            CategoryName = categoryName ?? "No category assigned"
+            CategoryName = category?.Name ?? "No category assigned"
         };
     }
 
-    private async Task<Domain.Entities.Invitation> ValidateInvitationAsync(string token)
+    private async Task<Domain.Entities.Invitation?> GetInvitationAsync(string token)
     {
-        var invitation = await invitationRepository.GetByTokenAsync(token)
-                         ?? throw new NotFoundException("Invite has expired or has already been accepted");
-
-        if (invitation.Status != InvitationStatus.Pending || invitation.ExpiresAt < DateTime.UtcNow)
-        {
-            throw new NotFoundException("Invite has expired or has already been accepted");
-        }
-
-        return invitation;
+        return await _context.Invitations
+            .FirstOrDefaultAsync(i => i.Token == token);
     }
 
-    private async Task EnsureUserIsNotAlreadyMemberAsync(string userId, int taskListId)
+    private async Task<bool> IsUserAMemberOfTaskListAsync(string userId, int taskListId)
     {
-        if (await taskListMemberRepository.GetByUserAndTaskListAsync(userId, taskListId) != null)
-        {
-            throw new ConflictException("User is already part of this task list");
-        }
+        return await _context.TaskListMembers.AnyAsync(q => q.UserId == userId && q.TaskListId == taskListId);
     }
 
-    private async Task<(int? AssignedCategoryId, string? CategoryName)> ProcessCategoryAsync(int? categoryId,
-        CreateCategoryCommand? newCategory, string userId)
+    private async Task<Category> CreateCategoryAsync(Category newCategory, string userId)
     {
-        if (newCategory != null)
-        {
-            var category = new Category
+        newCategory.UserId = userId;
+
+        await _context.Categories.AddAsync(newCategory);
+        await _context.SaveChangesAsync();
+        return newCategory;
+    }
+
+    private async Task<Category?> GetCategoryByIdAsync(int categoryId)
+    {
+        return await _context.Categories.FindAsync(categoryId);
+    }
+
+    private async Task<bool> AssignCategoryAndTaskListToUserAsync(string userId, int taskListId, int categoryId)
+    {
+        await _context.UserTaskListCategories.AddAsync(
+            new UserTaskListCategory
             {
-                Name = newCategory.Name,
-                Color = newCategory.Color,
-                Tag = newCategory.Tag,
-                UserId = userId
-            };
-            await categoryRepository.AddAsync(category);
-            return (category.Id, category.Name);
-        }
+                UserId = userId,
+                TaskListId = taskListId,
+                CategoryId = categoryId
+            });
 
-        if (!categoryId.HasValue) return (null, null);
-
-        var existingCategory = await categoryRepository.GetByIdAsync(userId, categoryId.Value);
-        if (existingCategory == null) throw new NotFoundException("Category not found");
-
-        return (existingCategory.Id, existingCategory.Name);
+        var result = await _context.SaveChangesAsync();
+        return result > 0;
     }
 
-    private async Task AssignCategoryToUserAsync(int taskListId, string userId, int categoryId)
+    private async Task<bool> AcceptInviteAsync(Domain.Entities.Invitation invitation)
     {
-        if (await taskListRepository.GetByIdAsync(taskListId) == null)
-        {
-            throw new NotFoundException("Task list not found");
-        }
+        invitation.Status = InvitationStatus.Accepted;
+        _context.Invitations.Update(invitation);
+        var result = await _context.SaveChangesAsync();
 
-        await userTaskListCategoryRepository.AddAsync(new UserTaskListCategory
+        return result > 0;
+    }
+
+    private async Task<bool> AddUserToTaskListAsync(string userId, int taskListId)
+    {
+        var member = new TaskListMember
         {
             UserId = userId,
             TaskListId = taskListId,
-            CategoryId = categoryId
-        });
-    }
-
-    private async Task AcceptInvitationAndAddMemberAsync(Domain.Entities.Invitation invitation, string userId)
-    {
-        invitation.Status = InvitationStatus.Accepted;
-        await invitationRepository.UpdateAsync(invitation);
-
-        await taskListMemberRepository.AddAsync(new TaskListMember
-        {
-            UserId = userId,
-            TaskListId = invitation.TaskListId,
             Role = TaskListRole.Viewer
-        });
+        };
+
+        await _context.TaskListMembers.AddAsync(member);
+        var result = await _context.SaveChangesAsync();
+
+        return result > 0;
     }
 }

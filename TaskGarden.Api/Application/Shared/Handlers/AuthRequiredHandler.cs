@@ -11,7 +11,6 @@ public abstract class AuthRequiredHandler
         _httpContextAccessor = httpContextAccessor;
     }
 
-    // Method to get the authenticated user ID
     protected string GetAuthenticatedUserId()
     {
         var userId = _httpContextAccessor.HttpContext?.Items["UserId"]?.ToString();

@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using TaskGarden.Application.Features.Shared.Constants;
 
-namespace TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 
 public class GetAllTaskListsForCategoryQueryValidator : AbstractValidator<GetAllTaskListsForCategoryQuery>
 {
