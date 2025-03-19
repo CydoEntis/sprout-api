@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Application.Common.Constants;
-using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Domain.Entities;
 using Newtonsoft.Json;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
@@ -81,5 +80,36 @@ public class TokenService : ITokenService
         return jwtToken?.Claims?.FirstOrDefault(c => c.Type == "userId")?.Value;
     }
 
-    
+
+    public string GenerateInviteToken(AppUser inviter, int taskListId, string taskListName,
+        string taskListCategoryName, List<Member> taskListMembers)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
+        {
+            new Claim("inviter", $"{inviter.FirstName} {inviter.LastName}"),
+            new Claim("inviterEmail", inviter.Email),
+            new Claim("taskListName", taskListName),
+            new Claim("taskListId", taskListId.ToString()),
+            new Claim("category", taskListCategoryName),
+            new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
+        };
+
+        var memberNames = taskListMembers.Select(m => m.Name).ToList();
+        var membersJson = JsonConvert.SerializeObject(memberNames);
+        claims.Add(new Claim("members", membersJson));
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddDays(7),
+            SigningCredentials = credentials
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
 }

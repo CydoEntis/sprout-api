@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-using TaskGarden.Application.Features.Auth.Commands.ChangePassword;
-using TaskGarden.Application.Features.Auth.Commands.ForgotPassword;
-using TaskGarden.Application.Features.Auth.Commands.Google;
-using TaskGarden.Application.Features.Auth.Commands.Login;
-using TaskGarden.Application.Features.Auth.Commands.Register;
-using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
+using TaskGarden.Api.Application.Features.Auth.Commands.ChangePassword;
+using TaskGarden.Api.Application.Features.Auth.Commands.ForgotPassword;
+using TaskGarden.Api.Application.Features.Auth.Commands.Google;
+using TaskGarden.Api.Application.Features.Auth.Commands.Login;
+using TaskGarden.Api.Application.Features.Auth.Commands.Register;
+using TaskGarden.Api.Application.Features.Categories.Commands.CreateCategory;
+using TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
+using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
-using TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
-using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
@@ -18,7 +17,7 @@ using TaskGarden.Application.Features.TaskListItem.UpdateTaskListItemCompletedSt
 using TaskGarden.Application.Services;
 using TaskGarden.Application.Services.Contracts;
 
-namespace TaskGarden.Application;
+namespace TaskGarden.Api.Application.DependencyInjection;
 
 public static class ValidatorServiceRegistration
 {

@@ -12,5 +12,7 @@ public interface ITokenService
 
     string? ExtractTokenFromAuthorizationHeader(string authorizationHeader);
     string? ExtractUserIdFromToken(string token);
-    string GenerateInviteToken(AppUser inviter, TaskListPreview taskList);
+
+    string GenerateInviteToken(AppUser inviter, int taskListId, string taskListName,
+        string taskListCategoryName, List<Member> taskListMembers);
 }
