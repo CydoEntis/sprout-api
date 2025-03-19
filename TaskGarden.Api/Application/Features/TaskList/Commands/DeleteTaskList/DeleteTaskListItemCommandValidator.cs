@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TaskGarden.Application.Features.TaskList.Commands.DeleteTaskList;
+using TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
 
 public class DeleteTaskListCommandValidator : AbstractValidator<DeleteTaskListCommand>
 {
