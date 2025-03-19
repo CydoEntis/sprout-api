@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 
-namespace TaskGarden.Application.MappingProfiles;
-
+namespace TaskGarden.Api.Application.Shared.Mappings;
 
 public class MapperConfig
 {
@@ -15,7 +14,6 @@ public class MapperConfig
             config.AddProfile(new UserTaskListCategoryMappingProfile());
             config.AddProfile(new MemberMappingProfile());
             config.AddProfile(new UserTaskListCategoryMappingProfile());
-
         });
     }
 }

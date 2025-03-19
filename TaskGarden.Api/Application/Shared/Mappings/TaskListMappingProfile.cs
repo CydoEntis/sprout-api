@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
+using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
-using TaskGarden.Application.Features.TaskList.Commands.UpdateTaskList;
-using TaskGarden.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure.Projections;
 
-namespace TaskGarden.Application.MappingProfiles;
+namespace TaskGarden.Api.Application.Shared.Mappings;
 
 public class TaskListMappingProfile : Profile
 {

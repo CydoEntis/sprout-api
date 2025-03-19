@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TaskGarden.Application.Features.Categories.Queries.GetAllCategories;
+using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
 using TaskGarden.Application.Projections;
 
-namespace TaskGarden.Application.MappingProfiles;
+namespace TaskGarden.Api.Application.Shared.Mappings;
 
 public class UserTaskListCategoryMappingProfile : Profile
 {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TaskGarden.Application.Features.Auth.Commands.Login;
+using TaskGarden.Api.Application.Features.Auth.Commands.Login;
 using TaskGarden.Domain.Entities;
 
-namespace TaskGarden.Application.MappingProfiles;
+namespace TaskGarden.Api.Application.Shared.Mappings;
 
 public class AuthMappingProfile : Profile
 {
