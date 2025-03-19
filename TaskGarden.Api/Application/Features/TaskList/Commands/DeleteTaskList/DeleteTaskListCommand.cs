@@ -59,6 +59,7 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
         try
         {
             await DeleteTaskListItemsAsync(taskList.Id);
+            await DeleteTaskListMembersAsync(taskList.Id);
             await DeleteTaskListAsync(taskList);
 
             await transaction.CommitAsync();
@@ -78,6 +79,16 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
 
         if (taskListItems.Any())
             _context.TaskListItems.RemoveRange(taskListItems);
+    }
+
+    private async Task DeleteTaskListMembersAsync(int taskListId)
+    {
+        var taskListMembers = await _context.TaskListMembers
+            .Where(q => q.TaskListId == taskListId)
+            .ToListAsync();
+
+        if (taskListMembers.Any())
+            _context.TaskListMembers.RemoveRange(taskListMembers);
     }
 
     private async Task DeleteTaskListAsync(Domain.Entities.TaskList taskList)
