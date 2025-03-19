@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
+namespace TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
 
 public class CreateTaskListCommandValidator : AbstractValidator<CreateTaskListCommand>
 {

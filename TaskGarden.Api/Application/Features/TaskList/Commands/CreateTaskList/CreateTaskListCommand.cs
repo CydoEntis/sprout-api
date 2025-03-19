@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using TaskGarden.Application.Common.Contracts;
+using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
+using TaskGarden.Infrastructure;
 using TaskGarden.Infrastructure.Projections;
 
-namespace TaskGarden.Application.Features.TaskList.Commands.CreateTaskList;
+namespace TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
 
 public record CreateTaskListCommand(string Name, string Description, string CategoryName)
     : IRequest<CreateTaskListResponse>;
@@ -19,84 +20,87 @@ public class CreateTaskListResponse : BaseResponse
     public TaskListPreview TaskListPreview { get; set; }
 }
 
-public class CreateTaskListCommandHandler(
-    IUserContextService userContextService,
-    ITaskListRepository taskListRepository,
-    ICategoryRepository categoryRepository,
-    ITaskListMemberRepository taskListMemberRepository,
-    IMapper mapper,
-    IValidationService validationService,
-    IUserTaskListCategoryRepository userTaskListCategoryRepository
-) : IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
+public class CreateTaskListCommandHandler : AuthRequiredHandler,
+    IRequestHandler<CreateTaskListCommand, CreateTaskListResponse>
 {
+    private readonly AppDbContext _context;
+    private readonly IValidator<CreateTaskListCommand> _validator;
+    private readonly IMapper _mapper;
+
+    public CreateTaskListCommandHandler(
+        IHttpContextAccessor httpContextAccessor,
+        AppDbContext context,
+        IValidator<CreateTaskListCommand> validator,
+        IMapper mapper
+    ) : base(httpContextAccessor)
+    {
+        _context = context;
+        _validator = validator;
+        _mapper = mapper;
+    }
+
     public async Task<CreateTaskListResponse> Handle(CreateTaskListCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetAuthenticatedUserId();
+        var userId = GetAuthenticatedUserId();
 
-        await validationService.ValidateRequestAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
+        var category = await GetCategoryAsync(userId, request.CategoryName)
+                       ?? throw new NotFoundException("Category does not exist.");
 
-        await CheckIfUserIsOwnerAsync(userId);
+        var newTaskList = _mapper.Map<Domain.Entities.TaskList>(request);
+        var createdTaskList = await CreateTaskListAsync(userId, newTaskList)
+                              ?? throw new ResourceCreationException("The task list could not be created.");
 
-        var category = await GetCategoryAsync(userId, request.CategoryName);
-        var taskList = await CreateTaskListAsync(request, userId);
-        await AssignCategoryToTaskListAsync(userId, category, taskList);
-        await AssignUserToTaskListAsync(userId, taskList);
+        if (!await AssignCategoryToTaskListAsync(userId, category, createdTaskList))
+            throw new ResourceCreationException("The category could not be assigned to the task list.");
 
-        var taskListPreview = mapper.Map<TaskListPreview>(taskList);
+        if (!await AssignUserToTaskListAsync(userId, createdTaskList))
+            throw new ResourceCreationException("The user could not be assigned to the task list.");
 
         return new CreateTaskListResponse
         {
-            Message = $"Task list created: {taskList.Id}",
-            TaskListPreview = taskListPreview
+            Message = $"Task list created: {createdTaskList.Id}",
+            TaskListPreview = _mapper.Map<TaskListPreview>(createdTaskList)
         };
     }
 
-    private async Task CheckIfUserIsOwnerAsync(string userId)
-    {
-        var member = await taskListMemberRepository.GetMemberByUserIdAsync(userId);
-        if (member == null || member.Role != TaskListRole.Owner)
-        {
-            throw new UnauthorizedAccessException("Only owners can create task lists.");
-        }
-    }
+    private Task<Category?> GetCategoryAsync(string userId, string categoryName) =>
+        _context.Categories
+            .FirstOrDefaultAsync(c => c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
 
-    private async Task<Category> GetCategoryAsync(string userId, string categoryName)
+    private async Task<Domain.Entities.TaskList> CreateTaskListAsync(string userId, Domain.Entities.TaskList taskList)
     {
-        var category = await categoryRepository.GetByNameAsync(userId, categoryName);
-        if (category == null)
-            throw new NotFoundException($"Category {categoryName} not found.");
-        return category;
-    }
-
-    private async Task<Domain.Entities.TaskList> CreateTaskListAsync(CreateTaskListCommand request, string userId)
-    {
-        var taskList = mapper.Map<Domain.Entities.TaskList>(request);
         taskList.CreatedById = userId;
-        return await taskListRepository.AddAsync(taskList);
+        _context.TaskLists.Add(taskList);
+        await _context.SaveChangesAsync();
+        return taskList;
     }
 
-    private async Task AssignCategoryToTaskListAsync(string userId, Category category,
+    private async Task<bool> AssignCategoryToTaskListAsync(string userId, Category category,
         Domain.Entities.TaskList taskList)
     {
-        var userTaskListCategory = new UserTaskListCategory
+        _context.UserTaskListCategories.Add(new UserTaskListCategory
         {
             UserId = userId,
             TaskListId = taskList.Id,
             CategoryId = category.Id
-        };
-        await userTaskListCategoryRepository.AddAsync(userTaskListCategory);
+        });
+
+        return await _context.SaveChangesAsync() > 0;
     }
 
-    private async Task AssignUserToTaskListAsync(string userId, Domain.Entities.TaskList taskList)
+    private async Task<bool> AssignUserToTaskListAsync(string userId, Domain.Entities.TaskList taskList)
     {
-        var result = await taskListMemberRepository.AddAsync(new TaskListMember
+        _context.TaskListMembers.Add(new TaskListMember
         {
             UserId = userId,
             TaskListId = taskList.Id,
             Role = TaskListRole.Owner
         });
 
-        if (result == null)
-            throw new ResourceCreationException("Unable to assign user to task list.");
+        return await _context.SaveChangesAsync() > 0;
     }
 }
