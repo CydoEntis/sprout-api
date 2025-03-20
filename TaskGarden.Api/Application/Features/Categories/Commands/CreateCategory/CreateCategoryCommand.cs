@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Extensions;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
@@ -40,7 +41,7 @@ public class CreateCategoryCommandHandler : AuthRequiredHandler,
 
         var userId = GetAuthenticatedUserId() ?? throw new UnauthorizedException("Invalid user");
 
-        if (await CheckIfCategoryExistsAsync(userId, request.Name))
+        if (await _context.Categories.CategoryExistsAsync(request.Name, userId))
             throw new ConflictException($"Category with name {request.Name} already exists.");
 
 
@@ -52,13 +53,6 @@ public class CreateCategoryCommandHandler : AuthRequiredHandler,
             { Message = $"{createdCategory.Name} category has been created", CategoryId = createdCategory.Id };
     }
 
-    private async Task<bool> CheckIfCategoryExistsAsync(string categoryName, string userId)
-    {
-        var existingCategory = await _context.Categories
-            .FirstOrDefaultAsync(c =>
-                c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
-        return existingCategory != null;
-    }
 
     private async Task<Category> CreateCategoryAsync(Category category)
     {

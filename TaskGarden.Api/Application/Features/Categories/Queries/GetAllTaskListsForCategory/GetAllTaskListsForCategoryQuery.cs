@@ -51,9 +51,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
 
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
             if (!validationResult.IsValid)
-            {
                 throw new ValidationException(validationResult.Errors);
-            }
 
             var existingCategory = await GetCategoryByNameAsync(userId, request.CategoryName);
             if (existingCategory is null)

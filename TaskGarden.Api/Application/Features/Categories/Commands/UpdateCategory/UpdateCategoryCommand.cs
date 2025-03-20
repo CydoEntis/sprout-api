@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Extensions;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
@@ -40,19 +41,13 @@ public class UpdateCategoryCommandHandler : AuthRequiredHandler,
 
         var userId = GetAuthenticatedUserId();
 
-        var category = await GetCategoryByIdAsync(userId, request.Id) ??
+        var category = await _context.Categories.GetByIdAsync(userId, request.Id) ??
                        throw new NotFoundException("Category not found or access denied.");
 
         _mapper.Map(request, category);
         await UpdateCategoryAsync(category);
         return new UpdateCategoryResponse()
             { Message = $"{category.Name} category has been updated successfully", CategoryId = category.Id };
-    }
-
-    private async Task<Category?> GetCategoryByIdAsync(string userId, int categoryId)
-    {
-        return await _context.Categories
-            .FirstOrDefaultAsync(c => c.Id == categoryId && c.UserId == userId);
     }
 
     private async Task UpdateCategoryAsync(Category category)

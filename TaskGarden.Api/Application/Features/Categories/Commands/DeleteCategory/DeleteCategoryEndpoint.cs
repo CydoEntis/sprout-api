@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
 
 namespace TaskGarden.Api.Application.Features.Categories.Commands.DeleteCategory;
 
