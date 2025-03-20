@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MimeKit;
-using TaskGarden.Application.Services.Contracts;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using System.Collections.Generic;
 using System;

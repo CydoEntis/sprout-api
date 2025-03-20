@@ -5,7 +5,6 @@ using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Application.Features.Auth.Commands.ResetPassword;

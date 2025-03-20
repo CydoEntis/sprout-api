@@ -14,8 +14,7 @@ using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListIt
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
 using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
 using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
-using TaskGarden.Application.Services;
-using TaskGarden.Application.Services.Contracts;
+
 
 namespace TaskGarden.Api.Application.DependencyInjection;
 
@@ -23,8 +22,6 @@ public static class ValidatorServiceRegistration
 {
     public static IServiceCollection AddValidatorService(this IServiceCollection services)
     {
-        services.AddScoped<IValidationService, ValidationService>();
-
         // Auth Validators
         services.AddValidatorsFromAssemblyContaining<ForgotPasswordCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<ChangePasswordCommandValidator>();
