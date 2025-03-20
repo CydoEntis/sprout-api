@@ -7,7 +7,7 @@ using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Domain.Entities;
 
-namespace TaskGarden.Application.Features.Auth.Commands.ResetPassword;
+namespace TaskGarden.Api.Application.Features.Auth.Commands.ResetPassword;
 
 public record ResetPasswordCommand(string Email, string Token, string NewPassword) : IRequest<ResetPasswordResponse>;
 
