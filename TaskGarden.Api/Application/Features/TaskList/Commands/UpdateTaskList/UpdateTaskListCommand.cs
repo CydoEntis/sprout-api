@@ -44,7 +44,7 @@ public class UpdateTaskListCommandHandler : AuthRequiredHandler,
         if (!hasAllowedRole)
             throw new PermissionException("User does not have the required role to update the task list.");
 
-        var taskList = await GetTaskListAsync(request.TaskListId) ??
+        var taskList = await GetTaskListByIdAsync(request.TaskListId) ??
                        throw new NotFoundException($"Task list with id: {request.TaskListId} could not be found.");
 
 
@@ -74,7 +74,7 @@ public class UpdateTaskListCommandHandler : AuthRequiredHandler,
             (q.Role == TaskListRole.Owner || q.Role == TaskListRole.Editor));
     }
 
-    private async Task<Domain.Entities.TaskList?> GetTaskListAsync(int taskListId)
+    private async Task<Domain.Entities.TaskList?> GetTaskListByIdAsync(int taskListId)
     {
         return await _context.TaskLists.FirstOrDefaultAsync(q => q.Id == taskListId);
     }
