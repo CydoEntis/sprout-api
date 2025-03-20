@@ -10,10 +10,10 @@ using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForC
 using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
 using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
-using TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
-using TaskGarden.Application.Features.TaskListItem.UpdateTaskListItemCompletedStatus;
 using TaskGarden.Application.Services;
 using TaskGarden.Application.Services.Contracts;
 

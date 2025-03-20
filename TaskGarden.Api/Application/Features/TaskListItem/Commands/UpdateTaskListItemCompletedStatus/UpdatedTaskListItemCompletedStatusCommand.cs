@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
-using TaskGarden.Application.Common.Contracts;
+using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
-using TaskGarden.Application.Services.Contracts;
+using TaskGarden.Domain.Enums;
+using TaskGarden.Infrastructure;
 
-namespace TaskGarden.Application.Features.TaskListItem.UpdateTaskListItemCompletedStatus;
+namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
 
 public record UpdateTaskListItemCompletedStatusCommand(int Id, bool IsCompleted)
     : IRequest<UpdateTaskListItemCompletedStatusResponse>;
@@ -15,33 +17,61 @@ public class UpdateTaskListItemCompletedStatusResponse : BaseResponse
     public int TaskListItemId { get; set; }
 }
 
-public class UpdateTaskListItemCompletedStatusCommandHandler(
-    IUserContextService userContextService,
-    ITaskListItemRepository taskListItemRepository,
-    IValidator<UpdateTaskListItemCompletedStatusCommand> validator)
-    : IRequestHandler<UpdateTaskListItemCompletedStatusCommand, UpdateTaskListItemCompletedStatusResponse>
+public class UpdateTaskListItemCompletedStatusCommandHandler : AuthRequiredHandler,
+    IRequestHandler<UpdateTaskListItemCompletedStatusCommand, UpdateTaskListItemCompletedStatusResponse>
 {
+    private readonly AppDbContext _context;
+    private readonly IValidator<UpdateTaskListItemCompletedStatusCommand> _validator;
+
+    public UpdateTaskListItemCompletedStatusCommandHandler(
+        IHttpContextAccessor httpContextAccessor,
+        AppDbContext context,
+        IValidator<UpdateTaskListItemCompletedStatusCommand> validator)
+        : base(httpContextAccessor)
+    {
+        _context = context;
+        _validator = validator;
+    }
+
     public async Task<UpdateTaskListItemCompletedStatusResponse> Handle(
         UpdateTaskListItemCompletedStatusCommand request, CancellationToken cancellationToken)
     {
-        var userId = userContextService.GetAuthenticatedUserId();
-        if (userId == null)
-            throw new UnauthorizedException("Invalid user");
+        var userId = GetAuthenticatedUserId();
 
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-
-
-        var taskListItem = await taskListItemRepository.GetByIdAsync(request.Id);
+        
+        var taskListItem = await GetTaskListItemByIdAsync(request.Id);
         if (taskListItem == null)
-            throw new NotFoundException($"Task list item with id {request.Id} was not found");
+            throw new NotFoundException($"Task List Item with id: {request.Id} not found");
+
+        var userHasRole = await CheckIfUserIsOwnerOrEditor(taskListItem.TaskListId, userId);
+        if (!userHasRole)
+            throw new PermissionException("User doesn't have role to update item.");
 
         taskListItem.IsCompleted = request.IsCompleted;
         taskListItem.CompletedById = request.IsCompleted ? userId : null;
-        await taskListItemRepository.UpdateAsync(taskListItem);
 
-        return new UpdateTaskListItemCompletedStatusResponse()
-            { Message = $"Task list item with id {taskListItem.Id} status updated", TaskListItemId = taskListItem.Id };
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return new UpdateTaskListItemCompletedStatusResponse
+        {
+            Message = $"Task list item with id {taskListItem.Id} status updated",
+            TaskListItemId = taskListItem.Id
+        };
+    }
+
+    private async Task<Domain.Entities.TaskListItem?> GetTaskListItemByIdAsync(int taskListItemId)
+    {
+        return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
+    }
+
+
+    private async Task<bool> CheckIfUserIsOwnerOrEditor(int taskListId, string userId)
+    {
+        return await _context.TaskListMembers.AnyAsync(q =>
+            q.TaskListId == taskListId && q.UserId == userId &&
+            (q.Role == TaskListRole.Owner || q.Role == TaskListRole.Editor));
     }
 }
