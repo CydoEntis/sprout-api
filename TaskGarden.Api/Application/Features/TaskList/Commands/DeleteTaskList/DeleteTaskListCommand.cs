@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
@@ -27,7 +28,7 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
 
-        var taskList = await GetTaskListByIdAsync(request.TaskListId)
+        var taskList = await _context.TaskLists.GetByIdAsync(request.TaskListId)
                        ?? throw new NotFoundException($"Task list with id {request.TaskListId} could not be found.");
 
         if (!await IsUserOwnerAsync(userId, taskList))
@@ -41,10 +42,10 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
         };
     }
 
-    private async Task<Domain.Entities.TaskList?> GetTaskListByIdAsync(int taskListId)
-    {
-        return await _context.TaskLists.FindAsync(taskListId);
-    }
+    // private async Task<Domain.Entities.TaskList?> GetTaskListByIdAsync(int taskListId)
+    // {
+    //     return await _context.TaskLists.FindAsync(taskListId);
+    // }
 
     private async Task<bool> IsUserOwnerAsync(string userId, Domain.Entities.TaskList taskList)
     {
