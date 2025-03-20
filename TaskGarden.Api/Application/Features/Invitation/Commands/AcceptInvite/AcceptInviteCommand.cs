@@ -26,14 +26,12 @@ public class AcceptInviteCommandHandler
     : AuthRequiredHandler, IRequestHandler<AcceptInviteCommand, AcceptInviteCommandResponse>
 {
     private readonly AppDbContext _context;
-    private readonly IValidator<AcceptInviteCommand> _validator;
     private readonly IMapper _mapper;
 
     public AcceptInviteCommandHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
-        IValidator<AcceptInviteCommand> validator, IMapper mapper) : base(httpContextAccessor)
+        IMapper mapper) : base(httpContextAccessor)
     {
         _context = context;
-        _validator = validator;
         _mapper = mapper;
     }
 

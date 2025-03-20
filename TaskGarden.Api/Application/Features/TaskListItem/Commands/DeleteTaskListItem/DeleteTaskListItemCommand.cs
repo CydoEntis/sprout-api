@@ -1,8 +1,6 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Domain.Enums;

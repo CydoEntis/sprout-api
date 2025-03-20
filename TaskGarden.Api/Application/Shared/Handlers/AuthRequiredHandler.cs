@@ -13,7 +13,7 @@ public abstract class AuthRequiredHandler
 
     protected string GetAuthenticatedUserId()
     {
-        var userId = _httpContextAccessor.HttpContext?.Items["UserId"]?.ToString();
+        var userId = _httpContextAccessor.HttpContext?.Items["userId"]?.ToString();
 
         if (string.IsNullOrEmpty(userId))
             throw new UnauthorizedException("User ID is missing from the token.");

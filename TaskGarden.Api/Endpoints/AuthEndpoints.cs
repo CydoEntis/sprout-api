@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Application.Features.Auth.Commands.ChangePassword;
-using TaskGarden.Application.Features.Auth.Commands.ForgotPassword;
-using TaskGarden.Application.Features.Auth.Commands.Google;
-using TaskGarden.Application.Features.Auth.Commands.Login;
-using TaskGarden.Application.Features.Auth.Commands.Logout;
-using TaskGarden.Application.Features.Auth.Commands.RefreshTokens;
-using TaskGarden.Application.Features.Auth.Commands.Register;
+using TaskGarden.Api.Application.Features.Auth.Commands.ChangePassword;
+using TaskGarden.Api.Application.Features.Auth.Commands.ForgotPassword;
+using TaskGarden.Api.Application.Features.Auth.Commands.Google;
+using TaskGarden.Api.Application.Features.Auth.Commands.Login;
+using TaskGarden.Api.Application.Features.Auth.Commands.Logout;
+using TaskGarden.Api.Application.Features.Auth.Commands.RefreshTokens;
+using TaskGarden.Api.Application.Features.Auth.Commands.Register;
 using TaskGarden.Application.Features.Auth.Commands.ResetPassword;
 using TaskGarden.Infrastructure.Models;
 

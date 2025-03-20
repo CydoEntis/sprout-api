@@ -1,18 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Text;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using TaskGarden.Application.Common.Contracts;
+﻿using MediatR;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
-using TaskGarden.Infrastructure.Repositories;
-using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
@@ -42,7 +32,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         AppDbContext context,
         IEmailService emailService,
         ITokenService tokenService,
-        IUserService userService, IConfiguration configuration) : base(httpContextAccessor)
+        IConfiguration configuration) : base(httpContextAccessor)
     {
         _context = context;
         _emailService = emailService;

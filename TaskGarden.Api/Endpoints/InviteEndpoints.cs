@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
-using TaskGarden.Application.Features.Invitation.Commands.AcceptInvite;
-using TaskGarden.Application.Features.Invitation.Commands.DeclineInvite;
+using TaskGarden.Api.Application.Features.Invitation.Commands.AcceptInvite;
+using TaskGarden.Api.Application.Features.Invitation.Commands.DeclineInvite;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;

@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using TaskGarden.Application.Features.Categories.Commands.CreateCategory;
+using TaskGarden.Api.Application.Features.Categories.Commands.CreateCategory;
+using TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
+using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
+using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
-using TaskGarden.Application.Features.Categories.Commands.UpdateCategory;
-using TaskGarden.Application.Features.Categories.Queries.GetAllCategories;
-using TaskGarden.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Infrastructure.Models;
 
 namespace TaskGarden.Api.Endpoints;

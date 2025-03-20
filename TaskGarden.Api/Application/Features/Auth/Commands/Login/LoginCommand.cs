@@ -46,7 +46,7 @@ public class LoginCommandHandler
         if (user == null)
             throw new NotFoundException("User not found");
 
-        var accessToken = GenerateAndStoreTokensAsync(user).ToString();
+        var accessToken = await GenerateAndStoreTokensAsync(user);
 
         return new LoginResponse { Message = "Logged in successfully", AccessToken = accessToken };
     }

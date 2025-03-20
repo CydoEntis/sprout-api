@@ -11,9 +11,9 @@ using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
 using TaskGarden.Application.Features.Categories.Commands.DeleteCategory;
-using TaskGarden.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 
 
 namespace TaskGarden.Api.Application.DependencyInjection;
@@ -46,6 +46,7 @@ public static class ValidatorServiceRegistration
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCompletedStatusCommand>();
+        
 
         return services;
     }

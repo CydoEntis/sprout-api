@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api;
 using TaskGarden.Api.Endpoints;
 using TaskGarden.Api.Extensions;
-using TaskGarden.Application;
+using TaskGarden.Api.Infrastructure.DependencyInjection;
+using TaskGarden.Api.Infrastructure.Middlewares;
 using TaskGarden.Application.Configurations;
-using TaskGarden.Application.Services;
-using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 
@@ -19,18 +18,14 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 
 builder.Services.AddCorsService();
-builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddDatabaseService(builder.Configuration);
 builder.Services.AddAuthenticationService(builder.Configuration);
 builder.Services.AddIdentityService();
 builder.Services.AddApplicationServices();
-builder.Services.AddRepositoryService();
-
+builder.Services.AddEmailService();
 
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
-
-builder.Services.AddValidatorService();
 
 builder.Services.AddIdentityCore<AppUser>()
     .AddRoles<IdentityRole>()
@@ -41,6 +36,7 @@ builder.Services.AddProblemDetails(ExceptionExtensions.ConfigureProblemDetails);
 
 var app = builder.Build();
 
+app.UseMiddleware<JwtTokenMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
