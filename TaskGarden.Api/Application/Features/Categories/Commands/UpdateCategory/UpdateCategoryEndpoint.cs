@@ -13,6 +13,7 @@ public static class UpdateCategoryEndpoint
                 return Results.Ok(ApiResponse<UpdateCategoryResponse>.SuccessWithData(response));
             })
             .WithName("UpdateCategory")
+            .WithTags("Category")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

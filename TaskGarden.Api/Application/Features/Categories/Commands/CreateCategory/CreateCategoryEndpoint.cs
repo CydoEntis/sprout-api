@@ -13,6 +13,7 @@ public static class CreateCategoryEndpoint
                 return Results.Ok(ApiResponse<CreateCategoryResponse>.SuccessWithData(response));
             })
             .WithName("AddCategory")
+            .WithTags("Category")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);

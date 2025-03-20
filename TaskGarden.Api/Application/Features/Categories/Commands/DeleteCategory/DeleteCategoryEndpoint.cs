@@ -15,6 +15,7 @@ public static class DeleteCategoryEndpoint
                 return Results.Ok(ApiResponse<DeleteCategoryResponse>.SuccessWithData(response));
             })
             .WithName("DeleteCategory")
+            .WithTags("Category")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

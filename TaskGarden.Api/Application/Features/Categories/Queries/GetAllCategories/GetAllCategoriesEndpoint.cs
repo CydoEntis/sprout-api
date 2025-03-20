@@ -13,6 +13,7 @@ public static class GetAllCategoriesEndpoint
                 return Results.Ok(ApiResponse<List<GetAllCategoriesQueryResponse>>.SuccessWithData(response));
             })
             .WithName("GetAllCategories")
+            .WithTags("Category")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);

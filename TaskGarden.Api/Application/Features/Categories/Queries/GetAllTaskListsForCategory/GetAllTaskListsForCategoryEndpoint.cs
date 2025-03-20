@@ -14,6 +14,7 @@ public static class GetAllTaskListsForCategoryEndpoint
                 return Results.Ok(ApiResponse<List<GetAllTaskListsForCategoryResponse>>.SuccessWithData(response));
             })
             .WithName("GetAllTaskListsForCategory")
+            .WithTags("Category")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
