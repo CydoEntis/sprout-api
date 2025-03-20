@@ -11,6 +11,10 @@ public static class GoogleLoginEndpoint
         {
             var response = await mediator.Send(command);
             return Results.Ok(ApiResponse<GoogleLoginResponse>.SuccessWithData(response));
-        });
+        })
+        .WithName("GoogleLogin")
+        .WithTags("Auth")
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status200OK);;
     }
 }

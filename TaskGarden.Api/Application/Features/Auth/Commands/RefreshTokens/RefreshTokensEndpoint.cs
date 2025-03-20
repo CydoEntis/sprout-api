@@ -13,6 +13,7 @@ public static class RefreshTokensEndpoint
                 return Results.Ok(ApiResponse<RefreshTokensResponse>.SuccessWithData(response));
             })
             .WithName("RefreshTokens")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);

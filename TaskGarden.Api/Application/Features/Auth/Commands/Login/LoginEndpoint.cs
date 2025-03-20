@@ -13,6 +13,7 @@ public static class LoginEndpoint
                 return Results.Ok(ApiResponse<LoginResponse>.SuccessWithData(response));
             })
             .WithName("Login")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
     }

@@ -13,6 +13,7 @@ public static class ChangePasswordEndpoint
                 return Results.Ok(ApiResponse<ChangePasswordResponse>.SuccessWithData(response));
             })
             .WithName("ChangePassword")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);

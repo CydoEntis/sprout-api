@@ -14,6 +14,7 @@ public static class RegisterEndpoint
                 return Results.Ok(ApiResponse<LoginResponse>.SuccessWithData(response));
             })
             .WithName("Register")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
     }

@@ -13,6 +13,7 @@ public static class LogoutEndpoint
                 return Results.Ok(ApiResponse<LogoutResponse>.SuccessWithData(response));
             })
             .WithName("Logout")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);

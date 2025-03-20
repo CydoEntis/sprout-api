@@ -13,6 +13,7 @@ public static class ForgotPasswordEndpoint
                 return Results.Ok(ApiResponse<ForgotPasswordResponse>.SuccessWithData(response));
             })
             .WithName("ForgotPassword")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);

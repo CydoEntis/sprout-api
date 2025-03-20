@@ -13,6 +13,7 @@ public static class ResetPasswordEndpoint
                 return Results.Ok(ApiResponse<ResetPasswordResponse>.SuccessWithData(response));
             })
             .WithName("ResetPassword")
+            .WithTags("Auth")
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status200OK);
