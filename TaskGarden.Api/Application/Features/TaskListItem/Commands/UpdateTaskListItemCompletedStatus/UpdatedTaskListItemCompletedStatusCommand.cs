@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
@@ -42,11 +43,11 @@ public class UpdateTaskListItemCompletedStatusCommandHandler : AuthRequiredHandl
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var taskListItem = await GetTaskListItemByIdAsync(request.Id);
+        var taskListItem = await _context.TaskListItems.GetByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task List Item with id: {request.Id} not found");
 
-        var userHasRole = await CheckIfUserIsOwnerOrEditor(taskListItem.TaskListId, userId);
+        var userHasRole = await _context.TaskListMembers.IsOwnerOrEditorAsync(userId, taskListItem.TaskListId);
         if (!userHasRole)
             throw new PermissionException("User doesn't have role to update item.");
 
@@ -60,18 +61,5 @@ public class UpdateTaskListItemCompletedStatusCommandHandler : AuthRequiredHandl
             Message = $"Task list item with id {taskListItem.Id} status updated",
             TaskListItemId = taskListItem.Id
         };
-    }
-
-    private async Task<Domain.Entities.TaskListItem?> GetTaskListItemByIdAsync(int taskListItemId)
-    {
-        return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
-    }
-
-
-    private async Task<bool> CheckIfUserIsOwnerOrEditor(int taskListId, string userId)
-    {
-        return await _context.TaskListMembers.AnyAsync(q =>
-            q.TaskListId == taskListId && q.UserId == userId &&
-            (q.Role == TaskListRole.Owner || q.Role == TaskListRole.Editor));
     }
 }

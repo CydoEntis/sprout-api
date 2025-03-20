@@ -10,4 +10,10 @@ public static class TaskListExtensions
     {
         return await taskLists.FindAsync(taskListId);
     }
+
+    public static async Task<bool> ExistsAsync(this DbSet<TaskList> taskLists,
+        int taskListId)
+    {
+        return await taskLists.AnyAsync(q => q.Id == taskListId);
+    }
 }

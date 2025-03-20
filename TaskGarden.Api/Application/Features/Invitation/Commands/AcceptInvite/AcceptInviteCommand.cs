@@ -45,7 +45,7 @@ public class AcceptInviteCommandHandler
             invitation.ExpiresAt < DateTime.UtcNow)
             throw new NotFoundException("Invite has expired, has already been accepted, or does not exist");
 
-        if (await _context.TaskListMembers.IsUserAMemberOfTaskListAsync(userId, invitation.TaskListId))
+        if (await _context.TaskListMembers.IsMemberAsync(userId, invitation.TaskListId))
             throw new ConflictException("User is already part of this task list");
 
         Category? category = null;
@@ -74,7 +74,7 @@ public class AcceptInviteCommandHandler
         if (!inviteAccepted)
             throw new ApplicationException("Failed to update invitation status.");
 
-        var addedToTaskList = await _context.AssignUserToTaskListAsync(userId, invitation.TaskListId);
+        var addedToTaskList = await _context.AssignUserAsync(userId, invitation.TaskListId);
         if (!addedToTaskList)
             throw new ApplicationException("Failed to add user to the task list.");
 

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
@@ -28,7 +29,7 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
     public async Task<UpdateTaskListItemResponse> Handle(UpdateTaskListItemCommand request,
         CancellationToken cancellationToken)
     {
-        var taskListItem = await GetTaskListItemByIdAsync(request.Id);
+        var taskListItem = await _context.TaskListItems.GetByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task list item with id {request.Id} was not found");
 
@@ -40,10 +41,6 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
             { Message = $"Task list item with id {taskListItem.Id} updated", TaskListId = taskListItem.TaskListId };
     }
 
-    private async Task<Domain.Entities.TaskListItem?> GetTaskListItemByIdAsync(int taskListItemId)
-    {
-        return await _context.TaskListItems.FirstOrDefaultAsync(q => q.Id == taskListItemId);
-    }
 
     private async Task<bool> UpdateTaskListItemAsync(Domain.Entities.TaskListItem taskListItem)
     {

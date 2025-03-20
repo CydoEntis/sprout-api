@@ -53,7 +53,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         if (taskList == null)
             throw new NotFoundException("Task list not found");
 
-        if (await _context.TaskListMembers.IsUserAMemberOfTaskListAsync(request.InvitedUserEmail, request.TaskListId))
+        if (await _context.TaskListMembers.IsMemberAsync(request.InvitedUserEmail, request.TaskListId))
             throw new ConflictException("The user is already a member of this task list.");
 
         var invitation = await CreateInviteAsync(taskList, request.InvitedUserEmail, user);

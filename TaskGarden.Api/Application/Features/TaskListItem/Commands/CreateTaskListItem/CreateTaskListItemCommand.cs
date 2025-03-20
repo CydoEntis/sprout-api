@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
@@ -39,7 +40,7 @@ public class CreateTaskListItemCommandHandler :
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var taskListExists = await CheckIfTaskListExists(request.TaskListId);
+        var taskListExists = await _context.TaskLists.ExistsAsync(request.TaskListId);
         if (!taskListExists)
             throw new NotFoundException("TaskList");
 
@@ -52,11 +53,6 @@ public class CreateTaskListItemCommandHandler :
 
         return new CreateTaskListItemResponse()
             { Message = $"Item added", TaskListId = request.TaskListId, TaskListItemDetail = taskListItemDetail };
-    }
-
-    private async Task<bool> CheckIfTaskListExists(int taskListId)
-    {
-        return await _context.TaskLists.AnyAsync(q => q.Id == taskListId);
     }
 
 
