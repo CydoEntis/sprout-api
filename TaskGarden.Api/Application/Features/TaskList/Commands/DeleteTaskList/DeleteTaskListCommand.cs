@@ -42,11 +42,6 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
         };
     }
 
-    // private async Task<Domain.Entities.TaskList?> GetTaskListByIdAsync(int taskListId)
-    // {
-    //     return await _context.TaskLists.FindAsync(taskListId);
-    // }
-
     private async Task<bool> IsUserOwnerAsync(string userId, Domain.Entities.TaskList taskList)
     {
         return await _context.TaskListMembers

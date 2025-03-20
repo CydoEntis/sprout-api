@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
@@ -36,13 +37,17 @@ public class UpdateTaskListCommandHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
 
-        await ValidateRequestAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        if (!validationResult.IsValid)
+        {
+            throw new ValidationException(validationResult.Errors);
+        }
 
-        var hasAllowedRole = await IsUserOwnerOrEditorAsync(userId, request.TaskListId);
+        var hasAllowedRole = await _context.TaskListMembers.IsUserOwnerOrEditorAsync(userId, request.TaskListId);
         if (!hasAllowedRole)
             throw new PermissionException("User does not have the required role to update the task list.");
 
-        var taskList = await GetTaskListByIdAsync(request.TaskListId) ??
+        var taskList = await _context.TaskLists.GetByIdAsync(request.TaskListId) ??
                        throw new NotFoundException($"Task list with id: {request.TaskListId} could not be found.");
 
 
@@ -54,27 +59,6 @@ public class UpdateTaskListCommandHandler : AuthRequiredHandler,
             Message = $"Task list with ID {taskList.Id} updated successfully",
             TaskListId = updatedTaskList.Id
         };
-    }
-
-    private async Task ValidateRequestAsync(UpdateTaskListCommand request, CancellationToken cancellationToken)
-    {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            throw new ValidationException(validationResult.Errors);
-        }
-    }
-
-    private async Task<bool> IsUserOwnerOrEditorAsync(string userId, int taskListId)
-    {
-        return await _context.TaskListMembers.AnyAsync(q =>
-            q.UserId == userId && q.TaskListId == taskListId &&
-            (q.Role == TaskListRole.Owner || q.Role == TaskListRole.Editor));
-    }
-
-    private async Task<Domain.Entities.TaskList?> GetTaskListByIdAsync(int taskListId)
-    {
-        return await _context.TaskLists.FirstOrDefaultAsync(q => q.Id == taskListId);
     }
 
 

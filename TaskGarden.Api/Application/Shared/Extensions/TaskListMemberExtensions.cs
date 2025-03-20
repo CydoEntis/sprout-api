@@ -26,4 +26,12 @@ public static class TaskListMemberExtensions
 
         return await context.SaveChangesAsync() > 0;
     }
+
+    public static async Task<bool> IsUserOwnerOrEditorAsync(this DbSet<TaskListMember> taskListMembers, string userId,
+        int taskListId)
+    {
+        return await taskListMembers.AnyAsync(q =>
+            q.UserId == userId && q.TaskListId == taskListId &&
+            (q.Role == TaskListRole.Owner || q.Role == TaskListRole.Editor));
+    }
 }
