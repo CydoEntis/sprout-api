@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
@@ -38,7 +39,7 @@ public class AcceptInviteCommandHandler
         CancellationToken cancellationToken)
     {
         var userId = GetAuthenticatedUserId();
-        var invitation = await GetInvitationAsync(request.Token);
+        var invitation = await _context.Invitations.GetByInviteToken(request.Token);
 
         if (invitation is null || invitation.Status != InvitationStatus.Pending ||
             invitation.ExpiresAt < DateTime.UtcNow)
@@ -52,11 +53,12 @@ public class AcceptInviteCommandHandler
         if (request.NewCategory is not null)
         {
             var newCategory = _mapper.Map<Category>(request.NewCategory);
-            category = await CreateCategoryAsync(newCategory, userId);
+            newCategory.UserId = userId;
+            category = await _context.CreateCategoryAsync(newCategory);
         }
         else if (request.CategoryId.HasValue)
         {
-            category = await GetCategoryByIdAsync(request.CategoryId.Value)
+            category = await _context.Categories.GetByIdAsync(request.CategoryId.Value)
                        ?? throw new NotFoundException("Category not found.");
         }
 
@@ -84,30 +86,12 @@ public class AcceptInviteCommandHandler
         };
     }
 
-    private async Task<Domain.Entities.Invitation?> GetInvitationAsync(string token)
-    {
-        return await _context.Invitations
-            .FirstOrDefaultAsync(i => i.Token == token);
-    }
 
     private async Task<bool> IsUserAMemberOfTaskListAsync(string userId, int taskListId)
     {
         return await _context.TaskListMembers.AnyAsync(q => q.UserId == userId && q.TaskListId == taskListId);
     }
 
-    private async Task<Category> CreateCategoryAsync(Category newCategory, string userId)
-    {
-        newCategory.UserId = userId;
-
-        await _context.Categories.AddAsync(newCategory);
-        await _context.SaveChangesAsync();
-        return newCategory;
-    }
-
-    private async Task<Category?> GetCategoryByIdAsync(int categoryId)
-    {
-        return await _context.Categories.FindAsync(categoryId);
-    }
 
     private async Task<bool> AssignCategoryAndTaskListToUserAsync(string userId, int taskListId, int categoryId)
     {

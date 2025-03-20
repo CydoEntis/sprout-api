@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Extensions;
@@ -48,16 +49,8 @@ public class CreateCategoryCommandHandler : AuthRequiredHandler,
         var category = _mapper.Map<Category>(request);
         category.UserId = userId!;
 
-        var createdCategory = await CreateCategoryAsync(category);
+        var createdCategory = await _context.CreateCategoryAsync(category);
         return new CreateCategoryResponse()
             { Message = $"{createdCategory.Name} category has been created", CategoryId = createdCategory.Id };
-    }
-
-
-    private async Task<Category> CreateCategoryAsync(Category category)
-    {
-        await _context.Categories.AddAsync(category);
-        await _context.SaveChangesAsync();
-        return category;
     }
 }

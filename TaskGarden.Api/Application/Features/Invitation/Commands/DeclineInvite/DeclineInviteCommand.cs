@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Enums;
@@ -22,7 +23,7 @@ public class DeclineInviteCommandHandler
 
     public async Task<bool> Handle(DeclineInviteCommand request, CancellationToken cancellationToken)
     {
-        var invitation = await GetInviteByTokenAsync(request.Token);
+        var invitation = await _context.Invitations.GetByInviteToken(request.Token);
         if (invitation is null || invitation.Status != InvitationStatus.Pending)
             throw new NotFoundException("Invitation is expired or could not be found.");
 
@@ -33,11 +34,6 @@ public class DeclineInviteCommandHandler
         return true;
     }
 
-    private async Task<Domain.Entities.Invitation?> GetInviteByTokenAsync(string token)
-    {
-        return await _context.Invitations
-            .FirstOrDefaultAsync(i => i.Token == token);
-    }
 
     private async Task<bool> DeclineInviteAsync(Domain.Entities.Invitation invitation)
     {

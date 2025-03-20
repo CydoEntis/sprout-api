@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Extensions;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
@@ -13,22 +12,19 @@ public record DeleteCategoryCommand(int CategoryId) : IRequest<DeleteCategoryRes
 
 public class DeleteCategoryResponse : BaseResponse;
 
-public class DeleteCategoryCommandHandler : AuthRequiredHandler,
+public class DeleteCategoryCommandHandler :
     IRequestHandler<DeleteCategoryCommand, DeleteCategoryResponse>
 {
     private readonly AppDbContext _context;
 
-    public DeleteCategoryCommandHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context)
-        : base(httpContextAccessor)
+    public DeleteCategoryCommandHandler(AppDbContext context)
     {
         _context = context;
     }
 
     public async Task<DeleteCategoryResponse> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var userId = GetAuthenticatedUserId();
-
-        var category = await _context.Categories.GetByIdAsync(userId, request.CategoryId) ??
+        var category = await _context.Categories.GetByIdAsync(request.CategoryId) ??
                        throw new NotFoundException("Category not found or access denied.");
 
         if (!await DeleteCategoryAndDependenciesAsync(category))

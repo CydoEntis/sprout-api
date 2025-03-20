@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Extensions;
@@ -18,15 +19,14 @@ public class UpdateCategoryResponse : BaseResponse
     public int CategoryId { get; set; }
 }
 
-public class UpdateCategoryCommandHandler : AuthRequiredHandler,
-    IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
+public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryCommand, UpdateCategoryResponse>
 {
     private readonly AppDbContext _context;
     private readonly IValidator<UpdateCategoryCommand> _validator;
     private readonly IMapper _mapper;
 
-    public UpdateCategoryCommandHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
-        IValidator<UpdateCategoryCommand> validator, IMapper mapper) : base(httpContextAccessor)
+    public UpdateCategoryCommandHandler(AppDbContext context,
+        IValidator<UpdateCategoryCommand> validator, IMapper mapper)
     {
         _context = context;
         _validator = validator;
@@ -39,9 +39,7 @@ public class UpdateCategoryCommandHandler : AuthRequiredHandler,
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var userId = GetAuthenticatedUserId();
-
-        var category = await _context.Categories.GetByIdAsync(userId, request.Id) ??
+        var category = await _context.Categories.GetByIdAsync(request.Id) ??
                        throw new NotFoundException("Category not found or access denied.");
 
         _mapper.Map(request, category);
