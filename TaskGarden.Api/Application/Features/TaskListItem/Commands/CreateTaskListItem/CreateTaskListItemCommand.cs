@@ -2,8 +2,8 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Infrastructure;
 using TaskGarden.Infrastructure.Projections;
 

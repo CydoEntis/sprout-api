@@ -1,4 +1,5 @@
-﻿namespace TaskGarden.Infrastructure.Models;
+﻿namespace TaskGarden.Api.Application.Shared.Models;
+
 
 public class ApiResponse<T>
 {

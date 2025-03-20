@@ -1,6 +1,5 @@
 ﻿using MediatR;
-using TaskGarden.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
-using TaskGarden.Infrastructure.Models;
+using TaskGarden.Api.Application.Shared.Models;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 

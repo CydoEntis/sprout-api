@@ -5,8 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Domain.Entities;
 using Newtonsoft.Json;
+using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Common;
 using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Infrastructure.Services.Identity;

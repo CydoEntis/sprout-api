@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Common;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 

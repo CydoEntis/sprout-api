@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using TaskGarden.Api.Application.Features.Auth.Commands.Login;
-using TaskGarden.Infrastructure.Models;
+using TaskGarden.Api.Application.Shared.Models;
 
 namespace TaskGarden.Api.Application.Features.Auth.Commands.Register;
 

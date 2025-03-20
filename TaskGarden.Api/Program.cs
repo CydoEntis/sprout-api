@@ -1,7 +1,11 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api;
-using TaskGarden.Api.Endpoints;
+using TaskGarden.Api.Application.Features.Auth;
+using TaskGarden.Api.Application.Features.Categories;
+using TaskGarden.Api.Application.Features.Invitation;
+using TaskGarden.Api.Application.Features.TaskList;
+using TaskGarden.Api.Application.Features.TaskListItem;
 using TaskGarden.Api.Extensions;
 using TaskGarden.Api.Infrastructure.DependencyInjection;
 using TaskGarden.Api.Infrastructure.Middlewares;
@@ -55,6 +59,7 @@ app.UseHttpsRedirection();
 app.MapAuthEndpoints();
 app.MapCategoryEndpoints();
 app.MapTaskListEndpoints();
-app.MapInviteEndpoints();
+app.MapTaskListItemEndpoints();
+app.MapInvitationEndpoints();
 
 app.Run();

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using TaskGarden.Api.Infrastructure.Exceptions;
 using TaskGarden.Application.Common.Exceptions;
 
 namespace TaskGarden.Api.Extensions;

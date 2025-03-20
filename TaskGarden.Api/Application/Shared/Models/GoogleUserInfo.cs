@@ -1,4 +1,5 @@
-﻿namespace TaskGarden.Application.Features.Shared.Models;
+﻿namespace TaskGarden.Api.Application.Shared.Models;
+
 
 public class GoogleUserInfo
 {

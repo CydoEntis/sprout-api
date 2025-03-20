@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
+using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
 
@@ -41,7 +41,7 @@ public class UpdateTaskListItemCompletedStatusCommandHandler : AuthRequiredHandl
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-        
+
         var taskListItem = await GetTaskListItemByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task List Item with id: {request.Id} not found");

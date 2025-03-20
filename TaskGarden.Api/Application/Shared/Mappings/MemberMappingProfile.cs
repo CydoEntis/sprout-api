@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TaskGarden.Application.Features.Shared.Models;
+using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure.Projections;
 

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
 using TaskGarden.Domain.Entities;
 

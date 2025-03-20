@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Application.Common.Models;
+﻿using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Application.Common.Exceptions;
 
-namespace TaskGarden.Application.Common.Exceptions;
+namespace TaskGarden.Api.Infrastructure.Exceptions;
 
 public class BadRequestException : BaseException
 {

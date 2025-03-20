@@ -1,4 +1,5 @@
-﻿namespace TaskGarden.Application.Common.Models;
+﻿namespace TaskGarden.Api.Application.Shared.Models;
+
 
 public class ErrorField
 {

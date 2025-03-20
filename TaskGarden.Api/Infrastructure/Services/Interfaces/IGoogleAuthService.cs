@@ -1,4 +1,4 @@
-﻿using TaskGarden.Application.Features.Shared.Models;
+﻿using TaskGarden.Api.Application.Shared.Models;
 
 namespace TaskGarden.Api.Infrastructure.Services.Interfaces;
 
