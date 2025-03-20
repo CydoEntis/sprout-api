@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Application.Common.Contracts;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Application.Features.Shared.Models;
 using TaskGarden.Application.Services.Contracts;
+using TaskGarden.Infrastructure;
 using TaskGarden.Infrastructure.Projections;
 
-namespace TaskGarden.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 
 public record CreateTaskListItemCommand(string Description, int TaskListId) : IRequest<CreateTaskListItemResponse>;
 
@@ -17,36 +20,55 @@ public class CreateTaskListItemResponse : BaseResponse
     public TaskListItemDetail TaskListItemDetail { get; set; }
 }
 
-public class CreateTaskListItemCommandHandler(
-    IUserContextService userContextService,
-    ITaskListRepository taskListRepository,
-    ITaskListItemRepository taskListItemRepository,
-    IValidator<CreateTaskListItemCommand> validator,
-    IMapper mapper) : IRequestHandler<CreateTaskListItemCommand, CreateTaskListItemResponse>
+public class CreateTaskListItemCommandHandler :
+    IRequestHandler<CreateTaskListItemCommand, CreateTaskListItemResponse>
 {
+    private readonly AppDbContext _context;
+    private readonly IValidator<CreateTaskListItemCommand> _validator;
+    private readonly IMapper _mapper;
+
+    public CreateTaskListItemCommandHandler(AppDbContext context,
+        IValidator<CreateTaskListItemCommand> validator, IMapper mapper)
+    {
+        _context = context;
+        _validator = validator;
+        _mapper = mapper;
+    }
+
     public async Task<CreateTaskListItemResponse> Handle(CreateTaskListItemCommand request,
         CancellationToken cancellationToken)
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var userId = userContextService.GetAuthenticatedUserId();
-        if (userId == null)
-            throw new UnauthorizedException("Invalid user");
+        var taskListExists = await CheckIfTaskListExists(request.TaskListId);
+        if (!taskListExists)
+            throw new NotFoundException("TaskList");
 
-        var taskList = await taskListRepository.GetDetailsByIdAsync(request.TaskListId);
-        if (taskList == null)
-            throw new NotFoundException($"Task list with id: {request.TaskListId} does not exist");
-
-        var taskListItem = mapper.Map<Domain.Entities.TaskListItem>(request);
+        var taskListItem = _mapper.Map<Domain.Entities.TaskListItem>(request);
         taskListItem.TaskListId = request.TaskListId;
 
-        var result = await taskListItemRepository.AddTaskListItemAsync(taskListItem);
+        var createdTaskListItem = await CreateTaskListItemAsync(taskListItem, request.TaskListId);
 
-        var taskListItemDetail = mapper.Map<TaskListItemDetail>(result);
+        var taskListItemDetail = _mapper.Map<TaskListItemDetail>(createdTaskListItem);
 
         return new CreateTaskListItemResponse()
-            { Message = $"Item added", TaskListId = 1, TaskListItemDetail = taskListItemDetail };
+            { Message = $"Item added", TaskListId = request.TaskListId, TaskListItemDetail = taskListItemDetail };
+    }
+
+    private async Task<bool> CheckIfTaskListExists(int taskListId)
+    {
+        return await _context.TaskLists.AnyAsync(q => q.Id == taskListId);
+    }
+
+
+    private async Task<Domain.Entities.TaskListItem> CreateTaskListItemAsync(Domain.Entities.TaskListItem taskListItem,
+        int taskListId)
+    {
+        taskListItem.TaskListId = taskListId;
+        await _context.TaskListItems.AddAsync(taskListItem);
+        await _context.SaveChangesAsync();
+        return taskListItem;
     }
 }
