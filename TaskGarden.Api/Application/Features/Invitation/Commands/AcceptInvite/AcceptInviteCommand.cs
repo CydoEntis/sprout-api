@@ -39,7 +39,7 @@ public class AcceptInviteCommandHandler
         CancellationToken cancellationToken)
     {
         var userId = GetAuthenticatedUserId();
-        var invitation = await _context.Invitations.GetByInviteToken(request.Token);
+        var invitation = await _context.Invitations.GetByInviteTokenAsync(request.Token);
 
         if (invitation is null || invitation.Status != InvitationStatus.Pending ||
             invitation.ExpiresAt < DateTime.UtcNow)
@@ -66,7 +66,7 @@ public class AcceptInviteCommandHandler
             throw new NotFoundException("Category not found.");
 
         var categoryAssigned =
-            await _context.AssignCategoryAndTaskListAsync(userId, invitation.TaskListId, category.Id);
+            await _context.AssignAsync(userId, invitation.TaskListId, category.Id);
         if (!categoryAssigned)
             throw new ApplicationException("Failed to assign category to the user.");
 

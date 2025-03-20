@@ -55,7 +55,7 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         var createdTaskList = await CreateTaskListAsync(userId, newTaskList)
                               ?? throw new ResourceCreationException("The task list could not be created.");
 
-        if (!await _context.AssignCategoryAndTaskListAsync(userId, createdTaskList.Id, category.Id))
+        if (!await _context.AssignAsync(userId, createdTaskList.Id, category.Id))
             throw new ResourceCreationException("The category could not be assigned to the task list.");
 
 

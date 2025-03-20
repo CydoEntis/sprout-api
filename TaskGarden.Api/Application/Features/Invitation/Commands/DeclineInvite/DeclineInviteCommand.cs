@@ -23,7 +23,7 @@ public class DeclineInviteCommandHandler
 
     public async Task<bool> Handle(DeclineInviteCommand request, CancellationToken cancellationToken)
     {
-        var invitation = await _context.Invitations.GetByInviteToken(request.Token);
+        var invitation = await _context.Invitations.GetByInviteTokenAsync(request.Token);
         if (invitation is null || invitation.Status != InvitationStatus.Pending)
             throw new NotFoundException("Invitation is expired or could not be found.");
 

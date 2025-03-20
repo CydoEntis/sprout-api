@@ -5,7 +5,7 @@ namespace TaskGarden.Api.Application.Shared.Extensions
 {
     public static class UserTaskListCategoryExtensions
     {
-        public static async Task<bool> AssignCategoryAndTaskListAsync(
+        public static async Task<bool> AssignAsync(
             this AppDbContext context,
             string userId,
             int taskListId,
