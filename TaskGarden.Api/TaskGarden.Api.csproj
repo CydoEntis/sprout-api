@@ -26,9 +26,4 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Application\Features\Shared\Constants\" />
-      <Folder Include="Application\Features\Shared\Models\" />
-    </ItemGroup>
-
 </Project>

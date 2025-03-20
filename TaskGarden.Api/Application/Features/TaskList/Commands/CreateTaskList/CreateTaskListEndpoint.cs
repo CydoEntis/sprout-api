@@ -13,6 +13,7 @@ public static class CreateTaskListEndpoint
                 return Results.Ok(ApiResponse<CreateTaskListResponse>.SuccessWithData(response));
             })
             .WithName("CreateTaskList")
+            .WithTags("Task List")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);

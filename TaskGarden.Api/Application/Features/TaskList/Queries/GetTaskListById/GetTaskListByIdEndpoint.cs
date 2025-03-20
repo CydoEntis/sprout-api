@@ -15,6 +15,7 @@ public static class GetTaskListByIdEndpoint
                     return Results.Ok(ApiResponse<GetTaskListByIdQueryResponse>.SuccessWithData(response));
                 })
             .WithName("GetTaskListById")
+            .WithTags("Task List")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
