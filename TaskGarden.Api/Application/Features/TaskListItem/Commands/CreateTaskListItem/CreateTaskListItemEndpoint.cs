@@ -14,6 +14,7 @@ public static class CreateTaskListItemEndpoint
                     return Results.Ok(ApiResponse<CreateTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("CreateTaskListItem")
+            .WithTags("Task List Item")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);

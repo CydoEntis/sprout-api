@@ -15,6 +15,7 @@ public static class DeleteTaskListItemEndpoint
                     return Results.Ok(ApiResponse<DeleteTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("DeleteTaskListItem")
+            .WithTags("Task List Item")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

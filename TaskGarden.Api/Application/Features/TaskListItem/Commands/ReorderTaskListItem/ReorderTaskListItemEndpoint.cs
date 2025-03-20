@@ -14,6 +14,7 @@ public static class ReorderTaskListItemEndpoint
                     return Results.Ok(ApiResponse<ReorderTaskListItemResponse>.SuccessWithData(response));
                 })
             .WithName("ReorderTaskListItem")
+            .WithTags("Task List Item")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

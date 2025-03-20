@@ -14,6 +14,7 @@ public static class UpdateTaskListItemCompletedStatusEndpoint
                     return Results.Ok(ApiResponse<UpdateTaskListItemCompletedStatusResponse>.SuccessWithData(response));
                 })
             .WithName("UpdateCompletedStatus")
+            .WithTags("Task List Item")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)
