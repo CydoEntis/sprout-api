@@ -15,6 +15,7 @@ public static class AcceptInviteEndpoint
                     return Results.Ok(ApiResponse<AcceptInviteCommandResponse>.SuccessWithData(response));
                 })
             .WithName("AcceptInvite")
+            .WithTags("Invite")
             .RequireAuthorization()
             .Produces<AcceptInviteCommandResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);

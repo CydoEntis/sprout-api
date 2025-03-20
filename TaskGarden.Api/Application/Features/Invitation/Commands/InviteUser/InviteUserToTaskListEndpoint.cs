@@ -22,6 +22,7 @@ public static class InviteUserToTaskListEndpoint
                         : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Failed to send invitation."));
                 })
             .WithName("InviteUser")
+            .WithTags("Invite")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

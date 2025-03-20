@@ -17,6 +17,7 @@ public static class DeclineInviteEndpoint
                         : Results.BadRequest(ApiResponse<string>.FailureWithMessage("Invite could not be declined."));
                 })
             .WithName("DeclineInvite")
+            .WithTags("Invite")
             .RequireAuthorization()
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);
