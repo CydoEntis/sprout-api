@@ -4,6 +4,7 @@ using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
 using TaskGarden.Application.Common.Constants;
@@ -22,9 +23,6 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
     private readonly AppDbContext _context;
     private readonly IEmailService _emailService;
     private readonly ITokenService _tokenService;
-    private readonly IConfiguration _configuration;
-
-    private readonly string? _jwtSecret;
 
 
     public InviteUserCommandHandler(
@@ -37,8 +35,6 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         _context = context;
         _emailService = emailService;
         _tokenService = tokenService;
-        _configuration = configuration;
-        _jwtSecret = _configuration[JwtConsts.Secret];
     }
 
     public async Task<bool> Handle(InviteUserCommand request, CancellationToken cancellationToken)
@@ -56,6 +52,9 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         var taskList = await GetTaskListDetailsById(request.TaskListId);
         if (taskList == null)
             throw new NotFoundException("Task list not found");
+
+        if (await _context.TaskListMembers.IsUserAMemberOfTaskListAsync(request.InvitedUserEmail, request.TaskListId))
+            throw new ConflictException("The user is already a member of this task list.");
 
         var invitation = await CreateInviteAsync(taskList, request.InvitedUserEmail, user);
         if (invitation is null)

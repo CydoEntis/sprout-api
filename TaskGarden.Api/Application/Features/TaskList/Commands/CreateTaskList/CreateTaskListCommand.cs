@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Application.Common.Exceptions;
@@ -46,7 +47,7 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
-        
+
         var category = await GetCategoryAsync(userId, request.CategoryName)
                        ?? throw new NotFoundException("Category does not exist.");
 
@@ -54,8 +55,9 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         var createdTaskList = await CreateTaskListAsync(userId, newTaskList)
                               ?? throw new ResourceCreationException("The task list could not be created.");
 
-        if (!await AssignCategoryToTaskListAsync(userId, category, createdTaskList))
+        if (!await _context.AssignCategoryAndTaskListAsync(userId, createdTaskList.Id, category.Id))
             throw new ResourceCreationException("The category could not be assigned to the task list.");
+
 
         if (!await AssignUserToTaskListAsync(userId, createdTaskList))
             throw new ResourceCreationException("The user could not be assigned to the task list.");
@@ -77,19 +79,6 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         _context.TaskLists.Add(taskList);
         await _context.SaveChangesAsync();
         return taskList;
-    }
-
-    private async Task<bool> AssignCategoryToTaskListAsync(string userId, Category category,
-        Domain.Entities.TaskList taskList)
-    {
-        _context.UserTaskListCategories.Add(new UserTaskListCategory
-        {
-            UserId = userId,
-            TaskListId = taskList.Id,
-            CategoryId = category.Id
-        });
-
-        return await _context.SaveChangesAsync() > 0;
     }
 
     private async Task<bool> AssignUserToTaskListAsync(string userId, Domain.Entities.TaskList taskList)
