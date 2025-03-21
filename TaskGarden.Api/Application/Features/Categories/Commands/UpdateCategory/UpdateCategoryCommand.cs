@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
-using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Extensions;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;

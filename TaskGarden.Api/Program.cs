@@ -6,7 +6,7 @@ using TaskGarden.Api.Application.Features.Categories;
 using TaskGarden.Api.Application.Features.Invitation;
 using TaskGarden.Api.Application.Features.TaskList;
 using TaskGarden.Api.Application.Features.TaskListItem;
-using TaskGarden.Api.Extensions;
+using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Infrastructure.DependencyInjection;
 using TaskGarden.Api.Infrastructure.Middlewares;
 using TaskGarden.Application.Configurations;

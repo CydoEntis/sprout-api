@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskGarden.Api.Infrastructure.Exceptions;
 using TaskGarden.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Extensions;
+namespace TaskGarden.Api.Application.Shared.Extensions;
 
 public static class ExceptionExtensions
 {
