@@ -1,28 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
 
-namespace TaskGarden.Infrastructure.Configurations;
+namespace TaskGarden.Api.Infrastructure.Persistence.Configurations;
 
 public class UserTaskListCategoryConfiguration : IEntityTypeConfiguration<UserTaskListCategory>
 {
     public void Configure(EntityTypeBuilder<UserTaskListCategory> builder)
     {
-        
-        builder.Ignore(ut => ut.Id);
-        
-        builder.HasKey(ut => new { ut.UserId, ut.TaskListId, ut.CategoryId });
+        builder.Ignore(utc => utc.Id);
 
-        builder.HasOne(ut => ut.User)
+        builder.HasKey(utc => new { utc.UserId, utc.CategoryId, utc.TaskListId });
+
+        builder.HasOne(utc => utc.User)
             .WithMany(u => u.UserTaskListCategories)
-            .HasForeignKey(ut => ut.UserId);
+            .HasForeignKey(utc => utc.UserId);
 
-        builder.HasOne(ut => ut.TaskList)
+        builder.HasOne(utc => utc.TaskList)
             .WithMany(tl => tl.UserCategories)
-            .HasForeignKey(ut => ut.TaskListId);
+            .HasForeignKey(utc => utc.TaskListId)
+            .IsRequired(false);
 
-        builder.HasOne(ut => ut.Category)
+        builder.HasOne(utc => utc.Category)
             .WithMany(c => c.UserTaskListCategories)
-            .HasForeignKey(ut => ut.CategoryId);
+            .HasForeignKey(utc => utc.CategoryId);
     }
 }

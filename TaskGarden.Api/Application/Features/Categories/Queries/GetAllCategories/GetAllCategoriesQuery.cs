@@ -43,15 +43,13 @@ public class GetAllCategoriesQueryHandler : AuthRequiredHandler,
 
     private async Task<List<CategoryWithTaskListCount>> GetCategoryPreviewByUserId(string userId)
     {
-        var categories = await _context.UserTaskListCategories
-            .Where(ut => ut.UserId == userId)
-            .Include(ut => ut.Category)
-            .Include(ut => ut.TaskList)
-            .GroupBy(ut => ut.Category)
-            .Select(g => new CategoryWithTaskListCount
+        var categories = await _context.Categories
+            .Where(c => c.UserId == userId)
+            .Select(c => new CategoryWithTaskListCount
             {
-                Category = g.Key,
-                TaskListCount = g.Count()
+                Category = c,
+                TaskListCount = _context.UserTaskListCategories
+                    .Count(uct => uct.CategoryId == c.Id && uct.UserId == userId)
             })
             .ToListAsync();
 
