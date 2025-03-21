@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Infrastructure.Projections;
+﻿namespace TaskGarden.Api.Application.Shared.Projections;
 
 public class TaskListItemDetail
 {

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 using TaskGarden.Infrastructure.Projections;

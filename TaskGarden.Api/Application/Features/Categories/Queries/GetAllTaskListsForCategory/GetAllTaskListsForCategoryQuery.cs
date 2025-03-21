@@ -94,8 +94,9 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                         }).ToList(),
                     TotalTasksCount = ut.TaskList.TaskListItems.Count,
                     CompletedTasksCount = ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
-                    TaskCompletionPercentage = ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted) /
-                        ut.TaskList.TaskListItems.Count * 100
+                    TaskCompletionPercentage = ut.TaskList.TaskListItems.Count > 0 
+                        ? (ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted) / (double)ut.TaskList.TaskListItems.Count) * 100 
+                        : 0
                 })
                 .ToListAsync();
 
