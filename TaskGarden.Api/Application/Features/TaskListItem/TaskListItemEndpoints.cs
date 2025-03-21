@@ -1,4 +1,5 @@
 ﻿using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItems;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.DeleteTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
@@ -11,6 +12,7 @@ public static class TaskListItemEndpoints
     public static void MapTaskListItemEndpoints(this IEndpointRouteBuilder routes)
     {
         routes.MapCreateTaskListItemEndpoint();
+        routes.MapCreateTaskListItemsEndpoint();
         routes.MapUpdateTaskListItemEndpoint();
         routes.MapDeleteTaskListItemEndpoint();
         routes.MapReorderTaskListItemEndpoint();

@@ -7,7 +7,7 @@ public static class CreateTaskListItemEndpoint
 {
     public static void MapCreateTaskListItemEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapPost("/api/task-list/{taskListId}/items",
+        routes.MapPost("/api/task-list/{taskListId}/item",
                 async (CreateTaskListItemCommand command, IMediator mediator) =>
                 {
                     var response = await mediator.Send(command);
