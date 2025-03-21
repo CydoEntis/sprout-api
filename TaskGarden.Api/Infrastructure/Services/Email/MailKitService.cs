@@ -18,17 +18,18 @@ namespace TaskGarden.Api.Infrastructure.Services.Email
 
         public MailKitService(IConfiguration configuration, IEmailTemplateService emailTemplateService)
         {
-            _smtpHost = configuration["SMTP:Host"];
-            _smtpPort = int.Parse(configuration["SMTP:Port"]);
-            _email = configuration["SMTP:Email"];
-            _password = configuration["SMTP:Password"];
+            _smtpHost = configuration["EmailSettings:SmtpHost"];
+            _smtpPort = int.Parse(configuration["EmailSettings:SMTPPort"]);
+            _email = configuration["EmailSettings:Email"];
+            _password = configuration["EmailSettings:Password"];
             _emailTemplateService = emailTemplateService;
         }
 
-        public async Task SendEmailAsync(string preview, string toEmail, string subject, string templateName, Dictionary<string, string> placeholders)
+        public async Task SendEmailAsync(string preview, string toEmail, string subject, string templateName,
+            Dictionary<string, string> placeholders)
         {
             var emailBody = _emailTemplateService.GetEmailTemplate(templateName, placeholders);
-            
+
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(preview, _email));
             message.To.Add(new MailboxAddress("", toEmail));

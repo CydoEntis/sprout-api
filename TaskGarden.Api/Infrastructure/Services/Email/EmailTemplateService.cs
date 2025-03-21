@@ -12,7 +12,7 @@ public class EmailTemplateService : IEmailTemplateService
     {
         var solutionDirectory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"..\"));
         _templateDirectory =
-            Path.Combine(solutionDirectory, "TaskGarden.Infrastructure", "Services", "Email", "Templates");
+            Path.Combine(solutionDirectory, "TaskGarden.Api", "Infrastructure", "Services", "Email", "Templates");
     }
 
     public string GetEmailTemplate(string templateName, Dictionary<string, string> placeholders)

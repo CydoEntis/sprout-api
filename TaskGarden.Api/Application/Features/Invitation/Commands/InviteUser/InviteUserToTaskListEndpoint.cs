@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using TaskGarden.Api.Application.Shared.Models;
 
 namespace TaskGarden.Api.Application.Features.Invitation.Commands.InviteUser;
@@ -8,7 +9,7 @@ public static class InviteUserToTaskListEndpoint
     public static void MapInviteUserToTaskListEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapPost("/api/task-list/{taskListId}/invite",
-                async (int taskListId, InviteUserCommand command, IMediator mediator) =>
+                async (int taskListId, [FromBody] InviteUserCommand command, IMediator mediator) =>
                 {
                     var inviteCommand = new InviteUserCommand
                     {
