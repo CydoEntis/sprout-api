@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Infrastructure.Services.Identity;

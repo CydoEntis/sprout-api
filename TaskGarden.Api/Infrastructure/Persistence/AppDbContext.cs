@@ -1,9 +1,10 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Infrastructure.Persistence.Configurations;
+using TaskGarden.Api.Infrastructure.Persistence.Seeding;
 using TaskGarden.Infrastructure.Configurations;
-using TaskGarden.Infrastructure.Seeders;
 
 namespace TaskGarden.Infrastructure;
 

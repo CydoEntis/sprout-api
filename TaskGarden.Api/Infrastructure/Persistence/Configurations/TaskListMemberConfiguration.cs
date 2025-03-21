@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
 
 namespace TaskGarden.Infrastructure.Configurations;
 

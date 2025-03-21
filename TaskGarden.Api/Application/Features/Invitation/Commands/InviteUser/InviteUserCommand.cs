@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Infrastructure;

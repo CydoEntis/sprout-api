@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
 
 namespace TaskGarden.Api.Application.Shared.Extensions;
 

@@ -1,6 +1,4 @@
-﻿using TaskGarden.Domain.Entities;
-
-namespace TaskGarden.Infrastructure.Projections;
+﻿namespace TaskGarden.Infrastructure.Projections;
 
 public class TaskListPreview
 {

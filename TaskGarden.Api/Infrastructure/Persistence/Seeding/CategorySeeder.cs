@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Domain.Common;
-using TaskGarden.Domain.Entities;
 
-namespace TaskGarden.Infrastructure.Seeders;
+namespace TaskGarden.Api.Infrastructure.Persistence.Seeding;
 
 public class CategorySeeder : IEntityTypeConfiguration<Category>
 {

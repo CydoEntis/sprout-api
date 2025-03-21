@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
 using TaskGarden.Infrastructure.Projections;
@@ -55,7 +55,7 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         var createdTaskList = await CreateTaskListAsync(userId, newTaskList)
                               ?? throw new ResourceCreationException("The task list could not be created.");
 
-        if (!await _context.AssignAsync(userId, createdTaskList.Id, category.Id))
+        if (!await _context.AssignCategoryAndTaskListAsync(userId, createdTaskList.Id, category.Id))
             throw new ResourceCreationException("The category could not be assigned to the task list.");
 
 

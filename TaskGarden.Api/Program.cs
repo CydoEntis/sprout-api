@@ -7,10 +7,10 @@ using TaskGarden.Api.Application.Features.Invitation;
 using TaskGarden.Api.Application.Features.TaskList;
 using TaskGarden.Api.Application.Features.TaskListItem;
 using TaskGarden.Api.Application.Shared.Extensions;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.DependencyInjection;
 using TaskGarden.Api.Infrastructure.Middlewares;
 using TaskGarden.Application.Configurations;
-using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

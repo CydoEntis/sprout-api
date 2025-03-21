@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TaskGarden.Domain.Entities;
+namespace TaskGarden.Api.Domain.Entities;
 
 public class BaseEntity
 {

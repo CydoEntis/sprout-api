@@ -6,7 +6,7 @@ using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Application.Shared.Mappings;

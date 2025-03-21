@@ -1,10 +1,9 @@
-﻿using TaskGarden.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Domain.Enums;
 
-namespace TaskGarden.Infrastructure.Seeders;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+namespace TaskGarden.Api.Infrastructure.Persistence.Seeding;
 
 public class TaskListMemberSeeder : IEntityTypeConfiguration<TaskListMember>
 {

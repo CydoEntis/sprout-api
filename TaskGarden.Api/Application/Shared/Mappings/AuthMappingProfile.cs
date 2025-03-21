@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TaskGarden.Api.Application.Features.Auth.Commands.Login;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
 
 namespace TaskGarden.Api.Application.Shared.Mappings;
 

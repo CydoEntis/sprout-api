@@ -1,4 +1,4 @@
-﻿using TaskGarden.Domain.Entities;
+﻿using TaskGarden.Api.Domain.Entities;
 
 namespace TaskGarden.Application.Projections;
 

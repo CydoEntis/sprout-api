@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskGarden.Domain.Entities;
+using TaskGarden.Api.Domain.Entities;
 
-namespace TaskGarden.Infrastructure.Seeders
+namespace TaskGarden.Api.Infrastructure.Persistence.Seeding
 {
     public class TaskListItemSeeder : IEntityTypeConfiguration<TaskListItem>
     {

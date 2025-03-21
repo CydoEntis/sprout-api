@@ -1,6 +1,6 @@
 ﻿using TaskGarden.Domain.Enums;
 
-namespace TaskGarden.Domain.Entities;
+namespace TaskGarden.Api.Domain.Entities;
 
 public class Invitation : BaseEntity
 {

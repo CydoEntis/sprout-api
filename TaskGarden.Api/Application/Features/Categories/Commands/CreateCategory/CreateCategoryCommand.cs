@@ -4,8 +4,8 @@ using MediatR;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Entities;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.Categories.Commands.CreateCategory;
@@ -48,6 +48,8 @@ public class CreateCategoryCommandHandler : AuthRequiredHandler,
         category.UserId = userId!;
 
         var createdCategory = await _context.CreateCategoryAsync(category);
+
+        
         return new CreateCategoryResponse()
             { Message = $"{createdCategory.Name} category has been created", CategoryId = createdCategory.Id };
     }

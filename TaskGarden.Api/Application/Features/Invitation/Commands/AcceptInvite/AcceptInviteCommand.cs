@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Entities;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
 
@@ -66,7 +66,7 @@ public class AcceptInviteCommandHandler
             throw new NotFoundException("Category not found.");
 
         var categoryAssigned =
-            await _context.AssignAsync(userId, invitation.TaskListId, category.Id);
+            await _context.AssignCategoryAndTaskListAsync(userId, invitation.TaskListId, category.Id);
         if (!categoryAssigned)
             throw new ApplicationException("Failed to assign category to the user.");
 

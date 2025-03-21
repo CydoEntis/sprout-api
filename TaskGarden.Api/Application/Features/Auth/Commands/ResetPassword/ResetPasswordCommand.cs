@@ -3,10 +3,10 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.Exceptions;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Entities;
 
 namespace TaskGarden.Api.Application.Features.Auth.Commands.ResetPassword;
 

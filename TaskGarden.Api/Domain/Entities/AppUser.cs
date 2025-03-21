@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace TaskGarden.Domain.Entities;
+namespace TaskGarden.Api.Domain.Entities;
 
 public class AppUser : IdentityUser
 {
