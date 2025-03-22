@@ -34,16 +34,25 @@ public class LogoutCommandHandler : AuthRequiredHandler, IRequestHandler<LogoutC
             throw new UnauthorizedException("User is not logged in");
 
         var refreshToken = _cookieService.Get(CookieConsts.RefreshToken);
+        var sessionId = _cookieService.Get(CookieConsts.SessionId);
+
+        if (string.IsNullOrEmpty(refreshToken) || string.IsNullOrEmpty(sessionId))
+        {
+            return new LogoutResponse { Message = "User is not logged in on this device." };
+        }
 
         var session = await _sessionService.GetSessionByRefreshTokenAsync(refreshToken);
 
-        if (session == null)
-            throw new NotFoundException("Session not found");
+        if (session == null || session.RefreshToken != refreshToken)
+        {
+            return new LogoutResponse { Message = "Session has expired or is already invalidated." };
+        }
 
         await _sessionService.InvalidateSessionAsync(session);
 
         _cookieService.Delete(CookieConsts.RefreshToken);
+        _cookieService.Delete(CookieConsts.SessionId);
 
-        return new LogoutResponse { Message = "Logged out successfully." };
+        return new LogoutResponse { Message = "Logged out successfully from this device." };
     }
 }
