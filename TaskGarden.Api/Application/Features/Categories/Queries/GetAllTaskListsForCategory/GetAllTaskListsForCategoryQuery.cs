@@ -21,6 +21,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public string CategoryName { get; set; }
         public List<MemberResponse> Members { get; set; }
         public int TotalTasksCount { get; set; }
         public int CompletedTasksCount { get; set; }
@@ -86,6 +87,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     Description = ut.TaskList.Description,
                     CreatedAt = ut.TaskList.CreatedAt,
                     UpdatedAt = ut.TaskList.UpdatedAt,
+                    CategoryName = ut.Category.Name,
                     Members = ut.TaskList.TaskListMembers
                         .Select(tlm => new Member()
                         {
