@@ -14,6 +14,14 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
     public record GetAllTaskListsForCategoryQuery(string CategoryName)
         : IRequest<List<GetAllTaskListsForCategoryResponse>>;
 
+    public class CategoryDetail
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Tag { get; set; }
+        public string Color { get; set; }
+    }
+
     public class GetAllTaskListsForCategoryResponse
     {
         public int Id { get; set; }
@@ -21,7 +29,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public string CategoryName { get; set; }
+        public CategoryDetail CategoryDetail { get; set; }
         public List<MemberResponse> Members { get; set; }
         public int TotalTasksCount { get; set; }
         public int CompletedTasksCount { get; set; }
@@ -70,16 +78,11 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
         }
 
-        private async Task<List<TaskListPreview>> GetAllTaskListsByUserIdAndCategoryId(string userId,
-            int categoryId)
+        private async Task<List<TaskListPreview>> GetAllTaskListsByUserIdAndCategoryId(string userId, int categoryId)
         {
             var taskListsData = await _context.UserTaskListCategories
+                .AsNoTracking()
                 .Where(ut => ut.UserId == userId && ut.CategoryId == categoryId)
-                .Include(ut => ut.Category)
-                .Include(ut => ut.TaskList)
-                .ThenInclude(t => t.TaskListMembers)
-                .Include(ut => ut.TaskList)
-                .ThenInclude(t => t.TaskListItems)
                 .Select(ut => new TaskListPreview
                 {
                     Id = ut.TaskList.Id,
@@ -87,17 +90,25 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     Description = ut.TaskList.Description,
                     CreatedAt = ut.TaskList.CreatedAt,
                     UpdatedAt = ut.TaskList.UpdatedAt,
-                    CategoryName = ut.Category.Name,
+                    CategoryDetail = new CategoryDetail
+                    {
+                        Id = ut.Category.Id,
+                        Name = ut.Category.Name,
+                        Tag = ut.Category.Tag,
+                        Color = ut.Category.Color
+                    },
                     Members = ut.TaskList.TaskListMembers
-                        .Select(tlm => new Member()
+                        .Select(tlm => new Member
                         {
                             Id = tlm.UserId,
                             Name = tlm.User.LastName + " " + tlm.User.FirstName,
-                        }).ToList(),
-                    TotalTasksCount = ut.TaskList.TaskListItems.Count,
+                        })
+                        .ToList(),
+                    TotalTasksCount = ut.TaskList.TaskListItems.Count(),
                     CompletedTasksCount = ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
-                    TaskCompletionPercentage = ut.TaskList.TaskListItems.Count > 0 
-                        ? (ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted) / (double)ut.TaskList.TaskListItems.Count) * 100 
+                    TaskCompletionPercentage = ut.TaskList.TaskListItems.Count() > 0
+                        ? Math.Round((ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted) /
+                                      (double)ut.TaskList.TaskListItems.Count()) * 100, 2)
                         : 0
                 })
                 .ToListAsync();

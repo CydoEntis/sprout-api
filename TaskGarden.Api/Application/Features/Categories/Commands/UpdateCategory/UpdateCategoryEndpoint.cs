@@ -7,13 +7,13 @@ public static class UpdateCategoryEndpoint
 {
     public static void MapUpdateCategoryEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapPut("/api/category", async (UpdateCategoryCommand command, IMediator mediator) =>
+        routes.MapPut("/api/categories", async (UpdateCategoryCommand command, IMediator mediator) =>
             {
                 var response = await mediator.Send(command);
                 return Results.Ok(ApiResponse<UpdateCategoryResponse>.SuccessWithData(response));
             })
-            .WithName("UpdateCategory")
-            .WithTags("Category")
+            .WithName("UpdateCategories")
+            .WithTags("Categories")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK)

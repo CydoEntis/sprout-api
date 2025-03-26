@@ -20,7 +20,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 1,
                 Name = "Groceries",
                 Tag = CategoryIcon.ShoppingCart.Tag,
-                Color = "lime",
+                Color = "#1971C2",
                 UserId = demoUser1Id
             },
             new Category
@@ -28,7 +28,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 2,
                 Name = "Bills",
                 Tag = CategoryIcon.Banknote.Tag,
-                Color = "red",
+                Color = "#E03131",
                 UserId = demoUser1Id
             },
             new Category
@@ -36,7 +36,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 3,
                 Name = "Entertainment",
                 Tag = CategoryIcon.RollerCoaster.Tag,
-                Color = "blue",
+                Color = "#1971C2",
                 UserId = demoUser1Id
             },
             new Category
@@ -44,7 +44,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 4,
                 Name = "Travel",
                 Tag = CategoryIcon.Plane.Tag,
-                Color = "yellow",
+                Color = "#F08C00",
                 UserId = demoUser1Id
             },
             new Category
@@ -52,7 +52,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 5,
                 Name = "School",
                 Tag = CategoryIcon.University.Tag,
-                Color = "grape",
+                Color = "#9C36B5",
                 UserId = demoUser1Id
             },
 
@@ -62,7 +62,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 6,
                 Name = "Groceries",
                 Tag = CategoryIcon.ShoppingCart.Tag,
-                Color = "cyan",
+                Color = "#0C8599",
                 UserId = demoUser2Id
             },
             new Category
@@ -70,7 +70,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 7,
                 Name = "Bills",
                 Tag = CategoryIcon.Receipt.Tag,
-                Color = "orange",
+                Color = "#E8590C",
                 UserId = demoUser2Id
             },
 
@@ -80,7 +80,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 8,
                 Name = "Groceries",
                 Tag = CategoryIcon.ShoppingBasket.Tag,
-                Color = "indigo",
+                Color = "#6741D9",
                 UserId = demoUser3Id
             },
             new Category
@@ -88,7 +88,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 9,
                 Name = "Bills",
                 Tag = CategoryIcon.HandCoins.Tag,
-                Color = "teal",
+                Color = "#099268",
                 UserId = demoUser3Id
             },
             new Category
@@ -96,7 +96,7 @@ public class CategorySeeder : IEntityTypeConfiguration<Category>
                 Id = 10,
                 Name = "Entertainment",
                 Tag = CategoryIcon.Theater.Tag,
-                Color = "pink",
+                Color = "#C2255C",
                 UserId = demoUser3Id
             }
         );

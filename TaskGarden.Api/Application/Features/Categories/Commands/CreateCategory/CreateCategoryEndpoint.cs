@@ -7,13 +7,13 @@ public static class CreateCategoryEndpoint
 {
     public static void MapCreateCategoryEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapPost("/api/category", async (CreateCategoryCommand command, IMediator mediator) =>
+        routes.MapPost("/api/categories", async (CreateCategoryCommand command, IMediator mediator) =>
             {
                 var response = await mediator.Send(command);
                 return Results.Ok(ApiResponse<CreateCategoryResponse>.SuccessWithData(response));
             })
             .WithName("AddCategory")
-            .WithTags("Category")
+            .WithTags("Categories")
             .RequireAuthorization()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status200OK);
