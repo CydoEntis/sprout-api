@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
@@ -11,12 +12,13 @@ using TaskGarden.Infrastructure;
 namespace TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskListWithCategory;
 
 public record CreateTaskListWithCategoryCommand(
-    string CategoryName,
-    string CategoryTag,
-    string CategoryColor,
+    int? CategoryId,
+    string? CategoryName,
+    string? CategoryTag,
+    string? CategoryColor,
     string TaskListName,
-    string TaskListDescription)
-    : IRequest<CreateTaskListWithCategoryResponse>;
+    string TaskListDescription
+) : IRequest<CreateTaskListWithCategoryResponse>;
 
 public class CreateTaskListWithCategoryResponse : BaseResponse
 {
@@ -52,55 +54,25 @@ public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
 
         try
         {
-            var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+            var category = await GetCategoryOrCreateAsync(request, userId, cancellationToken);
 
-            if (await _context.Categories.CategoryExistsAsync(request.CategoryName, userId))
-                throw new ConflictException($"Category with name {request.CategoryName} already exists.");
+            var createdTaskList = await CreateTaskListAsync(request, userId, cancellationToken);
 
-            var category = new Category
+            if (!await _context.AssignCategoryAndTaskListAsync(userId, createdTaskList.Id, category.Id))
             {
-                Name = request.CategoryName,
-                Tag = request.CategoryTag,
-                Color = request.CategoryColor,
-                UserId = userId
-            };
+                throw new ResourceCreationException("Could not assign category and task list to user.");
+            }
 
-            var createdCategory = await _context.CreateCategoryAsync(category);
-            if (createdCategory == null)
-                throw new ResourceCreationException("Category could not be created.");
 
-            var taskList = new Domain.Entities.TaskList
-            {
-                Name = request.TaskListName,
-                Description = request.TaskListDescription,
-                CreatedById = userId,
-            };
-
-            var createdTaskList = await _context.TaskLists.AddAsync(taskList, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken); 
-
-            if (createdTaskList == null)
-                throw new ResourceCreationException("Task list could not be created.");
-
-            var userTaskListCategory = new UserTaskListCategory
-            {
-                TaskListId = createdTaskList.Entity.Id,
-                CategoryId = createdCategory.Id,
-                UserId = userId
-            };
-
-            _context.UserTaskListCategories.Add(userTaskListCategory);
-
-            await _context.SaveChangesAsync(cancellationToken); 
             await transaction.CommitAsync(cancellationToken);
 
             return new CreateTaskListWithCategoryResponse
             {
-                CategoryId = createdCategory.Id,
-                TaskListId = createdTaskList.Entity.Id,
-                Message = "Category and Task List created successfully."
+                CategoryId = category.Id,
+                TaskListId = createdTaskList.Id,
+                Message = category.Id == request.CategoryId
+                    ? "Task List created and associated with existing category."
+                    : "Category and Task List created successfully."
             };
         }
         catch (Exception)
@@ -108,5 +80,61 @@ public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
             await transaction.RollbackAsync(cancellationToken);
             throw;
         }
+    }
+
+    private async Task<Category> GetCategoryOrCreateAsync(CreateTaskListWithCategoryCommand request, string userId,
+        CancellationToken cancellationToken)
+    {
+        if (request.CategoryId is not null)
+        {
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Id == request.CategoryId && c.UserId == userId, cancellationToken);
+
+            if (category == null)
+                throw new NotFoundException("Category not found.");
+
+            return category;
+        }
+
+        return await CreateCategoryAsync(request, userId);
+    }
+
+    private async Task<Category> CreateCategoryAsync(CreateTaskListWithCategoryCommand request, string userId)
+    {
+        if (await _context.Categories.CategoryExistsAsync(request.CategoryName, userId))
+            throw new ConflictException($"Category with name {request.CategoryName} already exists.");
+
+        var category = new Category
+        {
+            Name = request.CategoryName,
+            Tag = request.CategoryTag,
+            Color = request.CategoryColor,
+            UserId = userId
+        };
+
+        var createdCategory = await _context.CreateCategoryAsync(category);
+        if (createdCategory == null)
+            throw new ResourceCreationException("Category could not be created.");
+
+        return createdCategory;
+    }
+
+    private async Task<Domain.Entities.TaskList> CreateTaskListAsync(CreateTaskListWithCategoryCommand request,
+        string userId, CancellationToken cancellationToken)
+    {
+        var taskList = new Domain.Entities.TaskList
+        {
+            Name = request.TaskListName,
+            Description = request.TaskListDescription,
+            CreatedById = userId,
+        };
+
+        var createdTaskList = await _context.TaskLists.AddAsync(taskList, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        if (createdTaskList == null)
+            throw new ResourceCreationException("Task list could not be created.");
+
+        return createdTaskList.Entity;
     }
 }
