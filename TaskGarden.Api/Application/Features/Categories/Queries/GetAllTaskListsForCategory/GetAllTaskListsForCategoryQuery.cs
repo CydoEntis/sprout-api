@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
@@ -106,9 +107,9 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                         .ToList(),
                     TotalTasksCount = ut.TaskList.TaskListItems.Count(),
                     CompletedTasksCount = ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
-                    TaskCompletionPercentage = ut.TaskList.TaskListItems.Count() > 0
+                    TaskCompletionPercentage = ut.TaskList.TaskListItems.Any()
                         ? Math.Round((ut.TaskList.TaskListItems.Count(ti => ti.IsCompleted) /
-                                      (double)ut.TaskList.TaskListItems.Count()) * 100, 2)
+                                      (double)Math.Max(1, ut.TaskList.TaskListItems.Count())) * 100, 2)
                         : 0
                 })
                 .ToListAsync();

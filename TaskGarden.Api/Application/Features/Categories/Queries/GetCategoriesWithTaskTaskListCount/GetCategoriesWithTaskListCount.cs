@@ -77,7 +77,7 @@ public class GetCategoriesWithTaskListCountHandler : AuthRequiredHandler,
         var totalRecords = await query.CountAsync();
 
         var categories = await query
-            .OrderBy(c => c.Name)
+            .OrderByDescending(c => c.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(c => new CategoryWithTaskListCount

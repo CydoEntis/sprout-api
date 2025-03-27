@@ -20,7 +20,7 @@ public class CategoryMappingProfile : Profile
         CreateMap<Category, UpdateCategoryResponse>().ReverseMap();
         
         CreateMap<Category, GetAllCategoriesResponse>();
-        
+        CreateMap<Category, CategoryDetail>();
         // Query to response mappings
         CreateMap<CategoryWithTaskLists, GetRecentCategoriesQueryResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Category.Id))

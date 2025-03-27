@@ -1,7 +1,7 @@
 ﻿using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Application.Shared.Projections;
+using TaskGarden.Infrastructure.Projections;
 
-namespace TaskGarden.Infrastructure.Projections;
+namespace TaskGarden.Api.Application.Shared.Projections;
 
 public class TaskListPreview
 {

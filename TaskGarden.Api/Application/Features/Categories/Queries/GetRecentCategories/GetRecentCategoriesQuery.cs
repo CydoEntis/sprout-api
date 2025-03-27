@@ -37,7 +37,8 @@ public class GetRecentCategoriesQueryHandler : AuthRequiredHandler,
     private readonly AppDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetRecentCategoriesQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context, IMapper mapper)
+    public GetRecentCategoriesQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
+        IMapper mapper)
         : base(httpContextAccessor)
     {
         _context = context;
@@ -49,20 +50,23 @@ public class GetRecentCategoriesQueryHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
         var categories = await GetCategoriesWithRecentTaskLists(userId);
-        return _mapper.Map<List<GetRecentCategoriesQueryResponse>>(categories.Select(c => new GetRecentCategoriesQueryResponse
-        {
-            Id = c.Category.Id,
-            Name = c.Category.Name,
-            Tag = c.Category.Tag,
-            Color = c.Category.Color,
-            RecentTaskLists = c.RecentlyUpdatedTaskLists
-        }).ToList());
+        return _mapper.Map<List<GetRecentCategoriesQueryResponse>>(categories.Select(c =>
+            new GetRecentCategoriesQueryResponse
+            {
+                Id = c.Category.Id,
+                Name = c.Category.Name,
+                Tag = c.Category.Tag,
+                Color = c.Category.Color,
+                RecentTaskLists = c.RecentlyUpdatedTaskLists
+            }).ToList());
     }
 
     private async Task<List<CategoryWithTaskLists>> GetCategoriesWithRecentTaskLists(string userId)
     {
         var categories = await _context.Categories
             .Where(c => c.UserId == userId)
+            .OrderByDescending(c => c.TaskLists.Max(t => t.UpdatedAt))
+            .Take(5)
             .Select(c => new CategoryWithTaskLists
             {
                 Category = c,

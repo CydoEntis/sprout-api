@@ -49,6 +49,9 @@ public class GetAllCategoriesHandler : AuthRequiredHandler,
 
     private async Task<List<Category>> GetAllCategories(string userId)
     {
-        return await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
+        return await _context.Categories
+            .Where(c => c.UserId == userId)
+            .OrderByDescending(c => c.CreatedAt)
+            .ToListAsync();
     }
 }
