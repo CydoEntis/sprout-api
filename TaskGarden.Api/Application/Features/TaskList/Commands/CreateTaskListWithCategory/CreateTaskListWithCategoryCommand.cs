@@ -79,15 +79,21 @@ public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
             };
 
             var createdTaskList = await _context.TaskLists.AddAsync(taskList, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken); 
+
             if (createdTaskList == null)
                 throw new ResourceCreationException("Task list could not be created.");
 
-            var categoryAssignmentSuccess =
-                await _context.AssignCategoryAndTaskListAsync(userId, createdTaskList.Entity.Id, createdCategory.Id);
-            if (!categoryAssignmentSuccess)
-                throw new ResourceCreationException("The category could not be assigned to the task list.");
+            var userTaskListCategory = new UserTaskListCategory
+            {
+                TaskListId = createdTaskList.Entity.Id,
+                CategoryId = createdCategory.Id,
+                UserId = userId
+            };
 
-            await _context.SaveChangesAsync(cancellationToken);
+            _context.UserTaskListCategories.Add(userTaskListCategory);
+
+            await _context.SaveChangesAsync(cancellationToken); 
             await transaction.CommitAsync(cancellationToken);
 
             return new CreateTaskListWithCategoryResponse
