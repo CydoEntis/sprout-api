@@ -15,6 +15,7 @@ public static class CategoryEndpoints
         routes.MapCreateCategoryEndpoint();
         routes.MapGetRecentCategoriesEndpoint();
         routes.MapGetCategoriesWithTaskListCountEndpoint();
+        routes.MapGetAllCategoriesEndpoint();
         routes.MapGetAllTaskListsForCategoryEndpoint();
         routes.MapUpdateCategoryEndpoint();
         routes.MapDeleteCategoryEndpoint();

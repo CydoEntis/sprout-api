@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TaskGarden.Api.Application.Features.Categories.Commands.CreateCategory;
 using TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
+using TaskGarden.Api.Application.Features.Categories.Queries;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskTaskListCount;
@@ -17,7 +18,9 @@ public class CategoryMappingProfile : Profile
         CreateMap<CreateCategoryCommand, Category>().ReverseMap();
         CreateMap<UpdateCategoryCommand, Category>().ReverseMap();
         CreateMap<Category, UpdateCategoryResponse>().ReverseMap();
-
+        
+        CreateMap<Category, GetAllCategoriesResponse>();
+        
         // Query to response mappings
         CreateMap<CategoryWithTaskLists, GetRecentCategoriesQueryResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Category.Id))

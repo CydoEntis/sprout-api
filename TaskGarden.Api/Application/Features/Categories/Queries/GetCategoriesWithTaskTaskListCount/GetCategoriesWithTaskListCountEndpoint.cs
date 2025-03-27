@@ -7,7 +7,7 @@ public static class GetCategoriesWithTaskListCountEndpoint
 {
     public static void MapGetCategoriesWithTaskListCountEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapGet("/api/categories", async (IMediator mediator) =>
+        routes.MapGet("/api/categories/details", async (IMediator mediator) =>
             {
                 var response = await mediator.Send(new GetCategoriesWithTaskListCountQuery());
 
