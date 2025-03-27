@@ -63,6 +63,11 @@ public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
                 throw new ResourceCreationException("Could not assign category and task list to user.");
             }
 
+            if (!await _context.AssignUserAsync(userId, createdTaskList.Id))
+            {
+                throw new ResourceCreationException("Could not assign user to task list.");
+            }
+
 
             await transaction.CommitAsync(cancellationToken);
 
