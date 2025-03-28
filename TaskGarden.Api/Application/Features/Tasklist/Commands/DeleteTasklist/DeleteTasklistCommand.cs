@@ -28,7 +28,7 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
 
-        var taskList = await _context.TaskLists.GetByIdAsync(request.TaskListId)
+        var taskList = await _context.Tasklists.GetByIdAsync(request.TaskListId)
                        ?? throw new NotFoundException($"Task list with id {request.TaskListId} could not be found.");
 
         if (!await IsUserOwnerAsync(userId, taskList))
@@ -88,7 +88,7 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
 
     private async Task DeleteTaskListAsync(Domain.Entities.Tasklist tasklist)
     {
-        _context.TaskLists.Remove(tasklist);
+        _context.Tasklists.Remove(tasklist);
         await _context.SaveChangesAsync();
     }
 }

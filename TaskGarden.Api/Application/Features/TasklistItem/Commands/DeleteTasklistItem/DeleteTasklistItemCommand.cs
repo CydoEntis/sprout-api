@@ -34,7 +34,7 @@ public class DeleteTaskListItemCommandHandler : AuthRequiredHandler,
         if (taskListItem == null)
             throw new NotFoundException("Task list item not found.");
 
-        var taskList = await _context.TaskLists.GetByIdAsync(taskListItem.TaskListId);
+        var taskList = await _context.Tasklists.GetByIdAsync(taskListItem.TaskListId);
         if (taskList == null)
             throw new NotFoundException("Task list not found.");
 

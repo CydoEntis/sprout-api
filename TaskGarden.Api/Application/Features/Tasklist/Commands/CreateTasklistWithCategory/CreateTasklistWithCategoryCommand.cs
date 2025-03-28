@@ -138,7 +138,7 @@ public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
             CreatedById = userId,
         };
 
-        var createdTaskList = await _context.TaskLists.AddAsync(taskList, cancellationToken);
+        var createdTaskList = await _context.Tasklists.AddAsync(taskList, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         if (createdTaskList == null)

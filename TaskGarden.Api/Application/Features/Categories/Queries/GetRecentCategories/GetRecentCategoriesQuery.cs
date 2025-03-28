@@ -58,7 +58,7 @@ public class GetRecentCategoriesQueryHandler : AuthRequiredHandler,
                 Name = c.Name,
                 Tag = c.Tag,
                 Color = c.Color,
-                RecentTasklists = _context.UserTaskListCategories
+                RecentTasklists = _context.UserTasklistCategories
                     .Where(utc => utc.UserId == userId && utc.CategoryId == c.Id)
                     .OrderByDescending(t => t.UpdatedAt)
                     .Take(3)

@@ -58,7 +58,7 @@ public class DeleteCategoryCommandHandler :
 
     private async Task<List<int>> GetTaskListIdsByCategoryAsync(int categoryId)
     {
-        return await _context.UserTaskListCategories
+        return await _context.UserTasklistCategories
             .Where(utc => utc.CategoryId == categoryId)
             .Select(utc => utc.TaskListId)
             .ToListAsync();
@@ -88,7 +88,7 @@ public class DeleteCategoryCommandHandler :
 
     private async Task DeleteTaskLists(List<int> taskListIds)
     {
-        await _context.TaskLists
+        await _context.Tasklists
             .Where(t => taskListIds.Contains(t.Id))
             .ExecuteDeleteAsync();
     }

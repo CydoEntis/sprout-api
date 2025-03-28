@@ -13,35 +13,31 @@ using TaskGarden.Infrastructure.Projections;
 namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory
 {
     public record GetAllTasklistsForCategoryQuery(string CategoryName)
-        : IRequest<List<GetAllTaskListsForCategoryResponse>>;
+        : IRequest<GetAllTasklistsForCategoryResponse>;
 
-
-    public class GetAllTaskListsForCategoryResponse
+    public class GetAllTasklistsForCategoryResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }
         public string Color { get; set; }
-        public List<TasklistInfo> TasklistsInfo { get; set; }
+        public List<TasklistInfo> TasklistsInfo { get; set; } = new();
     }
 
-    public class GetAllTaskListsForCategoryQueryHandler : AuthRequiredHandler,
-        IRequestHandler<GetAllTasklistsForCategoryQuery, List<GetAllTaskListsForCategoryResponse>>
+    public class GetAllTasklistsForCategoryQueryHandler : AuthRequiredHandler,
+        IRequestHandler<GetAllTasklistsForCategoryQuery, GetAllTasklistsForCategoryResponse>
     {
         private readonly AppDbContext _context;
         private readonly IValidator<GetAllTasklistsForCategoryQuery> _validator;
-        private readonly IMapper _mapper;
 
-        public GetAllTaskListsForCategoryQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
-            IValidator<GetAllTasklistsForCategoryQuery> validator, IMapper mapper) : base(
-            httpContextAccessor)
+        public GetAllTasklistsForCategoryQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
+            IValidator<GetAllTasklistsForCategoryQuery> validator) : base(httpContextAccessor)
         {
             _context = context;
             _validator = validator;
-            _mapper = mapper;
         }
 
-        public async Task<List<GetAllTaskListsForCategoryResponse>> Handle(
+        public async Task<GetAllTasklistsForCategoryResponse> Handle(
             GetAllTasklistsForCategoryQuery request,
             CancellationToken cancellationToken)
         {
@@ -67,65 +63,55 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
         }
 
-        private async Task<List<GetAllTaskListsForCategoryResponse>> GetAllTaskListsByUserIdAndCategoryId(string userId,
+        private async Task<GetAllTasklistsForCategoryResponse> GetAllTaskListsByUserIdAndCategoryId(string userId,
             Category existingCategory)
         {
-            var taskListsData = await _context.UserTaskListCategories
+            var taskListsData = await _context.UserTasklistCategories
                 .AsNoTracking()
                 .Where(ut => ut.UserId == userId && ut.CategoryId == existingCategory.Id)
-                .GroupBy(ut => new
+                .Select(ut => new TasklistInfo
                 {
-                    ut.Category.Id,
-                    ut.Category.Name,
-                    ut.Category.Tag,
-                    ut.Category.Color
-                })
-                .Select(g => new GetAllTaskListsForCategoryResponse
-                {
-                    Id = g.Key.Id,
-                    Name = g.Key.Name,
-                    Tag = g.Key.Tag,
-                    Color = g.Key.Color,
-                    TasklistsInfo = g.Select(ut => new TasklistInfo
-                    {
-                        Id = ut.Tasklist.Id,
-                        Name = ut.Tasklist.Name,
-                        Description = ut.Tasklist.Description,
-                        CreatedAt = ut.Tasklist.CreatedAt,
-                        UpdatedAt = ut.Tasklist.UpdatedAt,
-                        Members = ut.Tasklist.TaskListMembers
-                            .Select(tlm => new Member()
-                            {
-                                Id = tlm.UserId,
-                                Name = tlm.User.LastName + " " + tlm.User.FirstName,
-                            })
-                            .ToList(),
-                        TotalTasksCount = ut.Tasklist.TaskListItems.Count(),
-                        CompletedTasksCount = ut.Tasklist.TaskListItems.Count(ti => ti.IsCompleted),
-                        TaskCompletionPercentage = ut.Tasklist.TaskListItems.Any()
-                            ? Math.Round((ut.Tasklist.TaskListItems.Count(ti => ti.IsCompleted) /
-                                          (double)Math.Max(1, ut.Tasklist.TaskListItems.Count())) * 100, 2)
-                            : 0
-                    }).ToList()
+                    Id = ut.Tasklist.Id,
+                    Name = ut.Tasklist.Name,
+                    Description = ut.Tasklist.Description,
+                    CreatedAt = ut.Tasklist.CreatedAt,
+                    UpdatedAt = ut.Tasklist.UpdatedAt,
+                    Members = ut.Tasklist.TaskListMembers
+                        .Select(tlm => new Member()
+                        {
+                            Id = tlm.UserId,
+                            Name = tlm.User.LastName + " " + tlm.User.FirstName,
+                        })
+                        .ToList(),
+                    TotalTasksCount = ut.Tasklist.TaskListItems.Count(),
+                    CompletedTasksCount = ut.Tasklist.TaskListItems.Count(ti => ti.IsCompleted),
+                    TaskCompletionPercentage = ut.Tasklist.TaskListItems.Any()
+                        ? Math.Round((ut.Tasklist.TaskListItems.Count(ti => ti.IsCompleted) /
+                                      (double)Math.Max(1, ut.Tasklist.TaskListItems.Count())) * 100, 2)
+                        : 0
                 })
                 .ToListAsync();
 
             if (!taskListsData.Any())
             {
-                return new List<GetAllTaskListsForCategoryResponse>
+                return new GetAllTasklistsForCategoryResponse
                 {
-                    new GetAllTaskListsForCategoryResponse
-                    {
-                        Id = existingCategory.Id,
-                        Name = existingCategory.Name,
-                        Tag = existingCategory.Tag,
-                        Color = existingCategory.Color,
-                        TasklistsInfo = new List<TasklistInfo>() 
-                    }
+                    Id = existingCategory.Id,
+                    Name = existingCategory.Name,
+                    Tag = existingCategory.Tag,
+                    Color = existingCategory.Color,
+                    TasklistsInfo = new List<TasklistInfo>()
                 };
             }
 
-            return taskListsData;
+            return new GetAllTasklistsForCategoryResponse
+            {
+                Id = existingCategory.Id,
+                Name = existingCategory.Name,
+                Tag = existingCategory.Tag,
+                Color = existingCategory.Color,
+                TasklistsInfo = taskListsData
+            };
         }
     }
 }

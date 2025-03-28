@@ -30,7 +30,7 @@ public class ReorderTaskListItemCommandHandler
     public async Task<ReorderTaskListItemResponse> Handle(ReorderTasklistItemCommand request,
         CancellationToken cancellationToken)
     {
-        var taskList = _context.TaskLists.GetByIdAsync(request.TaskListId);
+        var taskList = _context.Tasklists.GetByIdAsync(request.TaskListId);
         if (taskList == null)
             throw new NotFoundException($"Task list with id {request.TaskListId} was not found");
 

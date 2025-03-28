@@ -41,7 +41,7 @@ public class CreateTaskListItemCommandHandler :
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var taskListExists = await _context.TaskLists.ExistsAsync(request.TaskListId);
+        var taskListExists = await _context.Tasklists.ExistsAsync(request.TaskListId);
         if (!taskListExists)
             throw new NotFoundException("TaskList");
 

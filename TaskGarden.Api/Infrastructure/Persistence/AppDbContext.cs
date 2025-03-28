@@ -13,8 +13,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<AppUser> Users { get; set; }
     public DbSet<Session> Sessions { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Tasklist> TaskLists { get; set; }
-    public DbSet<UserTasklistCategory> UserTaskListCategories { get; set; }
+    public DbSet<Tasklist> Tasklists { get; set; }
+    public DbSet<UserTasklistCategory> UserTasklistCategories { get; set; }
 
 
     public DbSet<TasklistItem> TaskListItems { get; set; }

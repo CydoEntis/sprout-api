@@ -47,7 +47,7 @@ public class UpdateTaskListCommandHandler : AuthRequiredHandler,
         if (!hasAllowedRole)
             throw new PermissionException("User does not have the required role to update the task list.");
 
-        var taskList = await _context.TaskLists.GetByIdAsync(request.TaskListId) ??
+        var taskList = await _context.Tasklists.GetByIdAsync(request.TaskListId) ??
                        throw new NotFoundException($"Task list with id: {request.TaskListId} could not be found.");
 
 

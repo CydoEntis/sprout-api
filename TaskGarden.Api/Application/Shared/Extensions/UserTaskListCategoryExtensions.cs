@@ -11,7 +11,7 @@ namespace TaskGarden.Api.Application.Shared.Extensions
             int taskListId,
             int categoryId)
         {
-            await context.UserTaskListCategories.AddAsync(new UserTasklistCategory
+            await context.UserTasklistCategories.AddAsync(new UserTasklistCategory
             {
                 UserId = userId,
                 TaskListId = taskListId,
@@ -26,7 +26,7 @@ namespace TaskGarden.Api.Application.Shared.Extensions
             string userId,
             int categoryId)
         {
-            await context.UserTaskListCategories.AddAsync(new UserTasklistCategory
+            await context.UserTasklistCategories.AddAsync(new UserTasklistCategory
             {
                 UserId = userId,
                 CategoryId = categoryId

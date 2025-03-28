@@ -87,7 +87,7 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
                 Tag = c.Tag,
                 Color = c.Color,
                 TotalTaskLists =
-                    _context.UserTaskListCategories.Count(utc =>
+                    _context.UserTasklistCategories.Count(utc =>
                         utc.CategoryId == c.Id)
             })
             .ToListAsync();

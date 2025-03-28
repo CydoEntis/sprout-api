@@ -11,7 +11,7 @@ public static class GetAllTasklistsForCategoryEndpoint
             {
                 var query = new GetAllTasklistsForCategoryQuery(category);
                 var response = await mediator.Send(query);
-                return Results.Ok(ApiResponse<List<GetAllTaskListsForCategoryResponse>>.SuccessWithData(response));
+                return Results.Ok(ApiResponse<GetAllTasklistsForCategoryResponse>.SuccessWithData(response));
             })
             .WithName("GetAllTaskListsForCategory")
             .WithTags("Categories")

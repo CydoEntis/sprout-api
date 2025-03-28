@@ -77,7 +77,7 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
     private async Task<Domain.Entities.Tasklist> CreateTaskListAsync(string userId, Domain.Entities.Tasklist tasklist)
     {
         tasklist.CreatedById = userId;
-        _context.TaskLists.Add(tasklist);
+        _context.Tasklists.Add(tasklist);
         await _context.SaveChangesAsync();
         return tasklist;
     }
