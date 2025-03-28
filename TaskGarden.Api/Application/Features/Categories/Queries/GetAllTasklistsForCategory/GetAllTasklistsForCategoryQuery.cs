@@ -22,7 +22,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
         public string Name { get; set; }
         public string Tag { get; set; }
         public string Color { get; set; }
-        public List<TasklistInfo> TaskListsInfo { get; set; }
+        public List<TasklistInfo> TasklistsInfo { get; set; }
     }
 
     public class GetAllTaskListsForCategoryQueryHandler : AuthRequiredHandler,
@@ -86,7 +86,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     Name = g.Key.Name,
                     Tag = g.Key.Tag,
                     Color = g.Key.Color,
-                    TaskListsInfo = g.Select(ut => new TasklistInfo
+                    TasklistsInfo = g.Select(ut => new TasklistInfo
                     {
                         Id = ut.Tasklist.Id,
                         Name = ut.Tasklist.Name,
@@ -120,7 +120,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                         Name = existingCategory.Name,
                         Tag = existingCategory.Tag,
                         Color = existingCategory.Color,
-                        TaskListsInfo = new List<TasklistInfo>() 
+                        TasklistsInfo = new List<TasklistInfo>() 
                     }
                 };
             }

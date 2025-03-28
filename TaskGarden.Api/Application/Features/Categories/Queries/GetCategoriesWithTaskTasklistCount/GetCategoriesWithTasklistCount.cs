@@ -28,13 +28,13 @@ public class GetCategoriesWithTaskListCountResponse
     public int TotalTaskLists { get; set; }
 }
 
-public class GetCategoriesWithTaskListCountHandler : AuthRequiredHandler,
+public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
     IRequestHandler<GetCategoriesWithTaskListCountQuery, PagedResponse<GetCategoriesWithTaskListCountResponse>>
 {
     private readonly AppDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetCategoriesWithTaskListCountHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
+    public GetCategoriesWithTasklistCountHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context,
         IMapper mapper)
         : base(httpContextAccessor)
     {
