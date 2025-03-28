@@ -23,7 +23,9 @@ public record CreateTaskListWithCategoryCommand(
 public class CreateTaskListWithCategoryResponse : BaseResponse
 {
     public int CategoryId { get; set; }
+    public string CategoryName { get; set; }
     public int TaskListId { get; set; }
+    public string TaskListName { get; set; }
 }
 
 public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
@@ -74,7 +76,9 @@ public class CreateTaskListWithCategoryCommandHandler : AuthRequiredHandler,
             return new CreateTaskListWithCategoryResponse
             {
                 CategoryId = category.Id,
+                CategoryName = category.Name,
                 TaskListId = createdTaskList.Id,
+                TaskListName = createdTaskList.Name,
                 Message = category.Id == request.CategoryId
                     ? "Task List created and associated with existing category."
                     : "Category and Task List created successfully."

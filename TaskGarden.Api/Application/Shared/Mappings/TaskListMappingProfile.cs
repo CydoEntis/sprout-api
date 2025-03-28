@@ -2,6 +2,7 @@
 using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
 using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
 // using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
@@ -17,7 +18,7 @@ public class TaskListMappingProfile : Profile
     public TaskListMappingProfile()
     {
         CreateMap<TaskList, TaskListPreview>()
-            .ForMember(dest => dest.CategoryDetail, opt =>
+            .ForMember(dest => dest.CategoryDetails, opt =>
                 opt.MapFrom(src => src.UserCategories
                     .Select(utlc => utlc.Category)
                     .FirstOrDefault()))
