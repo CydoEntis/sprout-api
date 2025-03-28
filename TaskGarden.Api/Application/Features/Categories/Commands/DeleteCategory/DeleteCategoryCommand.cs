@@ -67,9 +67,21 @@ public class DeleteCategoryCommandHandler :
 
     private async Task DeleteTaskListsAndDependenciesAsync(List<int> taskListIds)
     {
+        await RemoveTaskListsFromUserTasklistCategories(taskListIds);
+
         await DeleteTaskListItems(taskListIds);
         await DeleteTaskListMembers(taskListIds);
         await DeleteTaskLists(taskListIds);
+    }
+
+    private async Task RemoveTaskListsFromUserTasklistCategories(List<int> taskListIds)
+    {
+        var userTasklistCategories = await _context.UserTasklistCategories
+            .Where(utc => taskListIds.Contains(utc.TaskListId))
+            .ToListAsync();
+
+        _context.UserTasklistCategories.RemoveRange(userTasklistCategories);
+        await _context.SaveChangesAsync();
     }
 
     private async Task DeleteTaskListItems(List<int> taskListIds)

@@ -9,7 +9,7 @@ using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
 
-public record DeleteTasklistCommand(int TaskListId) : IRequest<DeleteTaskListResponse>;
+public record DeleteTasklistCommand(int TasklistId) : IRequest<DeleteTaskListResponse>;
 
 public class DeleteTaskListResponse : BaseResponse;
 
@@ -28,8 +28,8 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
 
-        var taskList = await _context.Tasklists.GetByIdAsync(request.TaskListId)
-                       ?? throw new NotFoundException($"Task list with id {request.TaskListId} could not be found.");
+        var taskList = await _context.Tasklists.GetByIdAsync(request.TasklistId)
+                       ?? throw new NotFoundException($"Task list with id {request.TasklistId} could not be found.");
 
         if (!await IsUserOwnerAsync(userId, taskList))
             throw new PermissionException("User does not have rights to delete this task list.");
