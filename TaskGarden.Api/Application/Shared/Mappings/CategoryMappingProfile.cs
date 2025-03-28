@@ -21,14 +21,5 @@ public class CategoryMappingProfile : Profile
 
         CreateMap<Category, GetAllCategoriesResponse>();
         CreateMap<Category, CategoryInfo>();
-
-
-        CreateMap<Category, CategoryWithTaskListCount>()
-            .ForMember(dest => dest.TotalTaskLists, opt => opt.MapFrom(src => src.UserTaskListCategories.Count));
-
-        CreateMap<List<CategoryWithTaskListCount>, GetCategoriesWithTaskListCountResponse>();
-
-
-        CreateMap<CategoryWithTaskListCount, GetCategoriesWithTaskListCountResponse>();
     }
 }

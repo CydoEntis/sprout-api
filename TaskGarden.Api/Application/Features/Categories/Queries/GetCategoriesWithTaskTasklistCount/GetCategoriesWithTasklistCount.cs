@@ -10,22 +10,13 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWi
 public record GetCategoriesWithTaskListCountQuery(int Page = 1, int PageSize = 10, string? Search = null)
     : IRequest<PagedResponse<GetCategoriesWithTaskListCountResponse>>;
 
-public class CategoryWithTaskListCount
-{
-    public int Id { get; set; }
-    public string Name { get; set; }
-    public string Tag { get; set; }
-    public string Color { get; set; }
-    public int TotalTaskLists { get; set; }
-}
-
 public class GetCategoriesWithTaskListCountResponse
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public string Tag { get; set; }
     public string Color { get; set; }
-    public int TotalTaskLists { get; set; }
+    public int TotalTasklists { get; set; }
 }
 
 public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
@@ -50,10 +41,9 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
         var (categories, totalRecords) =
             await GetCategoriesWithTaskListCount(userId, request.Page, request.PageSize, request.Search);
 
-        var responseData = _mapper.Map<List<GetCategoriesWithTaskListCountResponse>>(categories);
 
         var response = new PagedResponse<GetCategoriesWithTaskListCountResponse>(
-            responseData,
+            categories,
             request.Page,
             request.PageSize,
             totalRecords
@@ -63,7 +53,8 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
     }
 
 
-    private async Task<(List<CategoryWithTaskListCount>, int)> GetCategoriesWithTaskListCount(string userId, int page,
+    private async Task<(List<GetCategoriesWithTaskListCountResponse>, int)> GetCategoriesWithTaskListCount(
+        string userId, int page,
         int pageSize, string? search)
     {
         var query = _context.Categories
@@ -80,13 +71,13 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
             .OrderByDescending(c => c.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Select(c => new CategoryWithTaskListCount
+            .Select(c => new GetCategoriesWithTaskListCountResponse
             {
                 Id = c.Id,
                 Name = c.Name,
                 Tag = c.Tag,
                 Color = c.Color,
-                TotalTaskLists =
+                TotalTasklists =
                     _context.UserTasklistCategories.Count(utc =>
                         utc.CategoryId == c.Id)
             })
