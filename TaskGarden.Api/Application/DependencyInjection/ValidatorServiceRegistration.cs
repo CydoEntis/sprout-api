@@ -35,14 +35,14 @@ public static class ValidatorServiceRegistration
         services.AddValidatorsFromAssemblyContaining<DeleteCategoryCommand>();
 
         // Task List Validators
-        services.AddValidatorsFromAssemblyContaining<GetAllTaskListsForCategoryQueryValidator>();
-        services.AddValidatorsFromAssemblyContaining<CreateTaskListCommandValidator>();
-        services.AddValidatorsFromAssemblyContaining<UpdateTaskListCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<GetAllTasklistsForCategoryQueryValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateTasklistCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateTasklistCommandValidator>();
         // Remove these if no validation required
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
 
         // Task List Item Validators
-        services.AddValidatorsFromAssemblyContaining<CreateTaskListItemCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateTasklistItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCommandValidator>();
         services.AddValidatorsFromAssemblyContaining<DeleteTaskListCommandHandler>();
         services.AddValidatorsFromAssemblyContaining<UpdateTaskListItemCompletedStatusCommand>();

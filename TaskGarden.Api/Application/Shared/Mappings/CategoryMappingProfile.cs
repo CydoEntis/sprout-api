@@ -18,15 +18,10 @@ public class CategoryMappingProfile : Profile
         CreateMap<CreateCategoryCommand, Category>().ReverseMap();
         CreateMap<UpdateCategoryCommand, Category>().ReverseMap();
         CreateMap<Category, UpdateCategoryResponse>().ReverseMap();
-        
+
         CreateMap<Category, GetAllCategoriesResponse>();
         CreateMap<Category, CategoryInfo>();
-        CreateMap<CategoryWithTaskLists, GetRecentCategoriesQueryResponse>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Category.Id))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Category.Name))
-            .ForMember(dest => dest.Tag, opt => opt.MapFrom(src => src.Category.Tag))
-            .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Category.Color))
-            .ForMember(dest => dest.RecentTaskLists, opt => opt.MapFrom(src => src.RecentlyUpdatedTaskLists));
+
 
         CreateMap<Category, CategoryWithTaskListCount>()
             .ForMember(dest => dest.TotalTaskLists, opt => opt.MapFrom(src => src.UserTaskListCategories.Count));
@@ -35,6 +30,5 @@ public class CategoryMappingProfile : Profile
 
 
         CreateMap<CategoryWithTaskListCount, GetCategoriesWithTaskListCountResponse>();
-        
     }
 }

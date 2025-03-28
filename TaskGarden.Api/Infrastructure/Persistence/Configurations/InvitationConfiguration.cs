@@ -13,7 +13,7 @@ public class InvitationConfiguration : IEntityTypeConfiguration<Invitation>
         builder.Property(i => i.Status)
             .HasConversion<string>(); 
 
-        builder.HasOne(i => i.TaskList)
+        builder.HasOne(i => i.Tasklist)
             .WithMany()
             .HasForeignKey(i => i.TaskListId);
 

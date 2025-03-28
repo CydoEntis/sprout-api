@@ -4,58 +4,58 @@ using TaskGarden.Api.Domain.Entities;
 
 namespace TaskGarden.Api.Infrastructure.Persistence.Seeding;
 
-public class UserTaskListCategorySeeder : IEntityTypeConfiguration<UserTaskListCategory>
+public class UserTaskListCategorySeeder : IEntityTypeConfiguration<UserTasklistCategory>
 {
-    public void Configure(EntityTypeBuilder<UserTaskListCategory> builder)
+    public void Configure(EntityTypeBuilder<UserTasklistCategory> builder)
     {
         var demoUser1Id = "1b503418-dc0f-4187-93c0-2e30070b2835";
         var demoUser2Id = "9e22a16c-da04-4232-b479-95c3a7b89259";
         var demoUser3Id = "40fcec36-7eef-42d8-8086-cd2226b88d00";
         
         builder.HasData(
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 1,
                 CategoryId = 1
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 2,
                 CategoryId = 1
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 3,
                 CategoryId = 2
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 4,
                 CategoryId = 2
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 5,
                 CategoryId = 3
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 6,
                 CategoryId = 3
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 7,
                 CategoryId = 4
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser1Id,
                 TaskListId = 8,
@@ -63,13 +63,13 @@ public class UserTaskListCategorySeeder : IEntityTypeConfiguration<UserTaskListC
             },
 
             // Demo User 2 Categories
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser2Id,
                 TaskListId = 9,
                 CategoryId = 6
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser2Id,
                 TaskListId = 10,
@@ -77,25 +77,25 @@ public class UserTaskListCategorySeeder : IEntityTypeConfiguration<UserTaskListC
             },
 
             // Demo User 3 Categories
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser3Id,
                 TaskListId = 11,
                 CategoryId = 8
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser3Id,
                 TaskListId = 12,
                 CategoryId = 8
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser3Id,
                 TaskListId = 13,
                 CategoryId = 9
             },
-            new UserTaskListCategory
+            new UserTasklistCategory
             {
                 UserId = demoUser3Id,
                 TaskListId = 14,
