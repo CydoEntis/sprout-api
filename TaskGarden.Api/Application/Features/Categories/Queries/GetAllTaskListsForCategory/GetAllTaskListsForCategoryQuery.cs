@@ -15,31 +15,11 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
     public record GetAllTaskListsForCategoryQuery(string CategoryName)
         : IRequest<List<GetAllTaskListsForCategoryResponse>>;
 
-    public class CategoryDetails
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Tag { get; set; }
-        public string Color { get; set; }
-    }
-
-    public class TaskListDetails
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public List<MemberResponse> Members { get; set; }
-        public int TotalTasksCount { get; set; }
-        public int CompletedTasksCount { get; set; }
-        public double TaskCompletionPercentage { get; set; }
-    }
 
     public class GetAllTaskListsForCategoryResponse
     {
-        public CategoryDetails CategoryDetails { get; set; }
-        public TaskListDetails TaskListDetails { get; set; }
+        public CategoryInfo CategoryInfo { get; set; }
+        public TaskListInfo TaskListInfo { get; set; }
     }
 
     public class GetAllTaskListsForCategoryQueryHandler : AuthRequiredHandler,
@@ -92,14 +72,14 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                 .Where(ut => ut.UserId == userId && ut.CategoryId == existingCategory.Id)
                 .Select(ut => new GetAllTaskListsForCategoryResponse
                 {
-                    CategoryDetails = new CategoryDetails
+                    CategoryInfo = new CategoryInfo
                     {
                         Id = ut.Category.Id,
                         Name = ut.Category.Name,
                         Tag = ut.Category.Tag,
                         Color = ut.Category.Color
                     },
-                    TaskListDetails = new TaskListDetails
+                    TaskListInfo = new TaskListInfo
                     {
                         Id = ut.TaskList.Id,
                         Name = ut.TaskList.Name,
@@ -107,9 +87,9 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                         CreatedAt = ut.TaskList.CreatedAt,
                         UpdatedAt = ut.TaskList.UpdatedAt,
                         Members = ut.TaskList.TaskListMembers
-                            .Select(tlm => new MemberResponse
+                            .Select(tlm => new Member()
                             {
-                                UserId = tlm.UserId,
+                                Id = tlm.UserId,
                                 Name = tlm.User.LastName + " " + tlm.User.FirstName,
                             })
                             .ToList(),
@@ -129,14 +109,14 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                 {
                     new GetAllTaskListsForCategoryResponse
                     {
-                        CategoryDetails = new CategoryDetails
+                        CategoryInfo = new CategoryInfo
                         {
                             Id = existingCategory.Id,
                             Name = existingCategory.Name,
                             Tag = existingCategory.Tag,
                             Color = existingCategory.Color
                         },
-                        TaskListDetails = null // No task list available
+                        TaskListInfo = null // No task list available
                     }
                 };
             }

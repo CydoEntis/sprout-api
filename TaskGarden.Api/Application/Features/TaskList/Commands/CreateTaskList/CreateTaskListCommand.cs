@@ -19,7 +19,7 @@ public record CreateTaskListCommand(string Name, string Description, string Cate
 
 public class CreateTaskListResponse : BaseResponse
 {
-    public TaskListPreview TaskListPreview { get; set; }
+    public TaskListInfo TaskListInfo { get; set; }
 }
 
 public class CreateTaskListCommandHandler : AuthRequiredHandler,
@@ -66,7 +66,7 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         return new CreateTaskListResponse
         {
             Message = $"Task list created: {createdTaskList.Id}",
-            TaskListPreview = _mapper.Map<TaskListPreview>(createdTaskList)
+            TaskListInfo = _mapper.Map<TaskListInfo>(createdTaskList)
         };
     }
 

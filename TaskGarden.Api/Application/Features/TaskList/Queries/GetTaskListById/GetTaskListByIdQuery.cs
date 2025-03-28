@@ -18,7 +18,7 @@ public class GetTaskListByIdQueryResponse : BaseResponse
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public CategoryDetails CategoryDetails { get; set; }
+    public CategoryInfo CategoryInfo { get; set; }
     public bool IsCompleted { get; set; }
     public List<MemberResponse> Members { get; set; } = [];
     public int TotalTasksCount { get; set; }
@@ -74,15 +74,15 @@ public class GetTaskListByIdQueryHandler
                     IsCompleted = q.IsCompleted,
                     Position = q.Position,
                 }).ToList(),
-                CategoryDetails = tl.UserCategories
-                    .Select(utc => new CategoryDetails
+                CategoryInfo = tl.UserCategories
+                    .Select(utc => new CategoryInfo
                     {
                         Id = utc.Category.Id,
                         Name = utc.Category.Name,
                         Tag = utc.Category.Tag,
                         Color = utc.Category.Color
                     })
-                    .FirstOrDefault() ?? new CategoryDetails(),
+                    .FirstOrDefault() ?? new CategoryInfo(),
                 Members = tl.TaskListMembers
                     .Select(tla => new MemberResponse
                     {

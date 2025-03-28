@@ -10,6 +10,7 @@ using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Infrastructure.Projections;
+using TaskListInfo = TaskGarden.Api.Application.Shared.Projections.TaskListInfo;
 
 namespace TaskGarden.Api.Application.Shared.Mappings;
 
@@ -17,8 +18,8 @@ public class TaskListMappingProfile : Profile
 {
     public TaskListMappingProfile()
     {
-        CreateMap<TaskList, TaskListPreview>()
-            .ForMember(dest => dest.CategoryDetails, opt =>
+        CreateMap<TaskList, TaskListInfo>()
+            .ForMember(dest => dest.CategoryInfo, opt =>
                 opt.MapFrom(src => src.UserCategories
                     .Select(utlc => utlc.Category)
                     .FirstOrDefault()))
@@ -32,7 +33,7 @@ public class TaskListMappingProfile : Profile
         CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
         CreateMap<UpdateTaskListCommand, TaskList>().ReverseMap();
 
-        CreateMap<TaskListPreview, GetAllTaskListsForCategoryResponse>().ReverseMap();
+        CreateMap<TaskListInfo, GetAllTaskListsForCategoryResponse>().ReverseMap();
         // CreateMap<TaskListPreview, GetTaskListByIdQueryResponse>();
         CreateMap<TaskListMember, MemberResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
