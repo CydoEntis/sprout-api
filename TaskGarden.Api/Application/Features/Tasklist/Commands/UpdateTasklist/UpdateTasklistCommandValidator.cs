@@ -6,7 +6,7 @@ public class UpdateTasklistCommandValidator : AbstractValidator<UpdateTasklistCo
 {
     public UpdateTasklistCommandValidator()
     {
-        RuleFor(x => x.TaskListId)
+        RuleFor(x => x.TasklistId)
             .NotEmpty().WithMessage("Id must be provided")
             .GreaterThan(0).WithMessage("Id must be greater than 0");
         RuleFor(x => x.Name).NotEmpty().WithMessage("Name cannot be empty");

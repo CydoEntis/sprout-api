@@ -30,7 +30,8 @@ public class TasklistMappingProfile : Profile
         // CreateMap<GetTaskListByIdQueryResponse, TaskList>().ReverseMap();
 
         CreateMap<CreateTasklistCommand, Tasklist>().ReverseMap();
-        CreateMap<UpdateTasklistCommand, Tasklist>().ReverseMap();
+        CreateMap<UpdateTasklistCommand, Tasklist>()
+            .ForMember(dest => dest.CreatedById, opt => opt.Ignore());
 
         CreateMap<TasklistInfo, GetAllTasklistsForCategoryResponse>().ReverseMap();
         // CreateMap<TaskListPreview, GetTaskListByIdQueryResponse>();

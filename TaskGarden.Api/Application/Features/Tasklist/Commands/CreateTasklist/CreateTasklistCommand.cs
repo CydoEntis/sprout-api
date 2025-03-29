@@ -10,16 +10,15 @@ using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
-using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
 
 public record CreateTasklistCommand(string Name, string Description, string CategoryName)
     : IRequest<CreateTaskListResponse>;
 
-public class CreateTaskListResponse : BaseResponse
+public class CreateTaskListResponse
 {
-    public TasklistInfo TasklistInfo { get; set; }
+    public int TasklistId { get; set; }
 }
 
 public class CreateTaskListCommandHandler : AuthRequiredHandler,
@@ -52,21 +51,26 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
         var category = await GetCategoryAsync(userId, request.CategoryName)
                        ?? throw new NotFoundException("Category does not exist.");
 
-        var newTaskList = _mapper.Map<Domain.Entities.Tasklist>(request);
+        var newTaskList = new Domain.Entities.Tasklist
+        {
+            Name = request.Name,
+            Description = request.Description,
+            CreatedById = userId,
+        };
+
         var createdTaskList = await CreateTaskListAsync(userId, newTaskList)
                               ?? throw new ResourceCreationException("The task list could not be created.");
 
         if (!await _context.AssignCategoryAndTaskListAsync(userId, createdTaskList.Id, category.Id))
             throw new ResourceCreationException("The category could not be assigned to the task list.");
 
-
         if (!await AssignUserToTaskListAsync(userId, createdTaskList))
             throw new ResourceCreationException("The user could not be assigned to the task list.");
 
+
         return new CreateTaskListResponse
         {
-            Message = $"Task list created: {createdTaskList.Id}",
-            TasklistInfo = _mapper.Map<TasklistInfo>(createdTaskList)
+            TasklistId = createdTaskList.Id,
         };
     }
 
@@ -76,7 +80,6 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
 
     private async Task<Domain.Entities.Tasklist> CreateTaskListAsync(string userId, Domain.Entities.Tasklist tasklist)
     {
-        tasklist.CreatedById = userId;
         _context.Tasklists.Add(tasklist);
         await _context.SaveChangesAsync();
         return tasklist;
