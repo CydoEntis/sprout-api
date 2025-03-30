@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
@@ -21,13 +22,16 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
         public DateTime UpdatedAt { get; set; }
         public List<Member> Members { get; set; } = new List<Member>();
         public string CategoryColor { get; set; }
+        public bool IsFavorited { get; set; }
     }
 
-    public class GetTaskListByIdQueryHandler : IRequestHandler<GetTasklistByIdQuery, GetTaskListByIdQueryResponse>
+    public class GetTaskListByIdQueryHandler : AuthRequiredHandler,
+        IRequestHandler<GetTasklistByIdQuery, GetTaskListByIdQueryResponse>
     {
         private readonly AppDbContext _context;
 
-        public GetTaskListByIdQueryHandler(AppDbContext context)
+        public GetTaskListByIdQueryHandler(HttpContextAccessor httpContextAccessor, AppDbContext context) : base(
+            httpContextAccessor)
         {
             _context = context;
         }
@@ -35,14 +39,15 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
         public async Task<GetTaskListByIdQueryResponse> Handle(GetTasklistByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var taskListResponse = await GetTaskListByIdAsync(request.TaskListId, cancellationToken);
+            var userId = GetAuthenticatedUserId();
+            var taskListResponse = await GetTaskListByIdAsync(request.TaskListId, userId, cancellationToken);
             if (taskListResponse == null)
                 throw new NotFoundException("Task list could not be found.");
 
             return taskListResponse;
         }
 
-        private async Task<GetTaskListByIdQueryResponse?> GetTaskListByIdAsync(int taskListId,
+        private async Task<GetTaskListByIdQueryResponse?> GetTaskListByIdAsync(int taskListId, string userId,
             CancellationToken cancellationToken)
         {
             var taskListData = await _context.UserTasklistCategories
@@ -66,7 +71,10 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
                         .ToList(),
                     TotalTasksCount = utc.Tasklist.TaskListItems.Count(),
                     CompletedTasksCount = utc.Tasklist.TaskListItems.Count(ti => ti.IsCompleted),
-                    CategoryColor = utc.Category.Color
+                    CategoryColor = utc.Category.Color,
+                    IsFavorited = _context.FavoriteTasklists
+                        .Any(f => f.UserId == userId &&
+                                  f.TaskListId == utc.Tasklist.Id) // Check if the task list is favorited
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 

@@ -17,4 +17,5 @@ public class TasklistInfo
     public double TaskCompletionPercentage { get; set; }
     public List<Member> Members { get; set; } = new List<Member>();
     public List<TasklistItemDetail> TaskListItems { get; set; } = new List<TasklistItemDetail>();
+    public bool IsFavorited { get; set; }
 }

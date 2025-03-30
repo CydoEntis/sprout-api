@@ -88,7 +88,10 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     TaskCompletionPercentage = ut.Tasklist.TaskListItems.Any()
                         ? Math.Round((ut.Tasklist.TaskListItems.Count(ti => ti.IsCompleted) /
                                       (double)Math.Max(1, ut.Tasklist.TaskListItems.Count())) * 100, 2)
-                        : 0
+                        : 0,
+                    IsFavorited = _context.FavoriteTasklists
+                        .Any(f => f.UserId == userId &&
+                                  f.TaskListId == ut.Tasklist.Id) // Check if the task list is favorited
                 })
                 .ToListAsync();
 
