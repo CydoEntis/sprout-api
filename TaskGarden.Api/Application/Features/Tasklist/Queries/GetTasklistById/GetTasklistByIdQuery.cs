@@ -48,8 +48,8 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
             var taskListData = await _context.UserTasklistCategories
                 .AsNoTracking()
                 .Where(utc => utc.TaskListId == taskListId)
-                .Include(utc => utc.Tasklist) // Ensure we get the Tasklist data
-                .Include(utc => utc.Category) // Ensure we get the Category data
+                .Include(utc => utc.Tasklist)
+                .Include(utc => utc.Category)
                 .Select(utc => new GetTaskListByIdQueryResponse
                 {
                     Id = utc.Tasklist.Id,
@@ -66,7 +66,7 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
                         .ToList(),
                     TotalTasksCount = utc.Tasklist.TaskListItems.Count(),
                     CompletedTasksCount = utc.Tasklist.TaskListItems.Count(ti => ti.IsCompleted),
-                    CategoryColor = utc.Category.Color // Optional: Can keep it if needed separately
+                    CategoryColor = utc.Category.Color
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 

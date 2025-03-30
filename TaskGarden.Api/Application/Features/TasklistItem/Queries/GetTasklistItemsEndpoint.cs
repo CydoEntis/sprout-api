@@ -10,7 +10,7 @@ public static class GetTasklistItemsEndpoint
     public static void MapGetTasklistItemsEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/api/task-list/{taskListId}/items",
-                async (IMediator mediator, int taskListId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10) =>
+                async (IMediator mediator, int taskListId, [FromQuery] int page = 1, [FromQuery] int pageSize = 20) =>
                 {
                     var query = new GetTaskListItemsQuery(taskListId, page, pageSize);
                     var response = await mediator.Send(query);
