@@ -4,6 +4,7 @@ using TaskGarden.Api.Application.Features.TaskListItem.Commands.DeleteTaskListIt
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
+using TaskGarden.Api.Application.Features.TasklistItem.Queries;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem;
 
@@ -17,5 +18,6 @@ public static class TaskListitemEndpoints
         routes.MapDeleteTaskListItemEndpoint();
         routes.MapReorderTaskListItemEndpoint();
         routes.MapUpdateTaskListItemCompletedStatusEndpoint();
+        routes.MapGetTasklistItemsEndpoint();
     }
 }

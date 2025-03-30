@@ -20,7 +20,6 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public List<Member> Members { get; set; } = new List<Member>();
-        public List<TasklistItemDetail> TasklistItems { get; set; } = new List<TasklistItemDetail>();
         public string CategoryColor { get; set; }
     }
 
@@ -67,16 +66,6 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
                         .ToList(),
                     TotalTasksCount = utc.Tasklist.TaskListItems.Count(),
                     CompletedTasksCount = utc.Tasklist.TaskListItems.Count(ti => ti.IsCompleted),
-                    TasklistItems = utc.Tasklist.TaskListItems
-                        .OrderBy(q => q.Position)
-                        .Select(q => new TasklistItemDetail
-                        {
-                            Id = q.Id,
-                            Description = q.Description,
-                            IsCompleted = q.IsCompleted,
-                            Position = q.Position,
-                        })
-                        .ToList(),
                     CategoryColor = utc.Category.Color // Optional: Can keep it if needed separately
                 })
                 .FirstOrDefaultAsync(cancellationToken);
