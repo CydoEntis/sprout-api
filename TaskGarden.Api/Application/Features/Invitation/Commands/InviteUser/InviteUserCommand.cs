@@ -105,7 +105,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
             TaskListId = taskList.Id,
             InvitedUserEmail = recipientsEmail,
             InviterUserId = inviter.Id,
-            Token = _tokenService.GenerateInviteToken(inviter, taskList.Id, taskList.Name, taskList.Members, role),
+            Token = _tokenService.GenerateInviteToken(inviter, taskList.Id, taskList.Name, taskList.Members),
             Status = InvitationStatus.Pending,
             ExpiresAt = DateTime.UtcNow.AddDays(7),
             Role = role
