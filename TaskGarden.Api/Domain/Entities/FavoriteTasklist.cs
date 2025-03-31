@@ -2,7 +2,7 @@
 
 namespace TaskGarden.Api.Domain.Entities;
 
-public class FavoriteTasklist
+public class FavoriteTasklist : BaseEntity
 {
     public string UserId { get; set; }
     public int TaskListId { get; set; }

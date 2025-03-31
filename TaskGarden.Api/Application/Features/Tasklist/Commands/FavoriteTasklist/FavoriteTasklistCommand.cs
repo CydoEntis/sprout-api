@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.FavoriteTasklist;
+namespace TaskGarden.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
 
 public record FavoriteTaskListCommand(int TaskListId) : IRequest<FavoriteTaskListResponse>;
 

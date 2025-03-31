@@ -30,7 +30,7 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
     {
         private readonly AppDbContext _context;
 
-        public GetTaskListByIdQueryHandler(HttpContextAccessor httpContextAccessor, AppDbContext context) : base(
+        public GetTaskListByIdQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context) : base(
             httpContextAccessor)
         {
             _context = context;
