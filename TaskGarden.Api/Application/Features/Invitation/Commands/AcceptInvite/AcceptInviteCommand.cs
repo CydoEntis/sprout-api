@@ -78,6 +78,18 @@ public class AcceptInviteCommandHandler
         if (!addedToTaskList)
             throw new ApplicationException("Failed to add user to the task list.");
 
+        // Fetch the role from the database
+        var userRole = await _context.TaskListMembers
+            .Where(m => m.UserId == userId && m.TaskListId == invitation.TaskListId)
+            .Select(m => m.Role)
+            .FirstOrDefaultAsync();
+
+        if (userRole == null)
+            throw new ApplicationException("User's role could not be determined.");
+
+        var roleAssigned = await AssignUserRoleAsync(userId, invitation.TaskListId, userRole);
+        if (!roleAssigned)
+            throw new ApplicationException("Failed to assign the role to the user.");
 
         return new AcceptInviteCommandResponse
         {
@@ -85,6 +97,21 @@ public class AcceptInviteCommandHandler
             TaskListId = invitation.TaskListId,
             CategoryName = category?.Name ?? "No category assigned"
         };
+    }
+
+    private async Task<bool> AssignUserRoleAsync(string userId, int taskListId, TaskListRole role)
+    {
+        var taskListMember = await _context.TaskListMembers
+            .FirstOrDefaultAsync(m => m.UserId == userId && m.TaskListId == taskListId);
+
+        if (taskListMember == null)
+            return false;
+
+        taskListMember.Role = role;
+        _context.TaskListMembers.Update(taskListMember);
+
+        var result = await _context.SaveChangesAsync();
+        return result > 0;
     }
 
 
