@@ -1,4 +1,5 @@
 ﻿using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Application.Shared.Projections;
@@ -18,4 +19,5 @@ public class TasklistInfo
     public List<Member> Members { get; set; } = new List<Member>();
     public List<TasklistItemDetail> TaskListItems { get; set; } = new List<TasklistItemDetail>();
     public bool IsFavorited { get; set; }
+    public TaskListRole UserRole { get; set; }
 }

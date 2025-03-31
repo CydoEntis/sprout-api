@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
+using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Infrastructure.Services.Identity;
@@ -82,7 +83,7 @@ public class TokenService : ITokenService
 
 
     public string GenerateInviteToken(AppUser inviter, int taskListId, string taskListName,
-        string taskListCategoryName, List<Member> taskListMembers)
+        List<Member> taskListMembers, TaskListRole role)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -93,7 +94,7 @@ public class TokenService : ITokenService
             new Claim("inviterEmail", inviter.Email),
             new Claim("taskListName", taskListName),
             new Claim("taskListId", taskListId.ToString()),
-            new Claim("category", taskListCategoryName),
+            new Claim("role", role.ToString()), // Add the user's role in the invitation token
             new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
         };
 

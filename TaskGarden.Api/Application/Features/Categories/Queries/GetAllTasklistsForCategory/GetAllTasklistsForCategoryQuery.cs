@@ -91,7 +91,11 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                         : 0,
                     IsFavorited = _context.FavoriteTasklists
                         .Any(f => f.UserId == userId &&
-                                  f.TaskListId == ut.Tasklist.Id) // Check if the task list is favorited
+                                  f.TaskListId == ut.Tasklist.Id),
+                    UserRole = ut.Tasklist.TaskListMembers
+                        .Where(tlm => tlm.UserId == userId)
+                        .Select(tlm => tlm.Role)
+                        .FirstOrDefault()
                 })
                 .ToListAsync();
 

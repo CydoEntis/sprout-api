@@ -1,5 +1,6 @@
 ﻿using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Infrastructure.Services.Interfaces;
@@ -14,5 +15,5 @@ public interface ITokenService
     string? ExtractUserIdFromToken(string token);
 
     string GenerateInviteToken(AppUser inviter, int taskListId, string taskListName,
-        string taskListCategoryName, List<Member> taskListMembers);
+        List<Member> taskListMembers, TaskListRole role);
 }
