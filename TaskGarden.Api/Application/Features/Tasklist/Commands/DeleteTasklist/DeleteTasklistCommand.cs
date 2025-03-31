@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Enums;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Domain.Enums;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
 

@@ -7,6 +7,7 @@ using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Domain.Enums;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Infrastructure;

@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Domain.Enums;
+﻿namespace TaskGarden.Api.Domain.Enums;
 
 public enum TaskListRole
 {

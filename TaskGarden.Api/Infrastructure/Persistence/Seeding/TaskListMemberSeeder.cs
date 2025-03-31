@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Domain.Enums;
 using TaskGarden.Domain.Enums;
 
 namespace TaskGarden.Api.Infrastructure.Persistence.Seeding;
