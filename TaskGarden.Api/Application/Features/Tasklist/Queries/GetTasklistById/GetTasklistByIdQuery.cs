@@ -63,7 +63,7 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
                     Category = utc.Category,
                     UserRole = utc.Tasklist.TaskListMembers
                         .Where(m => m.UserId == userId)
-                        .Select(m => m.Role) // Directly selecting enum value
+                        .Select(m => m.Role)
                         .FirstOrDefault()
                 })
                 .FirstOrDefaultAsync(cancellationToken);
@@ -90,7 +90,7 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
                 CategoryColor = taskListData.Category.Color,
                 IsFavorited = await _context.FavoriteTasklists
                     .AnyAsync(f => f.UserId == userId && f.TaskListId == taskListData.TaskList.Id, cancellationToken),
-                MembersRole = taskListData.UserRole // This will now return the enum value
+                MembersRole = taskListData.UserRole
             };
         }
     }
