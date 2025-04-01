@@ -19,56 +19,56 @@ public class TaskListMemberSeeder : IEntityTypeConfiguration<TaskListMember>
             new TaskListMember
             {
                 Id = 1,
-                TaskListId = 1,
+                TasklistId = 1,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 2,
-                TaskListId = 2,
+                TasklistId = 2,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 3,
-                TaskListId = 3,
+                TasklistId = 3,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 4,
-                TaskListId = 4,
+                TasklistId = 4,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 5,
-                TaskListId = 5,
+                TasklistId = 5,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 6,
-                TaskListId = 6,
+                TasklistId = 6,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 7,
-                TaskListId = 7,
+                TasklistId = 7,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 8,
-                TaskListId = 8,
+                TasklistId = 8,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Owner
             },
@@ -76,14 +76,14 @@ public class TaskListMemberSeeder : IEntityTypeConfiguration<TaskListMember>
             new TaskListMember
             {
                 Id = 9,
-                TaskListId = 9,
+                TasklistId = 9,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 10,
-                TaskListId = 10,
+                TasklistId = 10,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Owner
             },
@@ -91,28 +91,28 @@ public class TaskListMemberSeeder : IEntityTypeConfiguration<TaskListMember>
             new TaskListMember
             {
                 Id = 11,
-                TaskListId = 11,
+                TasklistId = 11,
                 UserId = demoUser3Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 12,
-                TaskListId = 12,
+                TasklistId = 12,
                 UserId = demoUser3Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 13,
-                TaskListId = 13,
+                TasklistId = 13,
                 UserId = demoUser3Id,
                 Role = TaskListRole.Owner
             },
             new TaskListMember
             {
                 Id = 14,
-                TaskListId = 14,
+                TasklistId = 14,
                 UserId = demoUser3Id,
                 Role = TaskListRole.Owner
             },
@@ -120,98 +120,98 @@ public class TaskListMemberSeeder : IEntityTypeConfiguration<TaskListMember>
             new TaskListMember
             {
                 Id = 15,
-                TaskListId = 1,
+                TasklistId = 1,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 16,
-                TaskListId = 2,
+                TasklistId = 2,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 17,
-                TaskListId = 3,
+                TasklistId = 3,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 18,
-                TaskListId = 4,
+                TasklistId = 4,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 19,
-                TaskListId = 5,
+                TasklistId = 5,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 20,
-                TaskListId = 6,
+                TasklistId = 6,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 21,
-                TaskListId = 7,
+                TasklistId = 7,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 22,
-                TaskListId = 8,
+                TasklistId = 8,
                 UserId = demoUser2Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 23,
-                TaskListId = 9,
+                TasklistId = 9,
                 UserId = demoUser3Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 24,
-                TaskListId = 10,
+                TasklistId = 10,
                 UserId = demoUser3Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 25,
-                TaskListId = 11,
+                TasklistId = 11,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 26,
-                TaskListId = 12,
+                TasklistId = 12,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 27,
-                TaskListId = 13,
+                TasklistId = 13,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Viewer
             },
             new TaskListMember
             {
                 Id = 28,
-                TaskListId = 14,
+                TasklistId = 14,
                 UserId = demoUser1Id,
                 Role = TaskListRole.Viewer
             }

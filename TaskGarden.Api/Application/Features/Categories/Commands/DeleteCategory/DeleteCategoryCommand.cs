@@ -86,15 +86,15 @@ public class DeleteCategoryCommandHandler :
 
     private async Task DeleteTaskListItems(List<int> taskListIds)
     {
-        await _context.TaskListItems
-            .Where(tli => taskListIds.Contains(tli.TaskListId))
+        await _context.TasklistItems
+            .Where(tli => taskListIds.Contains(tli.TasklistId))
             .ExecuteDeleteAsync();
     }
 
     private async Task DeleteTaskListMembers(List<int> taskListIds)
     {
-        await _context.TaskListMembers
-            .Where(tla => taskListIds.Contains(tla.TaskListId))
+        await _context.TasklistMembers
+            .Where(tla => taskListIds.Contains(tla.TasklistId))
             .ExecuteDeleteAsync();
     }
 

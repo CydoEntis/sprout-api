@@ -45,8 +45,8 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
 
     private async Task<bool> IsUserOwnerAsync(string userId, Domain.Entities.Tasklist tasklist)
     {
-        return await _context.TaskListMembers
-            .AnyAsync(q => q.UserId == userId && q.TaskListId == tasklist.Id && q.Role == TaskListRole.Owner);
+        return await _context.TasklistMembers
+            .AnyAsync(q => q.UserId == userId && q.TasklistId == tasklist.Id && q.Role == TaskListRole.Owner);
     }
 
     private async Task DeleteTaskListTransactionAsync(Domain.Entities.Tasklist tasklist)
@@ -69,22 +69,22 @@ public class DeleteTaskListCommandHandler : AuthRequiredHandler,
 
     private async Task DeleteTaskListItemsAsync(int taskListId)
     {
-        var taskListItems = await _context.TaskListItems
-            .Where(q => q.TaskListId == taskListId)
+        var taskListItems = await _context.TasklistItems
+            .Where(q => q.TasklistId == taskListId)
             .ToListAsync();
 
         if (taskListItems.Any())
-            _context.TaskListItems.RemoveRange(taskListItems);
+            _context.TasklistItems.RemoveRange(taskListItems);
     }
 
     private async Task DeleteTaskListMembersAsync(int taskListId)
     {
-        var taskListMembers = await _context.TaskListMembers
-            .Where(q => q.TaskListId == taskListId)
+        var taskListMembers = await _context.TasklistMembers
+            .Where(q => q.TasklistId == taskListId)
             .ToListAsync();
 
         if (taskListMembers.Any())
-            _context.TaskListMembers.RemoveRange(taskListMembers);
+            _context.TasklistMembers.RemoveRange(taskListMembers);
     }
 
     private async Task DeleteTaskListAsync(Domain.Entities.Tasklist tasklist)

@@ -38,7 +38,7 @@ public class UpdateTaskListCommandHandler : AuthRequiredHandler,
             throw new ValidationException(validationResult.Errors);
         }
 
-        var hasAllowedRole = await _context.TaskListMembers.IsOwnerOrEditorAsync(userId, request.TasklistId);
+        var hasAllowedRole = await _context.TasklistMembers.IsOwnerOrEditorAsync(userId, request.TasklistId);
         if (!hasAllowedRole)
             throw new PermissionException("User does not have the required role to update the task list.");
 

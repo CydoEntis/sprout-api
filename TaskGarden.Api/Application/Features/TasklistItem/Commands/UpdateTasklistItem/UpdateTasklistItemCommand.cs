@@ -29,7 +29,7 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
     public async Task<UpdateTaskListItemResponse> Handle(UpdateTasklistItemCommand request,
         CancellationToken cancellationToken)
     {
-        var taskListItem = await _context.TaskListItems.GetByIdAsync(request.Id);
+        var taskListItem = await _context.TasklistItems.GetByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task list item with id {request.Id} was not found");
 
@@ -38,7 +38,7 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
             throw new ResourceModificationException($"Task list item with id: {taskListItem.Id} could not be updated.");
 
         return new UpdateTaskListItemResponse()
-            { Message = $"Task list item with id {taskListItem.Id} updated", TaskListId = taskListItem.TaskListId };
+            { Message = $"Task list item with id {taskListItem.Id} updated", TaskListId = taskListItem.TasklistId };
     }
 
 

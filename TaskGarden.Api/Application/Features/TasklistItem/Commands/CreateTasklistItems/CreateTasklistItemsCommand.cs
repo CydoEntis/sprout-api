@@ -51,11 +51,11 @@ public class
         foreach (var item in request.TaskListItems)
         {
             var taskListItem = _mapper.Map<Domain.Entities.TasklistItem>(item);
-            taskListItem.TaskListId = item.TaskListId;
+            taskListItem.TasklistId = item.TaskListId;
             taskListItems.Add(taskListItem);
         }
 
-        await _context.TaskListItems.AddRangeAsync(taskListItems);
+        await _context.TasklistItems.AddRangeAsync(taskListItems);
         await _context.SaveChangesAsync();
 
         var taskListItemDetails = _mapper.Map<List<TasklistItemDetail>>(taskListItems);

@@ -88,10 +88,10 @@ public class CreateTaskListCommandHandler : AuthRequiredHandler,
 
     private async Task<bool> AssignUserToTaskListAsync(string userId, Domain.Entities.Tasklist tasklist)
     {
-        _context.TaskListMembers.Add(new TaskListMember
+        _context.TasklistMembers.Add(new TaskListMember
         {
             UserId = userId,
-            TaskListId = tasklist.Id,
+            TasklistId = tasklist.Id,
             Role = TaskListRole.Owner
         });
 

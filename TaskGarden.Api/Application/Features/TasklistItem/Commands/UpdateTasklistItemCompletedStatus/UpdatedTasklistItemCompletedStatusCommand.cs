@@ -43,11 +43,11 @@ public class UpdateTaskListItemCompletedStatusCommandHandler : AuthRequiredHandl
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var taskListItem = await _context.TaskListItems.GetByIdAsync(request.Id);
+        var taskListItem = await _context.TasklistItems.GetByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task List Item with id: {request.Id} not found");
 
-        var userHasRole = await _context.TaskListMembers.IsOwnerOrEditorAsync(userId, taskListItem.TaskListId);
+        var userHasRole = await _context.TasklistMembers.IsOwnerOrEditorAsync(userId, taskListItem.TasklistId);
         if (!userHasRole)
             throw new PermissionException("User doesn't have role to update item.");
 

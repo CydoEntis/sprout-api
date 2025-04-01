@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskGarden.Api.Domain.Entities;
 
-namespace TaskGarden.Infrastructure.Configurations;
+namespace TaskGarden.Api.Infrastructure.Persistence.Configurations;
 
 public class TaskListMemberConfiguration : IEntityTypeConfiguration<TaskListMember>
 {
     public void Configure(EntityTypeBuilder<TaskListMember> builder)
     {
-        builder.HasKey(ut => new { ut.UserId, ut.TaskListId });
+        builder.HasKey(ut => new { ut.UserId, TaskListId = ut.TasklistId });
 
         builder.HasOne(ut => ut.User)
             .WithMany(u => u.TaskListMembers)
@@ -16,6 +16,6 @@ public class TaskListMemberConfiguration : IEntityTypeConfiguration<TaskListMemb
 
         builder.HasOne(ut => ut.Tasklist)
             .WithMany(t => t.TaskListMembers)
-            .HasForeignKey(ut => ut.TaskListId);
+            .HasForeignKey(ut => ut.TasklistId);
     }
 }

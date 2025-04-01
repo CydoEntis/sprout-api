@@ -22,8 +22,8 @@ namespace TaskGarden.Api.Application.Features.TasklistItem.Queries
         public async Task<PagedResponse<TasklistItemDetail>> Handle(GetTaskListItemsQuery request,
             CancellationToken cancellationToken)
         {
-            var query = _context.TaskListItems
-                .Where(t => t.TaskListId == request.TaskListId)
+            var query = _context.TasklistItems
+                .Where(t => t.TasklistId == request.TaskListId)
                 .OrderBy(t => t.Position)
                 .Select(t => new TasklistItemDetail
                 {

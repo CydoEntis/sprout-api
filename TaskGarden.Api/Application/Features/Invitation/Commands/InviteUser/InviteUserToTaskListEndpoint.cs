@@ -14,7 +14,8 @@ public static class InviteUserToTaskListEndpoint
                     var inviteCommand = new InviteUserCommand
                     {
                         InvitedUserEmail = command.InvitedUserEmail,
-                        TaskListId = taskListId
+                        TasklistId = taskListId,
+                        Role = command.Role
                     };
 
                     var result = await mediator.Send(inviteCommand);

@@ -7,7 +7,7 @@ public static class AcceptInviteEndpoint
 {
     public static void MapAcceptInviteEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapPost("/api/task-list/{taskListId}/invitations/{token}/accept",
+        routes.MapPost("/api/task-list/{taskListId}/invitations/{inviteToken}/accept",
                 async (string inviteToken, AcceptInviteCommand command, IMediator mediator) =>
                 {
                     var updatedCommand = command with { Token = inviteToken };

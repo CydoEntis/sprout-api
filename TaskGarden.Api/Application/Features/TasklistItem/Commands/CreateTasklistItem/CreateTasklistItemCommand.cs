@@ -46,7 +46,7 @@ public class CreateTaskListItemCommandHandler :
             throw new NotFoundException("TaskList");
 
         var taskListItem = _mapper.Map<Domain.Entities.TasklistItem>(request);
-        taskListItem.TaskListId = request.TaskListId;
+        taskListItem.TasklistId = request.TaskListId;
 
         var createdTaskListItem = await CreateTaskListItemAsync(taskListItem, request.TaskListId);
 
@@ -60,8 +60,8 @@ public class CreateTaskListItemCommandHandler :
     private async Task<Domain.Entities.TasklistItem> CreateTaskListItemAsync(Domain.Entities.TasklistItem tasklistItem,
         int taskListId)
     {
-        tasklistItem.TaskListId = taskListId;
-        await _context.TaskListItems.AddAsync(tasklistItem);
+        tasklistItem.TasklistId = taskListId;
+        await _context.TasklistItems.AddAsync(tasklistItem);
         await _context.SaveChangesAsync();
         return tasklistItem;
     }

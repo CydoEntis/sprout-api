@@ -12,16 +12,16 @@ public static class TaskListMemberExtensions
         string userId,
         int taskListId)
     {
-        return await taskListMembers.AnyAsync(q => q.UserId == userId && q.TaskListId == taskListId);
+        return await taskListMembers.AnyAsync(q => q.UserId == userId && q.TasklistId == taskListId);
     }
 
     public static async Task<bool> AssignUserAsync(this AppDbContext context, string userId,
         int taskListId)
     {
-        await context.TaskListMembers.AddAsync(new TaskListMember
+        await context.TasklistMembers.AddAsync(new TaskListMember
         {
             UserId = userId,
-            TaskListId = taskListId,
+            TasklistId = taskListId,
             Role = TaskListRole.Owner
         });
 
@@ -32,7 +32,7 @@ public static class TaskListMemberExtensions
         int taskListId)
     {
         return await taskListMembers.AnyAsync(q =>
-            q.UserId == userId && q.TaskListId == taskListId &&
+            q.UserId == userId && q.TasklistId == taskListId &&
             (q.Role == TaskListRole.Owner || q.Role == TaskListRole.Editor));
     }
 }

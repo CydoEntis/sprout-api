@@ -41,8 +41,8 @@ public class ReorderTaskListItemCommandHandler
 
     private async Task ReorderTaskListItemsAsync(int taskListId, List<TasklistItemPosition> items)
     {
-        var taskListItems = await _context.TaskListItems
-            .Where(i => i.TaskListId == taskListId)
+        var taskListItems = await _context.TasklistItems
+            .Where(i => i.TasklistId == taskListId)
             .ToListAsync();
 
         foreach (var item in items)

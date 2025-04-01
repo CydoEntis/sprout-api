@@ -7,8 +7,8 @@ public class TasklistItem : BaseEntity
     public string Description { get; set; }
     public bool IsCompleted { get; set; } = false;
     public int Position { get; set; }
-    public required int TaskListId { get; set; }
-    [ForeignKey("TaskListId")]
+    public required int TasklistId { get; set; }
+    [ForeignKey("TasklistId")]
     public Tasklist Tasklist { get; set; }
     public string? CompletedById { get; set; }
     [ForeignKey("CompletedById")]

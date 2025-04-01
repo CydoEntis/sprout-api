@@ -30,15 +30,15 @@ public class DeleteTaskListItemCommandHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
 
-        var taskListItem = await _context.TaskListItems.ExistsAsync(request.TaskListItemId);
+        var taskListItem = await _context.TasklistItems.ExistsAsync(request.TaskListItemId);
         if (taskListItem == null)
             throw new NotFoundException("Task list item not found.");
 
-        var taskList = await _context.Tasklists.GetByIdAsync(taskListItem.TaskListId);
+        var taskList = await _context.Tasklists.GetByIdAsync(taskListItem.TasklistId);
         if (taskList == null)
             throw new NotFoundException("Task list not found.");
 
-        if (!await _context.TaskListMembers.IsOwnerOrEditorAsync(userId, taskList.Id))
+        if (!await _context.TasklistMembers.IsOwnerOrEditorAsync(userId, taskList.Id))
             throw new UnauthorizedAccessException("You are not authorized to delete items from this task list.");
 
 
@@ -48,13 +48,13 @@ public class DeleteTaskListItemCommandHandler : AuthRequiredHandler,
         return new DeleteTaskListItemResponse()
         {
             Message = $"Item with id: {taskListItem.Id} has been deleted successfully.",
-            TaskListId = taskListItem.TaskListId
+            TaskListId = taskListItem.TasklistId
         };
     }
 
     private async Task<bool> DeleteTaskListItem(Domain.Entities.TasklistItem tasklistItem)
     {
-        _context.TaskListItems.Remove(tasklistItem);
+        _context.TasklistItems.Remove(tasklistItem);
         var result = await _context.SaveChangesAsync();
         return result > 0;
     }

@@ -17,7 +17,7 @@ namespace TaskGarden.Api.Application.Features.Invitation.Commands.InviteUser;
 public record InviteUserCommand : IRequest<bool>
 {
     public string InvitedUserEmail { get; init; } = default!;
-    public int TaskListId { get; init; }
+    public int TasklistId { get; init; }
     public TaskListRole Role { get; init; } // Added Role property to specify the user's role
 }
 
@@ -41,7 +41,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
 
     public async Task<bool> Handle(InviteUserCommand request, CancellationToken cancellationToken)
     {
-        if (await InviteExistsAsync(request.InvitedUserEmail, request.TaskListId))
+        if (await InviteExistsAsync(request.InvitedUserEmail, request.TasklistId))
             throw new ConflictException("An invitation already exists for this user.");
 
         var userId = GetAuthenticatedUserId();
@@ -50,11 +50,11 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         if (user == null)
             throw new NotFoundException("User not found.");
 
-        var taskList = await GetTaskListDetailsById(request.TaskListId);
+        var taskList = await GetTaskListDetailsById(request.TasklistId);
         if (taskList == null)
             throw new NotFoundException("Task list not found");
 
-        if (await _context.TaskListMembers.IsMemberAsync(request.InvitedUserEmail, request.TaskListId))
+        if (await _context.TasklistMembers.IsMemberAsync(request.InvitedUserEmail, request.TasklistId))
             throw new ConflictException("The user is already a member of this task list.");
 
         var invitation = await CreateInviteAsync(taskList, request.InvitedUserEmail, user, request.Role);
@@ -70,7 +70,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
     {
         return await _context.Invitations
             .AnyAsync(i => i.InvitedUserEmail == email &&
-                           i.TaskListId == taskListId &&
+                           i.TasklistId == taskListId &&
                            i.Status == InvitationStatus.Pending);
     }
 
@@ -103,7 +103,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
     {
         var invitation = new Domain.Entities.Invitation
         {
-            TaskListId = taskList.Id,
+            TasklistId = taskList.Id,
             InvitedUserEmail = recipientsEmail,
             InviterUserId = inviter.Id,
             Token = _tokenService.GenerateInviteToken(inviter, taskList.Id, taskList.Name, taskList.Members),

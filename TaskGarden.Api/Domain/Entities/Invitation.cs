@@ -5,7 +5,7 @@ namespace TaskGarden.Api.Domain.Entities;
 
 public class Invitation : BaseEntity
 {
-    public int TaskListId { get; set; }
+    public int TasklistId { get; set; }
     public Tasklist Tasklist { get; set; }
 
     public string InvitedUserEmail { get; set; }

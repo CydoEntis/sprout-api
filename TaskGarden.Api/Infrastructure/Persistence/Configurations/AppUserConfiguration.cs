@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskGarden.Api.Domain.Entities;
 
-namespace TaskGarden.Infrastructure.Configurations;
+namespace TaskGarden.Api.Infrastructure.Persistence.Configurations;
 
 public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
 {

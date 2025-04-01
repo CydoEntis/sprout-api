@@ -92,8 +92,8 @@ public class TokenService : ITokenService
         {
             new Claim("inviter", $"{inviter.FirstName} {inviter.LastName}"),
             new Claim("inviterEmail", inviter.Email),
-            new Claim("taskListName", taskListName),
-            new Claim("taskListId", taskListId.ToString()),
+            new Claim("tasklistName", taskListName),
+            new Claim("tasklistId", taskListId.ToString()),
             new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
         };
 
