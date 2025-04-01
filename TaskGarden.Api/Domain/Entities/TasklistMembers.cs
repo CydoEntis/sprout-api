@@ -9,7 +9,6 @@ public class TaskListMember : BaseEntity
     public AppUser User { get; set; }
     public int TasklistId { get; set; }
     public Tasklist Tasklist { get; set; }
-    public TaskListRole MemberRole { get; set; }
 
     public TaskListRole Role { get; set; } = TaskListRole.Viewer;
 }

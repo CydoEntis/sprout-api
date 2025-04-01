@@ -24,7 +24,7 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
         public List<Member> Members { get; set; } = new List<Member>();
         public string CategoryColor { get; set; }
         public bool IsFavorited { get; set; }
-        public TaskListRole MembersRole { get; set; }
+        public TaskListRole Role { get; set; }
     }
 
     public class GetTaskListByIdQueryHandler : AuthRequiredHandler,
@@ -56,16 +56,11 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
                 .AsNoTracking()
                 .Where(utc => utc.TaskListId == taskListId)
                 .Include(utc => utc.Tasklist)
+                .ThenInclude(tl => tl.TaskListMembers)
+                .ThenInclude(tlm => tlm.User)
+                .Include(utc => utc.Tasklist)
+                .ThenInclude(tl => tl.TaskListItems)
                 .Include(utc => utc.Category)
-                .Select(utc => new
-                {
-                    TaskList = utc.Tasklist,
-                    Category = utc.Category,
-                    UserRole = utc.Tasklist.TaskListMembers
-                        .Where(m => m.UserId == userId)
-                        .Select(m => m.Role)
-                        .FirstOrDefault()
-                })
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (taskListData == null)
@@ -73,24 +68,28 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
 
             return new GetTaskListByIdQueryResponse
             {
-                Id = taskListData.TaskList.Id,
-                Name = taskListData.TaskList.Name,
-                Description = taskListData.TaskList.Description,
-                CreatedAt = taskListData.TaskList.CreatedAt,
-                UpdatedAt = taskListData.TaskList.UpdatedAt,
-                Members = taskListData.TaskList.TaskListMembers
+                Id = taskListData.Tasklist.Id,
+                Name = taskListData.Tasklist.Name,
+                Description = taskListData.Tasklist.Description,
+                CreatedAt = taskListData.Tasklist.CreatedAt,
+                UpdatedAt = taskListData.Tasklist.UpdatedAt,
+                Members = taskListData.Tasklist.TaskListMembers
+                    .Where(tlm => tlm.User != null) // ✅ Ensure user is not null
                     .Select(tlm => new Member
                     {
                         Id = tlm.User.Id,
                         Name = $"{tlm.User.FirstName} {tlm.User.LastName}"
                     })
                     .ToList(),
-                TotalTasksCount = taskListData.TaskList.TaskListItems.Count(),
-                CompletedTasksCount = taskListData.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
+                TotalTasksCount = taskListData.Tasklist.TaskListItems.Count(),
+                CompletedTasksCount = taskListData.Tasklist.TaskListItems.Count(ti => ti.IsCompleted),
                 CategoryColor = taskListData.Category.Color,
                 IsFavorited = await _context.FavoriteTasklists
-                    .AnyAsync(f => f.UserId == userId && f.TaskListId == taskListData.TaskList.Id, cancellationToken),
-                MembersRole = taskListData.UserRole
+                    .AnyAsync(f => f.UserId == userId && f.TaskListId == taskListData.Tasklist.Id, cancellationToken),
+                Role = taskListData.Tasklist.TaskListMembers
+                    .Where(m => m.UserId == userId)
+                    .Select(m => m.Role)
+                    .FirstOrDefault()
             };
         }
     }
