@@ -8,7 +8,7 @@ using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
 
-public record UpdateUserRoleCommand(int TaskListId, string TargetUserId, TaskListRole NewRole)
+public record UpdateUserRoleCommand(int TaskListId, string UserId, TaskListRole NewRole)
     : IRequest<UpdateUserRoleCommandResponse>;
 
 public class UpdateUserRoleCommandResponse : BaseResponse
@@ -39,7 +39,7 @@ public class UpdateUserRoleCommandHandler
             throw new PermissionException("You do not have permission to update roles.");
 
         var targetUser = await _context.TasklistMembers
-            .FirstOrDefaultAsync(m => m.UserId == request.TargetUserId && m.TasklistId == request.TaskListId,
+            .FirstOrDefaultAsync(m => m.UserId == request.UserId && m.TasklistId == request.TaskListId,
                 cancellationToken);
 
         if (targetUser == null)

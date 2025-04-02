@@ -8,7 +8,7 @@ using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TasklistMembers.Commands.RemoveUserFromTasklist;
 
-public record RemoveUserFromTasklistCommand(int TaskListId, string TargetUserId)
+public record RemoveUserFromTasklistCommand(int TaskListId, string UserId)
     : IRequest<RemoveUserFromTasklistCommandResponse>;
 
 public class RemoveUserFromTasklistCommandResponse : BaseResponse
@@ -39,7 +39,7 @@ public class RemoveUserCommandHandler
             throw new PermissionException("You do not have permission to remove users.");
 
         var targetUser = await _context.TasklistMembers
-            .FirstOrDefaultAsync(m => m.UserId == request.TargetUserId && m.TasklistId == request.TaskListId,
+            .FirstOrDefaultAsync(m => m.UserId == request.UserId && m.TasklistId == request.TaskListId,
                 cancellationToken);
 
         if (targetUser == null)
@@ -48,7 +48,7 @@ public class RemoveUserCommandHandler
         _context.TasklistMembers.Remove(targetUser);
 
         var userCategory = await _context.UserTasklistCategories
-            .Where(utc => utc.UserId == request.TargetUserId && utc.TaskListId == request.TaskListId)
+            .Where(utc => utc.UserId == request.UserId && utc.TaskListId == request.TaskListId)
             .ToListAsync(cancellationToken);
 
         if (userCategory.Any())

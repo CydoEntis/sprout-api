@@ -7,10 +7,10 @@ public static class RemoveUserFromTasklistEndpoint
 {
     public static void MapRemoveUserFromTasklistEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapDelete("/api/task-list/{taskListId}/members/{targetUserId}",
-                async (int taskListId, string targetUserId, IMediator mediator) =>
+        routes.MapDelete("/api/task-list/{taskListId}/members/{userId}",
+                async (int taskListId, string userId, IMediator mediator) =>
                 {
-                    var command = new RemoveUserFromTasklistCommand(taskListId, targetUserId);
+                    var command = new RemoveUserFromTasklistCommand(taskListId, userId);
                     var response = await mediator.Send(command);
                     return Results.Ok(ApiResponse<RemoveUserFromTasklistCommandResponse>.SuccessWithData(response));
                 })
