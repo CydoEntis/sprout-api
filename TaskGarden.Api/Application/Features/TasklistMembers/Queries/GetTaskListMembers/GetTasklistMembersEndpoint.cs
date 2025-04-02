@@ -12,7 +12,7 @@ public static class GetTasklistMembersEndpoint
                 {
                     var query = new GetTasklistMembersQuery(taskListId);
                     var response = await mediator.Send(query);
-                    return Results.Ok(ApiResponse<GetTasklistMembersQueryResponse>.SuccessWithData(response));
+                    return Results.Ok(ApiResponse<List<GetTasklistMembersQueryResponse>>.SuccessWithData(response));
                 })
             .WithName("GetTasklistMembers")
             .WithTags("Task List Members")

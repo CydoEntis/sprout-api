@@ -1,27 +1,22 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Domain.Enums;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TasklistMembers.Queries.GetTasklistMembers;
 
-public record GetTasklistMembersQuery(int TaskListId) : IRequest<GetTasklistMembersQueryResponse>;
+public record GetTasklistMembersQuery(int TaskListId) : IRequest<List<GetTasklistMembersQueryResponse>>;
 
-public class GetTasklistMembersQueryResponse : BaseResponse
-{
-    public List<TasklistMemberDto> Members { get; set; } = new();
-}
-
-public class TasklistMemberDto
+public class GetTasklistMembersQueryResponse
 {
     public string UserId { get; set; } = string.Empty;
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Role { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public TaskListRole Role { get; set; }
 }
 
 public class GetTasklistMembersQueryHandler
-    : IRequestHandler<GetTasklistMembersQuery, GetTasklistMembersQueryResponse>
+    : IRequestHandler<GetTasklistMembersQuery, List<GetTasklistMembersQueryResponse>>
 {
     private readonly AppDbContext _context;
 
@@ -30,25 +25,23 @@ public class GetTasklistMembersQueryHandler
         _context = context;
     }
 
-    public async Task<GetTasklistMembersQueryResponse> Handle(GetTasklistMembersQuery request,
+    public async Task<List<GetTasklistMembersQueryResponse>> Handle(
+        GetTasklistMembersQuery request,
         CancellationToken cancellationToken)
     {
-        var members = await _context.TasklistMembers
+        return await _context.TasklistMembers
             .Where(m => m.TasklistId == request.TaskListId)
             .Join(
                 _context.Users,
                 member => member.UserId,
                 user => user.Id,
-                (member, user) => new TasklistMemberDto
+                (member, user) => new GetTasklistMembersQueryResponse
                 {
                     UserId = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Role = member.Role.ToString()
+                    Name = user.FirstName + " " + user.LastName,
+                    Role = member.Role
                 }
             )
             .ToListAsync(cancellationToken);
-
-        return new GetTasklistMembersQueryResponse { Members = members };
     }
 }

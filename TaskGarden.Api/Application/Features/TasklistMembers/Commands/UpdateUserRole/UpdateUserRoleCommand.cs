@@ -45,6 +45,15 @@ public class UpdateUserRoleCommandHandler
         if (targetUser == null)
             throw new NotFoundException("User is not a member of this task list.");
 
+        if (targetUser.Role == TaskListRole.Owner)
+            throw new PermissionException("Owners cannot have their role changed.");
+
+        if (requestingUser.Role == TaskListRole.Editor && targetUser.Role == TaskListRole.Editor)
+            throw new PermissionException("Editors cannot update the role of another Editor.");
+
+        if (request.NewRole == TaskListRole.Owner)
+            throw new PermissionException("Cannot assign the Owner role through this endpoint.");
+
         targetUser.Role = request.NewRole;
         _context.TasklistMembers.Update(targetUser);
         await _context.SaveChangesAsync(cancellationToken);
