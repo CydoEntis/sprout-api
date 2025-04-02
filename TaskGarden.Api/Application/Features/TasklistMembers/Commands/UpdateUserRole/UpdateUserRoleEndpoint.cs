@@ -9,8 +9,9 @@ public static class UpdateUserRoleEndpoint
     public static void MapUpdateUserRoleEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapPut("/api/task-list/{taskListId}/members/role",
-                async (UpdateUserRoleCommand command, IMediator mediator) =>
+                async (int taskListId, UpdateUserRoleRequest request, IMediator mediator) =>
                 {
+                    var command = new UpdateUserRoleCommand(taskListId, request.UserId, request.NewRole);
                     var response = await mediator.Send(command);
                     return Results.Ok(ApiResponse<UpdateUserRoleCommandResponse>.SuccessWithData(response));
                 })
@@ -22,4 +23,10 @@ public static class UpdateUserRoleEndpoint
             .Produces(StatusCodes.Status403Forbidden)
             .Produces(StatusCodes.Status404NotFound);
     }
+}
+
+public class UpdateUserRoleRequest
+{
+    public string UserId { get; set; }
+    public TaskListRole NewRole { get; set; }
 }
