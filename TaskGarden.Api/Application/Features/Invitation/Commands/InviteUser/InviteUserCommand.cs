@@ -16,9 +16,9 @@ namespace TaskGarden.Api.Application.Features.Invitation.Commands.InviteUser;
 
 public record InviteUserCommand : IRequest<bool>
 {
-    public string InvitedUserEmail { get; init; } = default!;
+    public List<string> InvitedUserEmails { get; init; } = new();
     public int TasklistId { get; init; }
-    public TaskListRole Role { get; init; } // Added Role property to specify the user's role
+    public TaskListRole Role { get; init; }
 }
 
 public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<InviteUserCommand, bool>
@@ -41,9 +41,6 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
 
     public async Task<bool> Handle(InviteUserCommand request, CancellationToken cancellationToken)
     {
-        if (await InviteExistsAsync(request.InvitedUserEmail, request.TasklistId))
-            throw new ConflictException("An invitation already exists for this user.");
-
         var userId = GetAuthenticatedUserId();
         var user = await GetUserByIdAsync(userId);
 
@@ -54,17 +51,24 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         if (taskList == null)
             throw new NotFoundException("Task list not found");
 
-        if (await _context.TasklistMembers.IsMemberAsync(request.InvitedUserEmail, request.TasklistId))
-            throw new ConflictException("The user is already a member of this task list.");
+        foreach (var email in request.InvitedUserEmails)
+        {
+            if (await InviteExistsAsync(email, request.TasklistId))
+                continue;
 
-        var invitation = await CreateInviteAsync(taskList, request.InvitedUserEmail, user, request.Role);
-        if (invitation is null)
-            throw new ResourceCreationException("Something went wrong while creating invite.");
+            if (await _context.TasklistMembers.IsMemberAsync(email, request.TasklistId))
+                continue;
 
-        await SendInviteEmail(invitation, request.InvitedUserEmail);
+            var invitation = await CreateInviteAsync(taskList, email, user, request.Role);
+            if (invitation is null)
+                throw new ResourceCreationException($"Failed to create invite for {email}.");
+
+            await SendInviteEmail(invitation, email);
+        }
 
         return true;
     }
+
 
     private async Task<bool> InviteExistsAsync(string email, int taskListId)
     {
@@ -73,6 +77,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
                            i.TasklistId == taskListId &&
                            i.Status == InvitationStatus.Pending);
     }
+
 
     private async Task<AppUser?> GetUserByIdAsync(string userId)
     {

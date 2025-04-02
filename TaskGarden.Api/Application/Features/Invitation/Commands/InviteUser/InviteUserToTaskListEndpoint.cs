@@ -13,7 +13,7 @@ public static class InviteUserToTaskListEndpoint
                 {
                     var inviteCommand = new InviteUserCommand
                     {
-                        InvitedUserEmail = command.InvitedUserEmail,
+                        InvitedUserEmails = command.InvitedUserEmails,
                         TasklistId = taskListId,
                         Role = command.Role
                     };
