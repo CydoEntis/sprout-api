@@ -61,5 +61,6 @@ app.MapCategoryEndpoints();
 app.MapTaskListEndpoints();
 app.MapTaskListItemEndpoints();
 app.MapInvitationEndpoints();
+app.MapTasklistMemberEndpoints();
 
 app.Run();
