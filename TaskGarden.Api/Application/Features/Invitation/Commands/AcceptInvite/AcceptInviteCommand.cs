@@ -40,18 +40,30 @@ public class AcceptInviteCommandHandler
         CancellationToken cancellationToken)
     {
         var userId = GetAuthenticatedUserId();
+
+        var user = await _context.Users
+            .Where(u => u.Id == userId)
+            .Select(u => u.Email)
+            .FirstOrDefaultAsync();
+
+        if (user == null)
+            throw new NotFoundException("User not found.");
+
         var invitation = await _context.Invitations.GetByInviteTokenAsync(request.Token);
 
-        if (invitation is null || invitation.Status != InvitationStatus.Pending ||
+        if (invitation == null || invitation.Status != InvitationStatus.Pending ||
             invitation.ExpiresAt < DateTime.UtcNow)
             throw new NotFoundException("Invite has expired, has already been accepted, or does not exist");
+
+        if (invitation.InvitedUserEmail != user)
+            throw new UnauthorizedAccessException("You are not authorized to accept this invite.");
 
         if (await _context.TasklistMembers.IsMemberAsync(userId, invitation.TasklistId))
             throw new ConflictException("User is already part of this task list");
 
         Category? category = null;
 
-        if (request.NewCategory is not null)
+        if (request.NewCategory != null)
         {
             var newCategory = _mapper.Map<Category>(request.NewCategory);
             newCategory.UserId = userId;
@@ -63,7 +75,7 @@ public class AcceptInviteCommandHandler
                        ?? throw new NotFoundException("Category not found.");
         }
 
-        if (category is null)
+        if (category == null)
             throw new NotFoundException("Category not found.");
 
         var categoryAssigned =
@@ -78,7 +90,6 @@ public class AcceptInviteCommandHandler
         var addedToTaskList = await _context.AssignUserAsync(userId, invitation.TasklistId);
         if (!addedToTaskList)
             throw new ApplicationException("Failed to add user to the task list.");
-
 
         var roleAssigned = await AssignUserRoleAsync(userId, invitation.TasklistId, invitation.Role);
         if (!roleAssigned)
@@ -106,7 +117,6 @@ public class AcceptInviteCommandHandler
         var result = await _context.SaveChangesAsync();
         return result > 0;
     }
-
 
     private async Task<bool> AcceptInviteAsync(Domain.Entities.Invitation invitation)
     {
