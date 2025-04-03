@@ -83,7 +83,7 @@ public class TokenService : ITokenService
 
 
     public string GenerateInviteToken(AppUser inviter, int taskListId, string taskListName,
-        List<Member> taskListMembers)
+        List<Member> taskListMembers, string inviteeEmail)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSecret));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -94,7 +94,8 @@ public class TokenService : ITokenService
             new Claim("inviterEmail", inviter.Email),
             new Claim("tasklistName", taskListName),
             new Claim("tasklistId", taskListId.ToString()),
-            new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy"))
+            new Claim("inviteDate", DateTime.UtcNow.ToString("MM/dd/yyyy")),
+            new Claim("invitedUserEmail", inviteeEmail)
         };
 
         var memberNames = taskListMembers.Select(m => m.Name).ToList();

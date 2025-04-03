@@ -53,7 +53,6 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
 
         foreach (var email in request.InvitedUserEmails)
         {
-            // Invalidate any existing invitation for this email
             var existingInvite = await _context.Invitations
                 .Where(i => i.InvitedUserEmail == email && i.TasklistId == request.TasklistId &&
                             i.Status == InvitationStatus.Pending)
@@ -111,7 +110,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
             TasklistId = taskList.Id,
             InvitedUserEmail = recipientsEmail,
             InviterUserId = inviter.Id,
-            Token = _tokenService.GenerateInviteToken(inviter, taskList.Id, taskList.Name, taskList.Members),
+            Token = _tokenService.GenerateInviteToken(inviter, taskList.Id, taskList.Name, taskList.Members, recipientsEmail),
             Status = InvitationStatus.Pending,
             ExpiresAt = DateTime.UtcNow.AddDays(7),
             Role = role

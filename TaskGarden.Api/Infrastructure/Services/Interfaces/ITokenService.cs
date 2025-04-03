@@ -15,5 +15,5 @@ public interface ITokenService
     string? ExtractUserIdFromToken(string token);
 
     string GenerateInviteToken(AppUser inviter, int taskListId, string taskListName,
-        List<Member> taskListMembers);
+        List<Member> taskListMembers, string inviteeEmail);
 }
