@@ -53,14 +53,24 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
 
         foreach (var email in request.InvitedUserEmails)
         {
-            if (await InviteExistsAsync(email, request.TasklistId))
-                continue;
+            // Invalidate any existing invitation for this email
+            var existingInvite = await _context.Invitations
+                .Where(i => i.InvitedUserEmail == email && i.TasklistId == request.TasklistId &&
+                            i.Status == InvitationStatus.Pending)
+                .FirstOrDefaultAsync();
+
+            if (existingInvite != null)
+            {
+                existingInvite.Status = InvitationStatus.Cancelled;
+                _context.Invitations.Update(existingInvite);
+                await _context.SaveChangesAsync();
+            }
 
             if (await _context.TasklistMembers.IsMemberAsync(email, request.TasklistId))
                 continue;
 
             var invitation = await CreateInviteAsync(taskList, email, user, request.Role);
-            if (invitation is null)
+            if (invitation == null)
                 throw new ResourceCreationException($"Failed to create invite for {email}.");
 
             await SendInviteEmail(invitation, email);
@@ -68,16 +78,6 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
 
         return true;
     }
-
-
-    private async Task<bool> InviteExistsAsync(string email, int taskListId)
-    {
-        return await _context.Invitations
-            .AnyAsync(i => i.InvitedUserEmail == email &&
-                           i.TasklistId == taskListId &&
-                           i.Status == InvitationStatus.Pending);
-    }
-
 
     private async Task<AppUser?> GetUserByIdAsync(string userId)
     {
