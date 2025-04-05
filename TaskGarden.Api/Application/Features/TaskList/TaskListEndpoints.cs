@@ -3,6 +3,7 @@ using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskListWithCa
 using TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
 using TaskGarden.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
 using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using TaskGarden.Api.Application.Features.TaskList.Queries.GetFavorited;
 using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
 
 
@@ -18,5 +19,6 @@ public static class TaskListEndpoints
         routes.MapCreateTaskListWithCategoryEndpoint();
         routes.MapGetTaskListByIdEndpoint();
         routes.MapFavoriteTasklistEndpoint();
+        routes.MapGetFavoritedTaskListsEndpoints();
     }
 }
