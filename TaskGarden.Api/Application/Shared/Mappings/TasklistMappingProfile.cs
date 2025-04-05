@@ -9,7 +9,6 @@ using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListI
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Application.Shared.Mappings;
 
@@ -17,20 +16,20 @@ public class TasklistMappingProfile : Profile
 {
     public TasklistMappingProfile()
     {
-        CreateMap<Tasklist, TasklistInfo>()
+        CreateMap<TaskList, TasklistInfo>()
             .ForMember(dest => dest.CategoryInfo, opt =>
                 opt.MapFrom(src => src.UserCategories
                     .Select(utlc => utlc.Category)
                     .FirstOrDefault()))
             .ReverseMap();
 
-        CreateMap<CreateTasklistCommand, Tasklist>().ReverseMap();
-        CreateMap<CreateTaskListResponse, Tasklist>().ReverseMap();
+        CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
+        CreateMap<CreateTaskListResponse, TaskList>().ReverseMap();
 
         // CreateMap<GetTaskListByIdQueryResponse, TaskList>().ReverseMap();
 
-        CreateMap<CreateTasklistCommand, Tasklist>().ReverseMap();
-        CreateMap<UpdateTasklistCommand, Tasklist>()
+        CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
+        CreateMap<UpdateTaskListCommand, TaskList>()
             .ForMember(dest => dest.CreatedById, opt => opt.Ignore());
 
         CreateMap<TasklistInfo, GetAllTasklistsForCategoryResponse>().ReverseMap();
@@ -42,9 +41,9 @@ public class TasklistMappingProfile : Profile
 
 
         // Task List Items
-        CreateMap<CreateTasklistItemCommand, TasklistItem>();
+        CreateMap<CreateTasklistItemCommand, TaskListItem>();
         CreateMap<TasklistItemDetail, TasklistItemResponse>();
-        CreateMap<ReorderTasklistItemCommand, TasklistItem>();
-        CreateMap<TasklistItem, TasklistItemDetail>();
+        CreateMap<ReorderTasklistItemCommand, TaskListItem>();
+        CreateMap<TaskListItem, TasklistItemDetail>();
     }
 }

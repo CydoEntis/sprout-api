@@ -6,6 +6,7 @@ using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Domain.Enums;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
@@ -58,7 +59,7 @@ public class AcceptInviteCommandHandler
         if (invitation.InvitedUserEmail != user)
             throw new UnauthorizedAccessException("You are not authorized to accept this invite.");
 
-        if (await _context.TasklistMembers.IsMemberAsync(userId, invitation.TasklistId))
+        if (await _context.TaskListMembers.IsMemberAsync(userId, invitation.TasklistId))
             throw new ConflictException("User is already part of this task list");
 
         Category? category = null;
@@ -105,14 +106,14 @@ public class AcceptInviteCommandHandler
 
     private async Task<bool> AssignUserRoleAsync(string userId, int taskListId, TaskListRole role)
     {
-        var taskListMember = await _context.TasklistMembers
+        var taskListMember = await _context.TaskListMembers
             .FirstOrDefaultAsync(m => m.UserId == userId && m.TasklistId == taskListId);
 
         if (taskListMember == null)
             return false;
 
         taskListMember.Role = role;
-        _context.TasklistMembers.Update(taskListMember);
+        _context.TaskListMembers.Update(taskListMember);
 
         var result = await _context.SaveChangesAsync();
         return result > 0;

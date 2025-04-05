@@ -1,4 +1,5 @@
 ﻿using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Shared.Extensions
@@ -11,7 +12,7 @@ namespace TaskGarden.Api.Application.Shared.Extensions
             int taskListId,
             int categoryId)
         {
-            await context.UserTasklistCategories.AddAsync(new UserTasklistCategory
+            await context.UserTaskListCategories.AddAsync(new UserTaskListCategory
             {
                 UserId = userId,
                 TaskListId = taskListId,
@@ -26,7 +27,7 @@ namespace TaskGarden.Api.Application.Shared.Extensions
             string userId,
             int categoryId)
         {
-            await context.UserTasklistCategories.AddAsync(new UserTasklistCategory
+            await context.UserTaskListCategories.AddAsync(new UserTaskListCategory
             {
                 UserId = userId,
                 CategoryId = categoryId

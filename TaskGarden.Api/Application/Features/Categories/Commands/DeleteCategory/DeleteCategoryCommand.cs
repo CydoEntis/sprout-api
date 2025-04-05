@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 
@@ -58,7 +59,7 @@ public class DeleteCategoryCommandHandler :
 
     private async Task<List<int>> GetTaskListIdsByCategoryAsync(int categoryId)
     {
-        return await _context.UserTasklistCategories
+        return await _context.UserTaskListCategories
             .Where(utc => utc.CategoryId == categoryId)
             .Select(utc => utc.TaskListId)
             .ToListAsync();
@@ -76,31 +77,31 @@ public class DeleteCategoryCommandHandler :
 
     private async Task RemoveTaskListsFromUserTasklistCategories(List<int> taskListIds)
     {
-        var userTasklistCategories = await _context.UserTasklistCategories
+        var userTasklistCategories = await _context.UserTaskListCategories
             .Where(utc => taskListIds.Contains(utc.TaskListId))
             .ToListAsync();
 
-        _context.UserTasklistCategories.RemoveRange(userTasklistCategories);
+        _context.UserTaskListCategories.RemoveRange(userTasklistCategories);
         await _context.SaveChangesAsync();
     }
 
     private async Task DeleteTaskListItems(List<int> taskListIds)
     {
-        await _context.TasklistItems
+        await _context.TaskListItems
             .Where(tli => taskListIds.Contains(tli.TasklistId))
             .ExecuteDeleteAsync();
     }
 
     private async Task DeleteTaskListMembers(List<int> taskListIds)
     {
-        await _context.TasklistMembers
+        await _context.TaskListMembers
             .Where(tla => taskListIds.Contains(tla.TasklistId))
             .ExecuteDeleteAsync();
     }
 
     private async Task DeleteTaskLists(List<int> taskListIds)
     {
-        await _context.Tasklists
+        await _context.TaskLists
             .Where(t => taskListIds.Contains(t.Id))
             .ExecuteDeleteAsync();
     }

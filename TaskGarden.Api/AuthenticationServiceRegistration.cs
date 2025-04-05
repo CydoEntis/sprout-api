@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Infrastructure;
 

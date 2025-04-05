@@ -3,6 +3,7 @@ using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 
@@ -32,13 +33,13 @@ public class UpdateUserRoleCommandHandler
     {
         var userId = GetAuthenticatedUserId();
 
-        var requestingUser = await _context.TasklistMembers
+        var requestingUser = await _context.TaskListMembers
             .FirstOrDefaultAsync(m => m.UserId == userId && m.TasklistId == request.TaskListId, cancellationToken);
 
         if (requestingUser == null || requestingUser.Role == TaskListRole.Viewer)
             throw new PermissionException("You do not have permission to update roles.");
 
-        var targetUser = await _context.TasklistMembers
+        var targetUser = await _context.TaskListMembers
             .FirstOrDefaultAsync(m => m.UserId == request.UserId && m.TasklistId == request.TaskListId,
                 cancellationToken);
 
@@ -55,7 +56,7 @@ public class UpdateUserRoleCommandHandler
             throw new PermissionException("Cannot assign the Owner role through this endpoint.");
 
         targetUser.Role = request.NewRole;
-        _context.TasklistMembers.Update(targetUser);
+        _context.TaskListMembers.Update(targetUser);
         await _context.SaveChangesAsync(cancellationToken);
 
         return new UpdateUserRoleCommandResponse();

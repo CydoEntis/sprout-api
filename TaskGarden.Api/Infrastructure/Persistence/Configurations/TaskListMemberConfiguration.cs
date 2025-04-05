@@ -14,7 +14,7 @@ public class TaskListMemberConfiguration : IEntityTypeConfiguration<TaskListMemb
             .WithMany(u => u.TaskListMembers)
             .HasForeignKey(ut => ut.UserId);
 
-        builder.HasOne(ut => ut.Tasklist)
+        builder.HasOne(ut => ut.TaskList)
             .WithMany(t => t.TaskListMembers)
             .HasForeignKey(ut => ut.TasklistId);
     }

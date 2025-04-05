@@ -7,7 +7,7 @@ public class AppUser : IdentityUser
     public string FirstName { get; set; }
     public string LastName { get; set; }
 
-    public ICollection<UserTasklistCategory> UserTaskListCategories { get; set; } = new List<UserTasklistCategory>();
+    public ICollection<UserTaskListCategory> UserTaskListCategories { get; set; } = new List<UserTaskListCategory>();
 
     public ICollection<TaskListMember> TaskListMembers { get; set; }
 }

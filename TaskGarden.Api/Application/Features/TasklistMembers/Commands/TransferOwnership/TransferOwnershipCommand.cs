@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Domain.Enums;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 
@@ -31,13 +32,13 @@ public class TransferOwnershipCommandHandler
     {
         var userId = GetAuthenticatedUserId();
 
-        var requestingUser = await _context.TasklistMembers
+        var requestingUser = await _context.TaskListMembers
             .FirstOrDefaultAsync(m => m.UserId == userId && m.TasklistId == request.TaskListId, cancellationToken);
 
         if (requestingUser == null || requestingUser.Role != TaskListRole.Owner)
             throw new PermissionException("You must be an owner to transfer ownership.");
 
-        var newOwner = await _context.TasklistMembers
+        var newOwner = await _context.TaskListMembers
             .FirstOrDefaultAsync(m => m.UserId == request.NewOwnerId && m.TasklistId == request.TaskListId,
                 cancellationToken);
 

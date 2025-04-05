@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Domain.Entities;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Shared.Extensions;

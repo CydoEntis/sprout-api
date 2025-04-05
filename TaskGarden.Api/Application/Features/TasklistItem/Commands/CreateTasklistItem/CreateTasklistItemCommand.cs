@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
-using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 
@@ -41,11 +41,11 @@ public class CreateTaskListItemCommandHandler :
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var taskListExists = await _context.Tasklists.ExistsAsync(request.TaskListId);
+        var taskListExists = await _context.TaskLists.ExistsAsync(request.TaskListId);
         if (!taskListExists)
             throw new NotFoundException("TaskList");
 
-        var taskListItem = _mapper.Map<Domain.Entities.TasklistItem>(request);
+        var taskListItem = _mapper.Map<Domain.Entities.TaskListItem>(request);
         taskListItem.TasklistId = request.TaskListId;
 
         var createdTaskListItem = await CreateTaskListItemAsync(taskListItem, request.TaskListId);
@@ -57,12 +57,12 @@ public class CreateTaskListItemCommandHandler :
     }
 
 
-    private async Task<Domain.Entities.TasklistItem> CreateTaskListItemAsync(Domain.Entities.TasklistItem tasklistItem,
+    private async Task<Domain.Entities.TaskListItem> CreateTaskListItemAsync(Domain.Entities.TaskListItem taskListItem,
         int taskListId)
     {
-        tasklistItem.TasklistId = taskListId;
-        await _context.TasklistItems.AddAsync(tasklistItem);
+        taskListItem.TasklistId = taskListId;
+        await _context.TaskListItems.AddAsync(taskListItem);
         await _context.SaveChangesAsync();
-        return tasklistItem;
+        return taskListItem;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
 using TaskGarden.Api.Domain.Enums;
 using TaskGarden.Domain.Enums;
-using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Application.Shared.Projections;
 

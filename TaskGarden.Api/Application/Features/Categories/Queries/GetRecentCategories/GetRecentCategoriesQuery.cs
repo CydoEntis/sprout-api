@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.Categories.Queries.GetRecentCategories;
@@ -58,14 +59,14 @@ public class GetRecentCategoriesQueryHandler : AuthRequiredHandler,
                 Name = c.Name,
                 Tag = c.Tag,
                 Color = c.Color,
-                RecentTasklists = _context.UserTasklistCategories
+                RecentTasklists = _context.UserTaskListCategories
                     .Where(utc => utc.UserId == userId && utc.CategoryId == c.Id)
                     .OrderByDescending(t => t.UpdatedAt)
                     .Take(3)
                     .Select(s => new TasklistMetadata
                     {
-                        TasklistId = s.Tasklist.Id,
-                        TasklistName = s.Tasklist.Name,
+                        TasklistId = s.TaskList.Id,
+                        TasklistName = s.TaskList.Name,
                     })
                     .ToList()
             })

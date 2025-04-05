@@ -2,6 +2,7 @@
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 
@@ -30,15 +31,15 @@ public class DeleteTaskListItemCommandHandler : AuthRequiredHandler,
     {
         var userId = GetAuthenticatedUserId();
 
-        var taskListItem = await _context.TasklistItems.ExistsAsync(request.TaskListItemId);
+        var taskListItem = await _context.TaskListItems.ExistsAsync(request.TaskListItemId);
         if (taskListItem == null)
             throw new NotFoundException("Task list item not found.");
 
-        var taskList = await _context.Tasklists.GetByIdAsync(taskListItem.TasklistId);
+        var taskList = await _context.TaskLists.GetByIdAsync(taskListItem.TasklistId);
         if (taskList == null)
             throw new NotFoundException("Task list not found.");
 
-        if (!await _context.TasklistMembers.IsOwnerOrEditorAsync(userId, taskList.Id))
+        if (!await _context.TaskListMembers.IsOwnerOrEditorAsync(userId, taskList.Id))
             throw new UnauthorizedAccessException("You are not authorized to delete items from this task list.");
 
 
@@ -52,9 +53,9 @@ public class DeleteTaskListItemCommandHandler : AuthRequiredHandler,
         };
     }
 
-    private async Task<bool> DeleteTaskListItem(Domain.Entities.TasklistItem tasklistItem)
+    private async Task<bool> DeleteTaskListItem(Domain.Entities.TaskListItem taskListItem)
     {
-        _context.TasklistItems.Remove(tasklistItem);
+        _context.TaskListItems.Remove(taskListItem);
         var result = await _context.SaveChangesAsync();
         return result > 0;
     }

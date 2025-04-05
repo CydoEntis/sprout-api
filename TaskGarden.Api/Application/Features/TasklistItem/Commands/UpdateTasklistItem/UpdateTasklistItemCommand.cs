@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 
@@ -29,7 +30,7 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
     public async Task<UpdateTaskListItemResponse> Handle(UpdateTasklistItemCommand request,
         CancellationToken cancellationToken)
     {
-        var taskListItem = await _context.TasklistItems.GetByIdAsync(request.Id);
+        var taskListItem = await _context.TaskListItems.GetByIdAsync(request.Id);
         if (taskListItem == null)
             throw new NotFoundException($"Task list item with id {request.Id} was not found");
 
@@ -42,9 +43,9 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
     }
 
 
-    private async Task<bool> UpdateTaskListItemAsync(Domain.Entities.TasklistItem tasklistItem)
+    private async Task<bool> UpdateTaskListItemAsync(Domain.Entities.TaskListItem taskListItem)
     {
-        _context.Update(tasklistItem);
+        _context.Update(taskListItem);
         var changes = await _context.SaveChangesAsync();
         return changes > 0;
     }

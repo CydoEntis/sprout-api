@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Infrastructure;
 
@@ -30,7 +31,7 @@ public class ReorderTaskListItemCommandHandler
     public async Task<ReorderTaskListItemResponse> Handle(ReorderTasklistItemCommand request,
         CancellationToken cancellationToken)
     {
-        var taskList = await _context.Tasklists.GetByIdAsync(request.TaskListId);
+        var taskList = await _context.TaskLists.GetByIdAsync(request.TaskListId);
         if (taskList == null)
             throw new NotFoundException($"Task list with id {request.TaskListId} was not found");
 
@@ -41,7 +42,7 @@ public class ReorderTaskListItemCommandHandler
 
     private async Task ReorderTaskListItemsAsync(int taskListId, List<TasklistItemPosition> items)
     {
-        var taskListItems = await _context.TasklistItems
+        var taskListItems = await _context.TaskListItems
             .Where(i => i.TasklistId == taskListId)
             .ToListAsync();
 

@@ -1,7 +1,7 @@
 ﻿using TaskGarden.Api.Application.Shared.Models;
+using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Domain.Enums;
-using TaskGarden.Infrastructure.Projections;
 
 namespace TaskGarden.Api.Infrastructure.Services.Interfaces;
 

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Domain.Enums;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TasklistMembers.Queries.GetTasklistMembers;
@@ -29,7 +30,7 @@ public class GetTasklistMembersQueryHandler
         GetTasklistMembersQuery request,
         CancellationToken cancellationToken)
     {
-        return await _context.TasklistMembers
+        return await _context.TaskListMembers
             .Where(m => m.TasklistId == request.TaskListId)
             .Join(
                 _context.Users,

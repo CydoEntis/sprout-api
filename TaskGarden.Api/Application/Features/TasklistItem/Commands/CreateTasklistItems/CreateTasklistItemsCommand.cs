@@ -5,6 +5,7 @@ using MediatR;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItems;
@@ -47,15 +48,15 @@ public class
                 throw new ValidationException(validationResult.Errors);
         }
 
-        var taskListItems = new List<Domain.Entities.TasklistItem>();
+        var taskListItems = new List<Domain.Entities.TaskListItem>();
         foreach (var item in request.TaskListItems)
         {
-            var taskListItem = _mapper.Map<Domain.Entities.TasklistItem>(item);
+            var taskListItem = _mapper.Map<Domain.Entities.TaskListItem>(item);
             taskListItem.TasklistId = item.TaskListId;
             taskListItems.Add(taskListItem);
         }
 
-        await _context.TasklistItems.AddRangeAsync(taskListItems);
+        await _context.TaskListItems.AddRangeAsync(taskListItems);
         await _context.SaveChangesAsync();
 
         var taskListItemDetails = _mapper.Map<List<TasklistItemDetail>>(taskListItems);

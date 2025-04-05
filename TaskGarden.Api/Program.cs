@@ -10,6 +10,7 @@ using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.DependencyInjection;
 using TaskGarden.Api.Infrastructure.Middlewares;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Configurations;
 using TaskGarden.Infrastructure;
 

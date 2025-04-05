@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using TaskGarden.Application.Common.Exceptions;
 using TaskGarden.Domain.Enums;
-using TaskGarden.Infrastructure.Projections;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Extensions;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Domain.Enums;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Api.Infrastructure.Services.Interfaces;
 using TaskGarden.Application.Common.Constants;
 using TaskGarden.Infrastructure;
@@ -65,7 +65,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
                 await _context.SaveChangesAsync();
             }
 
-            if (await _context.TasklistMembers.IsMemberAsync(email, request.TasklistId))
+            if (await _context.TaskListMembers.IsMemberAsync(email, request.TasklistId))
                 continue;
 
             var invitation = await CreateInviteAsync(taskList, email, user, request.Role);
@@ -85,7 +85,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
 
     private async Task<TasklistInfo?> GetTaskListDetailsById(int id)
     {
-        return await _context.Tasklists
+        return await _context.TaskLists
             .Where(q => q.Id == id)
             .Select(tl => new TasklistInfo()
             {
@@ -94,7 +94,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
                 Members = tl.TaskListMembers
                     .Select(tla => new Member
                     {
-                        Id = tla.User.Id,
+                        UserId = tla.User.Id,
                         Name = tla.User.FirstName + " " + tla.User.LastName,
                     })
                     .ToList(),

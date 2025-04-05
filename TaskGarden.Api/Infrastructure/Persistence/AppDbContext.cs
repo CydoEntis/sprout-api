@@ -1,27 +1,26 @@
-﻿using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.Persistence.Configurations;
 using TaskGarden.Api.Infrastructure.Persistence.Seeding;
 
-namespace TaskGarden.Infrastructure;
+namespace TaskGarden.Api.Infrastructure.Persistence;
 
 public class AppDbContext : IdentityDbContext<AppUser>
 {
     public DbSet<AppUser> Users { get; set; }
     public DbSet<Session> Sessions { get; set; }
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Tasklist> Tasklists { get; set; }
-    public DbSet<UserTasklistCategory> UserTasklistCategories { get; set; }
+    public DbSet<TaskList> TaskLists { get; set; }
+    public DbSet<UserTaskListCategory> UserTaskListCategories { get; set; }
 
 
-    public DbSet<TasklistItem> TasklistItems { get; set; }
-    public DbSet<TaskListMember> TasklistMembers { get; set; }
+    public DbSet<TaskListItem> TaskListItems { get; set; }
+    public DbSet<TaskListMember> TaskListMembers { get; set; }
 
     public DbSet<Invitation> Invitations { get; set; }
 
-    public DbSet<FavoriteTasklist> FavoriteTasklists { get; set; }
+    public DbSet<FavoriteTaskList> FavoriteTaskLists { get; set; }
 
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

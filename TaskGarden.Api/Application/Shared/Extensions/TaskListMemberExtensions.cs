@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Domain.Enums;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Domain.Enums;
 using TaskGarden.Infrastructure;
 
@@ -18,7 +19,7 @@ public static class TaskListMemberExtensions
     public static async Task<bool> AssignUserAsync(this AppDbContext context, string userId,
         int taskListId)
     {
-        await context.TasklistMembers.AddAsync(new TaskListMember
+        await context.TaskListMembers.AddAsync(new TaskListMember
         {
             UserId = userId,
             TasklistId = taskListId,

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
+using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TasklistItem.Queries
@@ -22,7 +23,7 @@ namespace TaskGarden.Api.Application.Features.TasklistItem.Queries
         public async Task<PagedResponse<TasklistItemDetail>> Handle(GetTaskListItemsQuery request,
             CancellationToken cancellationToken)
         {
-            var query = _context.TasklistItems
+            var query = _context.TaskListItems
                 .Where(t => t.TasklistId == request.TaskListId)
                 .OrderBy(t => t.Position)
                 .Select(t => new TasklistItemDetail
