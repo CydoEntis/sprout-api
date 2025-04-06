@@ -11,17 +11,16 @@ public record GetFavoritedTaskListsQuery() : IRequest<List<FavoritedTasklistQuer
 
 public class FavoritedTasklistQueryResponse
 {
-    public int Id { get; set; }
+    public int TaskListId { get; set; }
+    public string CategoryName { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public string CategoryName { get; set; }
-    public List<Member> Members { get; set; } = new();
-    public int TotalTasksCount { get; set; }
-    public int CompletedTasksCount { get; set; }
+    public List<Member> Members { get; set; } = new List<Member>();
+    public int RemainingMembers { get; set; }
     public double TaskCompletionPercentage { get; set; }
-    public TaskListRole UserRole { get; set; }
+    public bool IsFavorited { get; set; }
 }
 
 public class GetFavoritedTasklistsQueryHandler : AuthRequiredHandler,
@@ -43,35 +42,58 @@ public class GetFavoritedTasklistsQueryHandler : AuthRequiredHandler,
         var favoritedTasklists = await _context.FavoriteTaskLists
             .AsNoTracking()
             .Where(f => f.UserId == userId)
-            .Select(f => new FavoritedTasklistQueryResponse
+            .Select(f => new
             {
-                Id = f.TaskList.Id,
-                Name = f.TaskList.Name,
-                Description = f.TaskList.Description,
-                CreatedAt = f.TaskList.CreatedAt,
-                UpdatedAt = f.TaskList.UpdatedAt,
+                f.TaskList.Id,
+                f.TaskList.Name,
+                f.TaskList.Description,
+                f.TaskList.CreatedAt,
+                f.TaskList.UpdatedAt,
+                Members = f.TaskList.TaskListMembers
+                    .OrderBy(m => m.User.LastName)
+                    .ThenBy(m => m.User.FirstName)
+                    .Select(m => new
+                    {
+                        m.UserId,
+                        Name = m.User.LastName + " " + m.User.FirstName
+                    }).ToList(),
+                TotalTasks = f.TaskList.TaskListItems.Count,
+                CompletedTasks = f.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
                 CategoryName = _context.UserTaskListCategories
                     .Where(utc => utc.UserId == userId && utc.TaskListId == f.TaskList.Id)
                     .Select(utc => utc.Category.Name)
-                    .FirstOrDefault() ?? "Uncategorized",
-                Members = f.TaskList.TaskListMembers.Select(m => new Member
-                {
-                    UserId = m.UserId,
-                    Name = m.User.LastName + " " + m.User.FirstName
-                }).ToList(),
-                TotalTasksCount = f.TaskList.TaskListItems.Count(),
-                CompletedTasksCount = f.TaskList.TaskListItems.Count(ti => ti.IsCompleted),
-                TaskCompletionPercentage = f.TaskList.TaskListItems.Any()
-                    ? Math.Round((f.TaskList.TaskListItems.Count(ti => ti.IsCompleted) /
-                                  (double)Math.Max(1, f.TaskList.TaskListItems.Count())) * 100, 2)
-                    : 0,
-                UserRole = f.TaskList.TaskListMembers
-                    .Where(tlm => tlm.UserId == userId)
-                    .Select(tlm => tlm.Role)
-                    .FirstOrDefault()
+                    .FirstOrDefault() ?? "Uncategorized"
             })
             .ToListAsync(cancellationToken);
 
-        return favoritedTasklists;
+        var response = favoritedTasklists.Select(x =>
+        {
+            var displayedMembers = x.Members.Take(5)
+                .Select(m => new Member
+                {
+                    UserId = m.UserId,
+                    Name = m.Name
+                }).ToList();
+
+            var remainingCount = x.Members.Count > 5 ? x.Members.Count - 5 : 0;
+
+            return new FavoritedTasklistQueryResponse
+            {
+                TaskListId = x.Id,
+                CategoryName = x.CategoryName,
+                Name = x.Name,
+                Description = x.Description,
+                CreatedAt = x.CreatedAt,
+                UpdatedAt = x.UpdatedAt,
+                Members = displayedMembers,
+                RemainingMembers = remainingCount,
+                TaskCompletionPercentage = x.TotalTasks > 0
+                    ? Math.Round((x.CompletedTasks / (double)x.TotalTasks) * 100, 2)
+                    : 0,
+                IsFavorited = true
+            };
+        }).ToList();
+
+        return response;
     }
 }

@@ -83,11 +83,11 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
         return await _context.Users.FindAsync(userId);
     }
 
-    private async Task<TaskListInfo?> GetTaskListDetailsById(int id)
+    private async Task<TaskListOverview?> GetTaskListDetailsById(int id)
     {
         return await _context.TaskLists
             .Where(q => q.Id == id)
-            .Select(tl => new TaskListInfo()
+            .Select(tl => new TaskListOverview()
             {
                 Id = tl.Id,
                 Name = tl.Name,
@@ -102,7 +102,7 @@ public class InviteUserCommandHandler : AuthRequiredHandler, IRequestHandler<Inv
             .FirstOrDefaultAsync();
     }
 
-    private async Task<Domain.Entities.Invitation> CreateInviteAsync(TaskListInfo taskList, string recipientsEmail,
+    private async Task<Domain.Entities.Invitation> CreateInviteAsync(TaskListOverview taskList, string recipientsEmail,
         AppUser inviter, TaskListRole role)
     {
         var invitation = new Domain.Entities.Invitation

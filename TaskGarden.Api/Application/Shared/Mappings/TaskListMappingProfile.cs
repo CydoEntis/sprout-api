@@ -12,15 +12,11 @@ using TaskGarden.Api.Domain.Entities;
 
 namespace TaskGarden.Api.Application.Shared.Mappings;
 
-public class TasklistMappingProfile : Profile
+public class TaskListMappingProfile : Profile
 {
-    public TasklistMappingProfile()
+    public TaskListMappingProfile()
     {
-        CreateMap<TaskList, TaskListInfo>()
-            .ForMember(dest => dest.CategoryInfo, opt =>
-                opt.MapFrom(src => src.UserCategories
-                    .Select(utlc => utlc.Category)
-                    .FirstOrDefault()))
+        CreateMap<TaskList, TaskListOverview>()
             .ReverseMap();
 
         CreateMap<CreateTaskListCommand, TaskList>().ReverseMap();
@@ -32,7 +28,7 @@ public class TasklistMappingProfile : Profile
         CreateMap<UpdateTaskListCommand, TaskList>()
             .ForMember(dest => dest.CreatedById, opt => opt.Ignore());
 
-        CreateMap<TaskListInfo, GetAllTasklistsForCategoryResponse>().ReverseMap();
+        CreateMap<TaskListOverview, GetAllTaskListsForCategoryResponse>().ReverseMap();
         // CreateMap<TaskListPreview, GetTaskListByIdQueryResponse>();
         CreateMap<TaskListMember, MemberResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
