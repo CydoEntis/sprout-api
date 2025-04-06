@@ -4,9 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskTaskListCount;
+namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
 
 public record GetCategoriesWithTaskListCountQuery(int Page = 1, int PageSize = 10, string? Search = null)
     : IRequest<PagedResponse<GetCategoriesWithTaskListCountResponse>>;
