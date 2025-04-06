@@ -4,7 +4,7 @@ using TaskGarden.Domain.Enums;
 
 namespace TaskGarden.Api.Application.Shared.Projections;
 
-public class TasklistInfo
+public class TaskListInfo
 {
     public int Id { get; set; }
     public string Name { get; set; }

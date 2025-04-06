@@ -21,7 +21,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
         public string Name { get; set; }
         public string Tag { get; set; }
         public string Color { get; set; }
-        public List<TasklistInfo> TasklistsInfo { get; set; } = new();
+        public List<TaskListInfo> TaskListsInfo { get; set; } = new();
     }
 
     public class GetAllTasklistsForCategoryQueryHandler : AuthRequiredHandler,
@@ -69,7 +69,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
             var taskListsData = await _context.UserTaskListCategories
                 .AsNoTracking()
                 .Where(ut => ut.UserId == userId && ut.CategoryId == existingCategory.Id)
-                .Select(ut => new TasklistInfo
+                .Select(ut => new TaskListInfo
                 {
                     Id = ut.TaskList.Id,
                     Name = ut.TaskList.Name,
@@ -107,7 +107,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     Name = existingCategory.Name,
                     Tag = existingCategory.Tag,
                     Color = existingCategory.Color,
-                    TasklistsInfo = new List<TasklistInfo>()
+                    TaskListsInfo = new List<TaskListInfo>()
                 };
             }
 
@@ -117,7 +117,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                 Name = existingCategory.Name,
                 Tag = existingCategory.Tag,
                 Color = existingCategory.Color,
-                TasklistsInfo = taskListsData
+                TaskListsInfo = taskListsData
             };
         }
     }

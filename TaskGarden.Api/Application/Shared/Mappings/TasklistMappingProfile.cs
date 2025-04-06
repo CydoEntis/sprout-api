@@ -16,7 +16,7 @@ public class TasklistMappingProfile : Profile
 {
     public TasklistMappingProfile()
     {
-        CreateMap<TaskList, TasklistInfo>()
+        CreateMap<TaskList, TaskListInfo>()
             .ForMember(dest => dest.CategoryInfo, opt =>
                 opt.MapFrom(src => src.UserCategories
                     .Select(utlc => utlc.Category)
@@ -32,7 +32,7 @@ public class TasklistMappingProfile : Profile
         CreateMap<UpdateTaskListCommand, TaskList>()
             .ForMember(dest => dest.CreatedById, opt => opt.Ignore());
 
-        CreateMap<TasklistInfo, GetAllTasklistsForCategoryResponse>().ReverseMap();
+        CreateMap<TaskListInfo, GetAllTasklistsForCategoryResponse>().ReverseMap();
         // CreateMap<TaskListPreview, GetTaskListByIdQueryResponse>();
         CreateMap<TaskListMember, MemberResponse>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
