@@ -17,7 +17,7 @@ public class GetCategoriesWithTaskListCountResponse
     public string Name { get; set; }
     public string Tag { get; set; }
     public string Color { get; set; }
-    public int TotalTasklists { get; set; }
+    public int TotalTaskLists { get; set; }
 }
 
 public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
@@ -78,7 +78,7 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
                 Name = c.Name,
                 Tag = c.Tag,
                 Color = c.Color,
-                TotalTasklists =
+                TotalTaskLists =
                     _context.UserTaskListCategories.Count(utc =>
                         utc.CategoryId == c.Id)
             })
