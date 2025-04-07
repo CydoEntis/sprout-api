@@ -9,7 +9,8 @@ using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 
-public record UpdateTasklistItemCommand(int Id, string Description) : IRequest<UpdateTaskListItemResponse>;
+public record UpdateTasklistItemCommand(int Id, string Description, DateTime? DueDate)
+    : IRequest<UpdateTaskListItemResponse>;
 
 public class UpdateTaskListItemResponse : BaseResponse
 {
@@ -35,13 +36,14 @@ public class UpdateTaskListItemCommandHandler : AuthRequiredHandler,
             throw new NotFoundException($"Task list item with id {request.Id} was not found");
 
         taskListItem.Description = request.Description;
+        taskListItem.DueDate = request.DueDate; // <-- Update the DueDate if provided
+
         if (!await UpdateTaskListItemAsync(taskListItem))
             throw new ResourceModificationException($"Task list item with id: {taskListItem.Id} could not be updated.");
 
         return new UpdateTaskListItemResponse()
             { Message = $"Task list item with id {taskListItem.Id} updated", TaskListId = taskListItem.TasklistId };
     }
-
 
     private async Task<bool> UpdateTaskListItemAsync(Domain.Entities.TaskListItem taskListItem)
     {
