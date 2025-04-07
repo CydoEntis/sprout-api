@@ -11,7 +11,8 @@ using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
 
-public record CreateTasklistItemCommand(string Description, int TaskListId) : IRequest<CreateTaskListItemResponse>;
+public record CreateTasklistItemCommand(string Description, int TaskListId, DateTime? DueDate)
+    : IRequest<CreateTaskListItemResponse>;
 
 public class CreateTaskListItemResponse : BaseResponse
 {
@@ -47,6 +48,7 @@ public class CreateTaskListItemCommandHandler :
 
         var taskListItem = _mapper.Map<Domain.Entities.TaskListItem>(request);
         taskListItem.TasklistId = request.TaskListId;
+        taskListItem.DueDate = request.DueDate; // <-- Handle the optional DueDate
 
         var createdTaskListItem = await CreateTaskListItemAsync(taskListItem, request.TaskListId);
 
@@ -55,7 +57,6 @@ public class CreateTaskListItemCommandHandler :
         return new CreateTaskListItemResponse()
             { Message = $"Item added", TaskListId = request.TaskListId, TasklistItemDetail = taskListItemDetail };
     }
-
 
     private async Task<Domain.Entities.TaskListItem> CreateTaskListItemAsync(Domain.Entities.TaskListItem taskListItem,
         int taskListId)
