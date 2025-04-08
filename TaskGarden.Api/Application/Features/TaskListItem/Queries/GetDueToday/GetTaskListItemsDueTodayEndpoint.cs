@@ -9,13 +9,11 @@ public static class GetTaskListItemsDueTodayEndpoint
     public static void MapGetTaskListItemsDueTodayEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/api/task-list/today",
-                async (IMediator mediator, [FromQuery] int taskListId, [FromQuery] int page = 1,
-                    [FromQuery] int pageSize = 20) =>
+                async (IMediator mediator) =>
                 {
-                    var query = new GetTaskListItemsDueTodayQuery(taskListId, page, pageSize);
+                    var query = new GetTaskListItemsDueTodayQuery();
                     var response = await mediator.Send(query);
-                    return Results.Ok(
-                        ApiResponse<PagedResponse<TodaysTaskListItem>>.SuccessWithData(response));
+                    return Results.Ok(ApiResponse<List<TodaysTaskListItemGroup>>.SuccessWithData(response));
                 })
             .WithName("GetDueToday")
             .WithTags("Task List Item")
