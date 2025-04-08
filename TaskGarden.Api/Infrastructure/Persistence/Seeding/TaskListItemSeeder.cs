@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TaskGarden.Api.Domain.Entities;
+using System;
 
 namespace TaskGarden.Api.Infrastructure.Persistence.Seeding
 {
@@ -12,150 +13,122 @@ namespace TaskGarden.Api.Infrastructure.Persistence.Seeding
             var demoUser2Id = "9e22a16c-da04-4232-b479-95c3a7b89259";
             var demoUser3Id = "40fcec36-7eef-42d8-8086-cd2226b88d00";
 
+            var random = new Random();
+            var today = DateTime.UtcNow.Date;
+
             builder.HasData(
                 // TaskListId = 1 (ShopRite shopping list)
                 new TaskListItem
-                    { Id = 1, Description = "Buy apples", IsCompleted = false, Position = 1, TasklistId = 1 },
-                new TaskListItem
                 {
-                    Id = 2, Description = "Buy bananas", IsCompleted = true, Position = 2, TasklistId = 1,
-                    CompletedById = demoUser1Id
+                    Id = 1, Description = "Buy apples", IsCompleted = random.NextDouble() < 0.5, Position = 1,
+                    TasklistId = 1,
+                    DueDate = GenerateDueDate(today, random)
                 },
                 new TaskListItem
-                    { Id = 3, Description = "Buy oranges", IsCompleted = false, Position = 3, TasklistId = 1 },
-                new TaskListItem
                 {
-                    Id = 4, Description = "Buy milk", IsCompleted = true, Position = 4, TasklistId = 1,
-                    CompletedById = demoUser1Id
+                    Id = 2, Description = "Buy bananas", IsCompleted = random.NextDouble() < 0.5, Position = 2,
+                    TasklistId = 1,
+                    CompletedById = demoUser1Id, DueDate = GenerateDueDate(today, random)
                 },
                 new TaskListItem
-                    { Id = 5, Description = "Buy eggs", IsCompleted = false, Position = 5, TasklistId = 1 },
+                {
+                    Id = 3, Description = "Buy oranges", IsCompleted = random.NextDouble() < 0.5, Position = 3,
+                    TasklistId = 1,
+                    DueDate = GenerateDueDate(today, random)
+                },
+                new TaskListItem
+                {
+                    Id = 4, Description = "Buy milk", IsCompleted = random.NextDouble() < 0.5, Position = 4,
+                    TasklistId = 1,
+                    CompletedById = demoUser1Id, DueDate = GenerateDueDate(today, random)
+                },
+                new TaskListItem
+                {
+                    Id = 5, Description = "Buy eggs", IsCompleted = random.NextDouble() < 0.5, Position = 5,
+                    TasklistId = 1,
+                    DueDate = GenerateDueDate(today, random)
+                },
 
                 // TaskListId = 2 (Walmart shopping list)
                 new TaskListItem
                 {
-                    Id = 6, Description = "Buy toothpaste", IsCompleted = true, Position = 1, TasklistId = 2,
-                    CompletedById = demoUser1Id
+                    Id = 6, Description = "Buy toothpaste", IsCompleted = random.NextDouble() < 0.5, Position = 1,
+                    TasklistId = 2,
+                    CompletedById = demoUser1Id, DueDate = GenerateDueDate(today, random)
                 },
-                new TaskListItem
-                    { Id = 7, Description = "Buy toothbrush", IsCompleted = false, Position = 2, TasklistId = 2 },
-                new TaskListItem
-                    { Id = 8, Description = "Buy shampoo", IsCompleted = false, Position = 3, TasklistId = 2 },
                 new TaskListItem
                 {
-                    Id = 9, Description = "Buy conditioner", IsCompleted = true, Position = 4, TasklistId = 2,
-                    CompletedById = demoUser1Id
+                    Id = 7, Description = "Buy toothbrush", IsCompleted = random.NextDouble() < 0.5, Position = 2,
+                    TasklistId = 2,
+                    DueDate = GenerateDueDate(today, random)
                 },
                 new TaskListItem
-                    { Id = 10, Description = "Buy soap", IsCompleted = false, Position = 5, TasklistId = 2 },
+                {
+                    Id = 8, Description = "Buy shampoo", IsCompleted = random.NextDouble() < 0.5, Position = 3,
+                    TasklistId = 2,
+                    DueDate = GenerateDueDate(today, random)
+                },
+                new TaskListItem
+                {
+                    Id = 9, Description = "Buy conditioner", IsCompleted = random.NextDouble() < 0.5, Position = 4,
+                    TasklistId = 2,
+                    CompletedById = demoUser1Id, DueDate = GenerateDueDate(today, random)
+                },
+                new TaskListItem
+                {
+                    Id = 10, Description = "Buy soap", IsCompleted = random.NextDouble() < 0.5, Position = 5,
+                    TasklistId = 2,
+                    DueDate = GenerateDueDate(today, random)
+                },
 
                 // TaskListId = 3 (Rent payment)
                 new TaskListItem
-                    { Id = 11, Description = "Pay rent", IsCompleted = false, Position = 1, TasklistId = 3 },
+                {
+                    Id = 11, Description = "Pay rent", IsCompleted = random.NextDouble() < 0.5, Position = 1,
+                    TasklistId = 3,
+                    DueDate = GenerateDueDate(today, random)
+                },
                 new TaskListItem
                 {
-                    Id = 12, Description = "Confirm payment", IsCompleted = true, Position = 2, TasklistId = 3,
-                    CompletedById = demoUser1Id
+                    Id = 12, Description = "Confirm payment", IsCompleted = random.NextDouble() < 0.5, Position = 2,
+                    TasklistId = 3,
+                    CompletedById = demoUser1Id, DueDate = GenerateDueDate(today, random)
                 },
 
                 // TaskListId = 4 (Electricity Bill)
                 new TaskListItem
                 {
-                    Id = 13, Description = "Pay electricity bill", IsCompleted = false, Position = 1, TasklistId = 4
+                    Id = 13, Description = "Pay electricity bill", IsCompleted = random.NextDouble() < 0.5,
+                    Position = 1, TasklistId = 4,
+                    DueDate = GenerateDueDate(today, random)
                 },
                 new TaskListItem
                 {
-                    Id = 14, Description = "Check bill amount", IsCompleted = true, Position = 2, TasklistId = 4,
-                    CompletedById = demoUser1Id
-                },
-
-                // TaskListId = 5 (Movie night)
-                new TaskListItem
-                    { Id = 15, Description = "Buy popcorn", IsCompleted = false, Position = 1, TasklistId = 5 },
-                new TaskListItem
-                {
-                    Id = 16, Description = "Pick movie", IsCompleted = true, Position = 2, TasklistId = 5,
-                    CompletedById = demoUser1Id
-                },
-                new TaskListItem
-                    { Id = 17, Description = "Prepare snacks", IsCompleted = false, Position = 3, TasklistId = 5 },
-
-                // TaskListId = 6 (Concert Tickets)
-                new TaskListItem
-                    { Id = 18, Description = "Buy concert tickets", IsCompleted = false, Position = 1, TasklistId = 6 },
-                new TaskListItem
-                {
-                    Id = 19, Description = "Confirm concert date", IsCompleted = true, Position = 2, TasklistId = 6,
-                    CompletedById = demoUser1Id
-                },
-
-                // TaskListId = 7 (Vacation Planning)
-                new TaskListItem
-                {
-                    Id = 20, Description = "Book flights", IsCompleted = true, Position = 1, TasklistId = 7,
-                    CompletedById = demoUser1Id
-                },
-                new TaskListItem
-                    { Id = 21, Description = "Reserve hotel", IsCompleted = false, Position = 2, TasklistId = 7 },
-                new TaskListItem
-                    { Id = 22, Description = "Plan itinerary", IsCompleted = false, Position = 3, TasklistId = 7 },
-
-                // TaskListId = 8 (Assignment Deadlines)
-                new TaskListItem
-                {
-                    Id = 23, Description = "Submit math assignment", IsCompleted = false, Position = 1, TasklistId = 8
-                },
-                new TaskListItem
-                {
-                    Id = 24, Description = "Submit history assignment", IsCompleted = true, Position = 2,
-                    TasklistId = 8, CompletedById = demoUser1Id
-                },
-
-                // TaskListId = 9 (Giant shopping list)
-                new TaskListItem
-                {
-                    Id = 25, Description = "Buy bread", IsCompleted = true, Position = 1, TasklistId = 9,
-                    CompletedById = demoUser2Id
-                },
-                new TaskListItem
-                    { Id = 26, Description = "Buy butter", IsCompleted = false, Position = 2, TasklistId = 9 },
-
-                // TaskListId = 10 (Internet Bill)
-                new TaskListItem
-                {
-                    Id = 27, Description = "Pay internet bill", IsCompleted = true, Position = 1, TasklistId = 10,
-                    CompletedById = demoUser2Id
-                },
-
-                // TaskListId = 11 (SuperMart shopping list)
-                new TaskListItem
-                    { Id = 28, Description = "Buy sugar", IsCompleted = false, Position = 1, TasklistId = 11 },
-                new TaskListItem
-                {
-                    Id = 29, Description = "Buy rice", IsCompleted = true, Position = 2, TasklistId = 11,
-                    CompletedById = demoUser3Id
-                },
-
-                // TaskListId = 12 (Local Market shopping list)
-                new TaskListItem
-                {
-                    Id = 30, Description = "Buy tomatoes", IsCompleted = true, Position = 1, TasklistId = 12,
-                    CompletedById = demoUser3Id
-                },
-
-                // TaskListId = 13 (Mobile Bill)
-                new TaskListItem
-                    { Id = 31, Description = "Pay mobile bill", IsCompleted = false, Position = 1, TasklistId = 13 },
-
-                // TaskListId = 14 (Weekend Fun Activities)
-                new TaskListItem
-                    { Id = 32, Description = "Plan weekend trip", IsCompleted = false, Position = 1, TasklistId = 14 },
-                new TaskListItem
-                {
-                    Id = 33, Description = "Book tickets", IsCompleted = true, Position = 2, TasklistId = 14,
-                    CompletedById = demoUser3Id
+                    Id = 14, Description = "Check bill amount", IsCompleted = random.NextDouble() < 0.5, Position = 2,
+                    TasklistId = 4,
+                    CompletedById = demoUser1Id, DueDate = GenerateDueDate(today, random)
                 }
             );
+        }
+
+        private DateTime? GenerateDueDate(DateTime today, Random random)
+        {
+            double dueDateChance = random.NextDouble();
+            if (dueDateChance < 0.4)
+            {
+                // 40% chance to be due today
+                return today;
+            }
+            else if (dueDateChance < 0.8)
+            {
+                // 40% chance to be due within 2 weeks
+                return today.AddDays(random.Next(1, 15)); // Random date between 1 to 14 days from today
+            }
+            else
+            {
+                // 20% chance to have no due date
+                return null;
+            }
         }
     }
 }

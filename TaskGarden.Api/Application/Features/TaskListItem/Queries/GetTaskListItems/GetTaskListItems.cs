@@ -31,6 +31,7 @@ namespace TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListIt
                     Description = t.Description,
                     IsCompleted = t.IsCompleted,
                     Position = t.Position,
+                    DueDate = t.DueDate,
                 });
 
             var totalCount = await query.CountAsync(cancellationToken);
