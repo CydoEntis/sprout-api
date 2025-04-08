@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
 
-namespace TaskGarden.Api.Application.Features.TasklistItem.Queries;
+namespace TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListItems;
 
 public static class GetTasklistItemsEndpoint
 {

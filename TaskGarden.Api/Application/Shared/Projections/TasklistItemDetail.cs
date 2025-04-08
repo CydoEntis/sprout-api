@@ -6,5 +6,5 @@ public class TasklistItemDetail
     public string Description { get; set; }
     public bool IsCompleted { get; set; }
     public int Position { get; set; }
-    public DateTime? DueDate { get; set; } // <-- Add DueDate here for the response
+    public DateTime? DueDate { get; set; }
 }

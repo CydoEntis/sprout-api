@@ -4,11 +4,12 @@ using TaskGarden.Api.Application.Features.TaskListItem.Commands.DeleteTaskListIt
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
-using TaskGarden.Api.Application.Features.TasklistItem.Queries;
+using TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueToday;
+using TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListItems;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem;
 
-public static class TaskListitemEndpoints
+public static class TaskListItemEndpoints
 {
     public static void MapTaskListItemEndpoints(this IEndpointRouteBuilder routes)
     {
@@ -19,5 +20,6 @@ public static class TaskListitemEndpoints
         routes.MapReorderTaskListItemEndpoint();
         routes.MapUpdateTaskListItemCompletedStatusEndpoint();
         routes.MapGetTasklistItemsEndpoint();
+        routes.MapGetTaskListItemsDueTodayEndpoint();
     }
 }

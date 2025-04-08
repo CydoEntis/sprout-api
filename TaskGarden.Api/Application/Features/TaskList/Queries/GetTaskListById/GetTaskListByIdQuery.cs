@@ -69,7 +69,6 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
 
             var taskList = taskListData.TaskList;
 
-            // Get first 5 members and count of remaining
             var allMembers = taskList.TaskListMembers
                 .Where(tlm => tlm.User != null)
                 .ToList();
@@ -85,7 +84,6 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
 
             var additionalMemberCount = Math.Max(0, allMembers.Count - 5);
 
-            // Get task counts via optimized queries
             var totalTasksCount = await _context.TaskListItems
                 .Where(ti => ti.TasklistId == taskListId)
                 .CountAsync(cancellationToken);

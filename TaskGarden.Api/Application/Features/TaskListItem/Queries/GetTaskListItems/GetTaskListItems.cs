@@ -3,9 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.TasklistItem.Queries
+namespace TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListItems
 {
     public record GetTaskListItemsQuery(int TaskListId, int Page, int PageSize)
         : IRequest<PagedResponse<TasklistItemDetail>>;
