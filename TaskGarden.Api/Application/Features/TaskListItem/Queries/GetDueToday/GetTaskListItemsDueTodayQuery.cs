@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Infrastructure.Persistence;
+using TaskGarden.Api.Application.Shared.Handlers;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueToday;
 
-public record GetTaskListItemsDueTodayQuery()
-    : IRequest<List<TodaysTaskListItemGroup>>;
+public record GetTaskListItemsDueTodayQuery(int Page, int PageSize)
+    : IRequest<PagedResponse<TodaysTaskListItemGroup>>;
 
 public class TodaysTaskListItem
 {
@@ -28,7 +28,7 @@ public class TodaysTaskListItemGroup
 }
 
 public class GetTaskListItemsDueTodayQueryHandler : AuthRequiredHandler,
-    IRequestHandler<GetTaskListItemsDueTodayQuery, List<TodaysTaskListItemGroup>>
+    IRequestHandler<GetTaskListItemsDueTodayQuery, PagedResponse<TodaysTaskListItemGroup>>
 {
     private readonly AppDbContext _context;
 
@@ -38,13 +38,14 @@ public class GetTaskListItemsDueTodayQueryHandler : AuthRequiredHandler,
         _context = context;
     }
 
-    public async Task<List<TodaysTaskListItemGroup>> Handle(
-        GetTaskListItemsDueTodayQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResponse<TodaysTaskListItemGroup>> Handle(
+        GetTaskListItemsDueTodayQuery request,
+        CancellationToken cancellationToken)
     {
         var userId = GetAuthenticatedUserId();
         var today = DateTime.UtcNow.Date;
 
-        var items = await _context.TaskListItems
+        var query = _context.TaskListItems
             .AsNoTracking()
             .Where(ti =>
                 ti.DueDate.HasValue &&
@@ -66,10 +67,17 @@ public class GetTaskListItemsDueTodayQueryHandler : AuthRequiredHandler,
                         c.Category.Color,
                         c.Category.Tag
                     }).FirstOrDefault()
-            })
+            });
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var pagedItems = await query
+            .OrderBy(i => i.DueDate)
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
             .ToListAsync(cancellationToken);
 
-        var grouped = items
+        var grouped = pagedItems
             .Where(i => i.Category != null)
             .GroupBy(i => new { i.Category!.Name, i.Category.Color, i.Category.Tag })
             .Select(g => new TodaysTaskListItemGroup
@@ -89,6 +97,11 @@ public class GetTaskListItemsDueTodayQueryHandler : AuthRequiredHandler,
             })
             .ToList();
 
-        return grouped;
+        return new PagedResponse<TodaysTaskListItemGroup>(
+            grouped,
+            request.Page,
+            request.PageSize,
+            totalCount
+        );
     }
 }
