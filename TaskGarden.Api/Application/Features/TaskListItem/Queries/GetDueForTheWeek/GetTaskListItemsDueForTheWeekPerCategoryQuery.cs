@@ -19,15 +19,20 @@ public class TaskListItemDue
     public string TaskListName { get; set; } = null!;
 }
 
-public class TaskListItemCategoryGroup
+public class TaskListCategoryGroup
 {
-    public DateTime Date { get; set; }
     public int CategoryId { get; set; }
     public string CategoryName { get; set; } = null!;
     public string CategoryColor { get; set; } = null!;
     public string CategoryTag { get; set; } = null!;
     public List<TaskListItemDue> Items { get; set; } = new();
     public int DueCount { get; set; }
+}
+
+public class TaskListItemCategoryGroup
+{
+    public DateTime Date { get; set; }
+    public List<TaskListCategoryGroup> Categories { get; set; } = new();
 }
 
 public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequiredHandler,
@@ -48,8 +53,8 @@ public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequired
     {
         var userId = GetAuthenticatedUserId();
 
-        var startDate = DateTime.UtcNow.Date.AddDays(1); 
-        var endDate = startDate.AddDays(7); 
+        var startDate = DateTime.UtcNow.Date.AddDays(1); // Start date (next day)
+        var endDate = startDate.AddDays(7); // End date (next week)
 
         var query = _context.TaskListItems
             .AsNoTracking()
@@ -86,27 +91,36 @@ public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequired
 
         var grouped = pagedItems
             .Where(i => i.Category != null)
-            .GroupBy(i => new
+            .GroupBy(i => i.DueDate.Date) // First group by the due date
+            .Select(dueDateGroup => new TaskListItemCategoryGroup
             {
-                i.DueDate.Date, i.Category!.Id, i.Category.Name, i.Category.Color, i.Category.Tag
-            }) 
-            .Select(g => new TaskListItemCategoryGroup
-            {
-                Date = g.Key.Date,
-                CategoryId = g.Key.Id,
-                CategoryName = g.Key.Name,
-                CategoryColor = g.Key.Color,
-                CategoryTag = g.Key.Tag,
-                Items = g.Select(i => new TaskListItemDue
-                {
-                    Id = i.Id,
-                    Description = i.Description,
-                    DueDate = i.DueDate,
-                    IsCompleted = i.IsCompleted,
-                    TaskListId = i.TasklistId,
-                    TaskListName = i.TaskListName
-                }).ToList(),
-                DueCount = g.Count()
+                Date = dueDateGroup.Key, // Group by date
+                Categories = dueDateGroup
+                    .GroupBy(i => new
+                    {
+                        i.Category.Id,
+                        i.Category.Name,
+                        i.Category.Color,
+                        i.Category.Tag
+                    }) // Then group by category
+                    .Select(categoryGroup => new TaskListCategoryGroup
+                    {
+                        CategoryId = categoryGroup.Key.Id,
+                        CategoryName = categoryGroup.Key.Name,
+                        CategoryColor = categoryGroup.Key.Color,
+                        CategoryTag = categoryGroup.Key.Tag,
+                        Items = categoryGroup.Select(i => new TaskListItemDue
+                        {
+                            Id = i.Id,
+                            Description = i.Description,
+                            DueDate = i.DueDate,
+                            IsCompleted = i.IsCompleted,
+                            TaskListId = i.TasklistId,
+                            TaskListName = i.TaskListName
+                        }).ToList(),
+                        DueCount = categoryGroup.Count()
+                    })
+                    .ToList()
             })
             .ToList();
 
