@@ -4,6 +4,7 @@ using TaskGarden.Api.Application.Features.TaskListItem.Commands.DeleteTaskListIt
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
 using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
+using TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueForTheWeek;
 using TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueToday;
 using TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListItems;
 
@@ -20,6 +21,7 @@ public static class TaskListItemEndpoints
         routes.MapReorderTaskListItemEndpoint();
         routes.MapUpdateTaskListItemCompletedStatusEndpoint();
         routes.MapGetTasklistItemsEndpoint();
-        routes.MapGetTaskListItemsDueTodayEndpoint();
+        routes.MapGetTaskListItemsPerCategoryByDateEndpoint();
+        routes.MapGetTaskListItemsDueForTheWeekPerCategoryEndpoint();
     }
 }

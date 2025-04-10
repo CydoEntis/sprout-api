@@ -44,7 +44,7 @@ public class TaskListItemCategoryGroup
             CancellationToken cancellationToken)
         {
             var userId = GetAuthenticatedUserId();
-            var targetDate = request.Date.Date;
+            var targetDate = DateTime.SpecifyKind(request.Date.Date, DateTimeKind.Utc);
 
             var query = _context.TaskListItems
                 .AsNoTracking()
