@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TaskGarden.Api.Application.Shared.Handlers;
 using TaskGarden.Api.Application.Shared.Models;
 using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Api.Application.Shared.Handlers;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueToday;
 
-public record GetTaskListItemsDueTodayQuery(int Page, int PageSize)
-    : IRequest<PagedResponse<TodaysTaskListItemGroup>>;
+public record GetTaskListItemsPerCategoryByDateQuery(DateTime Date, int Page, int PageSize)
+    : IRequest<PagedResponse<TaskListItemCategoryGroup>>;
 
-public class TodaysTaskListItem
+public class TaskListItemDue
 {
     public int Id { get; set; }
     public string? Description { get; set; }
@@ -19,44 +19,44 @@ public class TodaysTaskListItem
     public string TaskListName { get; set; } = null!;
 }
 
-public class TodaysTaskListItemGroup
+public class TaskListItemCategoryGroup
 {
     public int CategoryId { get; set; }
     public string CategoryName { get; set; } = null!;
     public string CategoryColor { get; set; } = null!;
     public string CategoryTag { get; set; } = null!;
-    public List<TodaysTaskListItem> Items { get; set; } = new();
+    public List<TaskListItemDue> Items { get; set; } = new();
     public int DueCount { get; set; }
 
-    public class GetTaskListItemsDueTodayQueryHandler : AuthRequiredHandler,
-        IRequestHandler<GetTaskListItemsDueTodayQuery, PagedResponse<TodaysTaskListItemGroup>>
+    public class GetTaskListItemsPerCategoryByDateQueryHandler : AuthRequiredHandler,
+        IRequestHandler<GetTaskListItemsPerCategoryByDateQuery, PagedResponse<TaskListItemCategoryGroup>>
     {
         private readonly AppDbContext _context;
 
-        public GetTaskListItemsDueTodayQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context)
+        public GetTaskListItemsPerCategoryByDateQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context)
             : base(httpContextAccessor)
         {
             _context = context;
         }
 
-        public async Task<PagedResponse<TodaysTaskListItemGroup>> Handle(
-            GetTaskListItemsDueTodayQuery request,
+        public async Task<PagedResponse<TaskListItemCategoryGroup>> Handle(
+            GetTaskListItemsPerCategoryByDateQuery request,
             CancellationToken cancellationToken)
         {
             var userId = GetAuthenticatedUserId();
-            var today = DateTime.UtcNow.Date;
+            var targetDate = request.Date.Date;
 
             var query = _context.TaskListItems
                 .AsNoTracking()
                 .Where(ti =>
                     ti.DueDate.HasValue &&
-                    ti.DueDate.Value.Date == today &&
+                    ti.DueDate.Value.Date == targetDate &&
                     ti.TaskList.TaskListMembers.Any(m => m.UserId == userId))
                 .Select(ti => new
                 {
                     ti.Id,
                     ti.Description,
-                    DueDate = ti.DueDate ?? today,
+                    DueDate = ti.DueDate ?? targetDate,
                     ti.IsCompleted,
                     ti.TasklistId,
                     TaskListName = ti.TaskList.Name,
@@ -81,14 +81,14 @@ public class TodaysTaskListItemGroup
 
             var grouped = pagedItems
                 .Where(i => i.Category != null)
-                .GroupBy(i => new { i.Category!.Name, i.Category.Color, i.Category.Tag, i.Category.Id })
-                .Select(g => new TodaysTaskListItemGroup
+                .GroupBy(i => new { i.Category!.Id, i.Category.Name, i.Category.Color, i.Category.Tag })
+                .Select(g => new TaskListItemCategoryGroup
                 {
                     CategoryId = g.Key.Id,
                     CategoryName = g.Key.Name,
                     CategoryColor = g.Key.Color,
                     CategoryTag = g.Key.Tag,
-                    Items = g.Select(i => new TodaysTaskListItem
+                    Items = g.Select(i => new TaskListItemDue
                     {
                         Id = i.Id,
                         Description = i.Description,
@@ -101,7 +101,7 @@ public class TodaysTaskListItemGroup
                 })
                 .ToList();
 
-            return new PagedResponse<TodaysTaskListItemGroup>(grouped, request.Page, request.PageSize, totalCount);
+            return new PagedResponse<TaskListItemCategoryGroup>(grouped, request.Page, request.PageSize, totalCount);
         }
     }
 }
