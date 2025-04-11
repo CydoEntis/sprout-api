@@ -8,11 +8,11 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
     {
         public static void MapGetAllTaskListsForCategoryEndpoint(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/api/categories/{category}", async (
+            routes.MapGet("/api/categories/{category}/task-lists", async (
                     IMediator mediator,
                     [FromRoute] string category,
                     [FromQuery] int page = 1, 
-                    [FromQuery] int pageSize = 10, 
+                    [FromQuery] int pageSize = 1, 
                     [FromQuery] string? search = null, 
                     [FromQuery] string sortBy = "createdAt", 
                     [FromQuery] string sortDirection = "desc" 

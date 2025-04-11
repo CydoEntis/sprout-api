@@ -22,11 +22,15 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
 
     public class GetAllTaskListsForCategoryResponse
     {
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string CategoryTag { get; set; }
-        public string CategoryColor { get; set; }
-        public List<TaskListOverview> TaskListOverviews { get; set; } = new();
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public List<Member> Members { get; set; } = new List<Member>();
+        public int RemainingMembers { get; set; }
+        public double TaskCompletionPercentage { get; set; }
+        public bool IsFavorited { get; set; }
     }
 
     public class GetAllTaskListsForCategoryQueryHandler : AuthRequiredHandler,
@@ -60,17 +64,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                 await GetAllTaskListsByUserIdAndCategoryId(userId, existingCategory, request);
 
             return new PagedResponse<GetAllTaskListsForCategoryResponse>(
-                new List<GetAllTaskListsForCategoryResponse>
-                {
-                    new GetAllTaskListsForCategoryResponse
-                    {
-                        CategoryId = existingCategory.Id,
-                        CategoryName = existingCategory.Name,
-                        CategoryTag = existingCategory.Tag,
-                        CategoryColor = existingCategory.Color,
-                        TaskListOverviews = taskLists
-                    }
-                },
+                taskLists,
                 request.Page,
                 request.PageSize,
                 totalRecords
@@ -84,7 +78,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
         }
 
-        private async Task<(List<TaskListOverview>, int)> GetAllTaskListsByUserIdAndCategoryId(
+        private async Task<(List<GetAllTaskListsForCategoryResponse>, int)> GetAllTaskListsByUserIdAndCategoryId(
             string userId,
             Category existingCategory,
             GetAllTaskListsForCategoryQuery request)
@@ -92,7 +86,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
             var query = _context.UserTaskListCategories
                 .AsNoTracking()
                 .Where(ut => ut.UserId == userId && ut.CategoryId == existingCategory.Id)
-                .Select(ut => new TaskListOverview
+                .Select(ut => new GetAllTaskListsForCategoryResponse
                 {
                     Id = ut.TaskList.Id,
                     Name = ut.TaskList.Name,

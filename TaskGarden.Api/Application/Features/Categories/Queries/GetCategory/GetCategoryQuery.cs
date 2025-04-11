@@ -11,10 +11,10 @@ public record GetCategoryQuery(string CategoryName) : IRequest<GetCategoryRespon
 
 public class GetCategoryResponse
 {
-    public int CategoryId { get; set; }
-    public string CategoryName { get; set; }
-    public string CategoryTag { get; set; }
-    public string CategoryColor { get; set; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Tag { get; set; }
+    public string Color { get; set; }
 }
 
 public class GetCategoryHandler : AuthRequiredHandler,
@@ -40,10 +40,10 @@ public class GetCategoryHandler : AuthRequiredHandler,
 
         return new GetCategoryResponse
         {
-            CategoryId = existingCategory.Id,
-            CategoryName = existingCategory.Name,
-            CategoryTag = existingCategory.Tag,
-            CategoryColor = existingCategory.Color,
+            Id = existingCategory.Id,
+            Name = existingCategory.Name,
+            Tag = existingCategory.Tag,
+            Color = existingCategory.Color,
         };
     }
 
