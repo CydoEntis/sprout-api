@@ -7,8 +7,13 @@ using TaskGarden.Api.Infrastructure.Persistence;
 
 namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
 
-public record GetCategoriesWithTaskListCountQuery(int Page = 1, int PageSize = 10, string? Search = null)
-    : IRequest<PagedResponse<GetCategoriesWithTaskListCountResponse>>;
+public record GetCategoriesWithTaskListCountQuery(
+    int Page = 1,
+    int PageSize = 10,
+    string? Search = null,
+    string SortBy = "createdAt",
+    string SortDirection = "desc"
+) : IRequest<PagedResponse<GetCategoriesWithTaskListCountResponse>>;
 
 public class GetCategoriesWithTaskListCountResponse
 {
@@ -38,9 +43,14 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
         CancellationToken cancellationToken)
     {
         var userId = GetAuthenticatedUserId();
-        var (categories, totalRecords) =
-            await GetCategoriesWithTaskListCount(userId, request.Page, request.PageSize, request.Search);
-
+        var (categories, totalRecords) = await GetCategoriesWithTaskListCount(
+            userId,
+            request.Page,
+            request.PageSize,
+            request.Search,
+            request.SortBy,
+            request.SortDirection
+        );
 
         var response = new PagedResponse<GetCategoriesWithTaskListCountResponse>(
             categories,
@@ -52,23 +62,34 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
         return response;
     }
 
-
     private async Task<(List<GetCategoriesWithTaskListCountResponse>, int)> GetCategoriesWithTaskListCount(
-        string userId, int page,
-        int pageSize, string? search)
+        string userId,
+        int page,
+        int pageSize,
+        string? search,
+        string sortBy,
+        string sortDirection)
     {
         var query = _context.Categories
             .Where(c => c.UserId == userId);
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(c => c.Name.Contains(search));
+            var lowerSearch = search.ToLower();
+            query = query.Where(c => c.Name.ToLower().Contains(lowerSearch));
         }
+
+        query = (sortBy.ToLower(), sortDirection.ToLower()) switch
+        {
+            ("name", "asc") => query.OrderBy(c => c.Name),
+            ("name", "desc") => query.OrderByDescending(c => c.Name),
+            ("createdat", "asc") => query.OrderBy(c => c.CreatedAt),
+            _ => query.OrderByDescending(c => c.CreatedAt)
+        };
 
         var totalRecords = await query.CountAsync();
 
         var categories = await query
-            .OrderByDescending(c => c.CreatedAt)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(c => new GetCategoriesWithTaskListCountResponse
@@ -77,9 +98,7 @@ public class GetCategoriesWithTasklistCountHandler : AuthRequiredHandler,
                 Name = c.Name,
                 Tag = c.Tag,
                 Color = c.Color,
-                TotalTaskLists =
-                    _context.UserTaskListCategories.Count(utc =>
-                        utc.CategoryId == c.Id)
+                TotalTaskLists = _context.UserTaskListCategories.Count(utc => utc.CategoryId == c.Id)
             })
             .ToListAsync();
 

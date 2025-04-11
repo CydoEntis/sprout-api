@@ -9,11 +9,10 @@ public static class GetAllCategoriesEndpoint
     public static void MapGetAllCategoriesEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/api/categories", async (
-                IMediator mediator,
-                [AsParameters] GetAllCategoriesQuery query) =>
+                IMediator mediator) =>
             {
-                var response = await mediator.Send(query);
-                return Results.Ok(ApiResponse<PagedResponse<GetAllCategoriesResponse>>.SuccessWithData(response));
+                var response = await mediator.Send(new GetAllCategoriesQuery());
+                return Results.Ok(ApiResponse<List<GetAllCategoriesResponse>>.SuccessWithData(response));
             })
             .WithName("GetAllCategories")
             .WithTags("Categories")

@@ -1,16 +1,17 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
 using TaskGarden.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskTaskListCount;
+namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
 
 public static class GetCategoriesWithTaskListCountEndpoint
 {
     public static void MapGetCategoriesWithTaskListCountEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapGet("/api/categories/details", async (IMediator mediator) =>
+        routes.MapGet("/api/categories/details", async (
+                [AsParameters] GetCategoriesWithTaskListCountQuery query,
+                IMediator mediator) =>
             {
-                var response = await mediator.Send(new GetCategoriesWithTaskListCountQuery());
+                var response = await mediator.Send(query);
 
                 return Results.Ok(
                     ApiResponse<PagedResponse<GetCategoriesWithTaskListCountResponse>>.SuccessWithData(response));

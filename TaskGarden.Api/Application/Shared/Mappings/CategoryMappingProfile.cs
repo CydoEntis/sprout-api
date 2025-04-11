@@ -4,7 +4,6 @@ using TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
 using TaskGarden.Api.Application.Features.Categories.Queries;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskTaskListCount;
 using TaskGarden.Api.Application.Features.Invitation.Commands.AcceptInvite;
 using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;

@@ -8,12 +8,17 @@ using TaskGarden.Api.Application.Shared.Projections;
 using TaskGarden.Api.Domain.Entities;
 using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory
 {
-    public record GetAllTaskListsForCategoryQuery(string CategoryName)
-        : IRequest<GetAllTaskListsForCategoryResponse>;
+    public record GetAllTaskListsForCategoryQuery(
+        string CategoryName,
+        int Page = 1,
+        int PageSize = 10,
+        string? Search = null,
+        string SortBy = "createdAt",
+        string SortDirection = "desc"
+    ) : IRequest<PagedResponse<GetAllTaskListsForCategoryResponse>>;
 
     public class GetAllTaskListsForCategoryResponse
     {
@@ -25,7 +30,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
     }
 
     public class GetAllTaskListsForCategoryQueryHandler : AuthRequiredHandler,
-        IRequestHandler<GetAllTaskListsForCategoryQuery, GetAllTaskListsForCategoryResponse>
+        IRequestHandler<GetAllTaskListsForCategoryQuery, PagedResponse<GetAllTaskListsForCategoryResponse>>
     {
         private readonly AppDbContext _context;
         private readonly IValidator<GetAllTaskListsForCategoryQuery> _validator;
@@ -37,7 +42,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
             _validator = validator;
         }
 
-        public async Task<GetAllTaskListsForCategoryResponse> Handle(
+        public async Task<PagedResponse<GetAllTaskListsForCategoryResponse>> Handle(
             GetAllTaskListsForCategoryQuery request,
             CancellationToken cancellationToken)
         {
@@ -51,9 +56,25 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
             if (existingCategory is null)
                 throw new NotFoundException("Category does not exist");
 
-            var taskLists = await GetAllTaskListsByUserIdAndCategoryId(userId, existingCategory);
+            var (taskLists, totalRecords) =
+                await GetAllTaskListsByUserIdAndCategoryId(userId, existingCategory, request);
 
-            return taskLists;
+            return new PagedResponse<GetAllTaskListsForCategoryResponse>(
+                new List<GetAllTaskListsForCategoryResponse>
+                {
+                    new GetAllTaskListsForCategoryResponse
+                    {
+                        CategoryId = existingCategory.Id,
+                        CategoryName = existingCategory.Name,
+                        CategoryTag = existingCategory.Tag,
+                        CategoryColor = existingCategory.Color,
+                        TaskListOverviews = taskLists
+                    }
+                },
+                request.Page,
+                request.PageSize,
+                totalRecords
+            );
         }
 
         private async Task<Category?> GetCategoryByNameAsync(string userId, string categoryName)
@@ -63,10 +84,12 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     c.UserId == userId && c.Name.ToLower() == categoryName.ToLower());
         }
 
-        private async Task<GetAllTaskListsForCategoryResponse> GetAllTaskListsByUserIdAndCategoryId(string userId,
-            Category existingCategory)
+        private async Task<(List<TaskListOverview>, int)> GetAllTaskListsByUserIdAndCategoryId(
+            string userId,
+            Category existingCategory,
+            GetAllTaskListsForCategoryQuery request)
         {
-            var taskListOverviews = await _context.UserTaskListCategories
+            var query = _context.UserTaskListCategories
                 .AsNoTracking()
                 .Where(ut => ut.UserId == userId && ut.CategoryId == existingCategory.Id)
                 .Select(ut => new TaskListOverview
@@ -99,17 +122,30 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
 
                     IsFavorited = _context.FavoriteTaskLists
                         .Any(f => f.UserId == userId && f.TaskListId == ut.TaskList.Id),
-                })
+                });
+
+            if (!string.IsNullOrWhiteSpace(request.Search))
+            {
+                var lowerSearch = request.Search.ToLower();
+                query = query.Where(ut => ut.Name.ToLower().Contains(lowerSearch));
+            }
+
+            query = (request.SortBy.ToLower(), request.SortDirection.ToLower()) switch
+            {
+                ("name", "asc") => query.OrderBy(ut => ut.Name),
+                ("name", "desc") => query.OrderByDescending(ut => ut.Name),
+                ("createdat", "asc") => query.OrderBy(ut => ut.CreatedAt),
+                _ => query.OrderByDescending(ut => ut.CreatedAt)
+            };
+
+            var totalRecords = await query.CountAsync();
+
+            var taskListOverviews = await query
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .ToListAsync();
 
-            return new GetAllTaskListsForCategoryResponse
-            {
-                CategoryId = existingCategory.Id,
-                CategoryName = existingCategory.Name,
-                CategoryTag = existingCategory.Tag,
-                CategoryColor = existingCategory.Color,
-                TaskListOverviews = taskListOverviews
-            };
+            return (taskListOverviews, totalRecords);
         }
     }
 }
