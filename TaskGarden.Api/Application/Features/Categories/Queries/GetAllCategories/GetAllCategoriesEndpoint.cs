@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
 using TaskGarden.Api.Application.Shared.Models;
 
 namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
@@ -8,11 +8,12 @@ public static class GetAllCategoriesEndpoint
 {
     public static void MapGetAllCategoriesEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapGet("/api/categories", async (IMediator mediator) =>
+        routes.MapGet("/api/categories", async (
+                IMediator mediator,
+                [AsParameters] GetAllCategoriesQuery query) =>
             {
-                var query = new GetAllCategoriesQuery();
                 var response = await mediator.Send(query);
-                return Results.Ok(ApiResponse<List<GetAllCategoriesResponse>>.SuccessWithData(response));
+                return Results.Ok(ApiResponse<PagedResponse<GetAllCategoriesResponse>>.SuccessWithData(response));
             })
             .WithName("GetAllCategories")
             .WithTags("Categories")
