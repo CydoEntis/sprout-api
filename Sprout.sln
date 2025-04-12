@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskGarden.Api", "TaskGarden.Api\TaskGarden.Api.csproj", "{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sprout.Api", "Sprout.Api\Sprout.Api.csproj", "{2CEE5B66-3B2A-4ABC-BDFD-37BDE4813DAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

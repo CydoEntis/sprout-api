@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
       <UserSecretsId>5c6b0dbc-3a4f-4de4-b123-80da9a720ebe</UserSecretsId>
+      <RootNamespace>TaskGarden.Api</RootNamespace>
   </PropertyGroup>
 
     <ItemGroup>

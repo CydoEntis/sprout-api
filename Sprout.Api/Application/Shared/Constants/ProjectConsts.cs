@@ -5,7 +5,7 @@
 
 public class ProjectConsts
 {
-    public const string ProjectApi = "TaskGarden.Api";
+    public const string ProjectApi = "Sprout.Api";
     public const string ProjectData = "TaskGarden.Infrastructure";
     public const string EmailDir = "Email";
     public const string EmailTemplatesDir = "Templates";
