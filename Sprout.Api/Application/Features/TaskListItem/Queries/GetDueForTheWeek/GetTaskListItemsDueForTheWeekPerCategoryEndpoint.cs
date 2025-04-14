@@ -9,10 +9,23 @@ public static class GetTaskListItemsDueForTheWeekPerCategoryEndpoint
     public static void MapGetTaskListItemsDueForTheWeekPerCategoryEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/api/task-list/coming-up",
-                async (IMediator mediator, [FromQuery] int page = 1,
-                    [FromQuery] int pageSize = 200) =>
+                async (
+                    IMediator mediator,
+                    [FromQuery] int page = 1,
+                    [FromQuery] string? search = null,
+                    [FromQuery] string sortBy = "dueDate",
+                    [FromQuery] string sortDirection = "asc",
+                    [FromQuery] bool? isCompleted = null
+                ) =>
                 {
-                    var query = new GetTaskListItemsDueForTheWeekPerCategoryQuery(page, pageSize);
+                    var query = new GetTaskListItemsDueForTheWeekPerCategoryQuery(
+                        page,
+                        10,
+                        search,
+                        sortBy,
+                        sortDirection,
+                        isCompleted
+                    );
                     var response = await mediator.Send(query);
                     return Results.Ok(ApiResponse<PagedResponse<TaskListItemCategoryGroup>>.SuccessWithData(response));
                 })
