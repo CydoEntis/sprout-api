@@ -6,8 +6,15 @@ using TaskGarden.Api.Infrastructure.Persistence;
 
 namespace TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueToday;
 
-public record GetTaskListItemsPerCategoryByDateQuery(DateTime Date, int Page, int PageSize)
-    : IRequest<PagedResponse<TaskListItemCategoryGroup>>;
+public record GetTaskListItemsPerCategoryByDateQuery(
+    DateTime Date,
+    int Page = 1,
+    int PageSize = 10,
+    string? Search = null,
+    string SortBy = "dueDate",
+    string SortDirection = "asc",
+    bool? IsCompleted = null
+) : IRequest<PagedResponse<TaskListItemCategoryGroup>>;
 
 public class TaskListItemDue
 {
@@ -33,7 +40,8 @@ public class TaskListItemCategoryGroup
     {
         private readonly AppDbContext _context;
 
-        public GetTaskListItemsPerCategoryByDateQueryHandler(IHttpContextAccessor httpContextAccessor, AppDbContext context)
+        public GetTaskListItemsPerCategoryByDateQueryHandler(IHttpContextAccessor httpContextAccessor,
+            AppDbContext context)
             : base(httpContextAccessor)
         {
             _context = context;
@@ -51,7 +59,37 @@ public class TaskListItemCategoryGroup
                 .Where(ti =>
                     ti.DueDate.HasValue &&
                     ti.DueDate.Value.Date == targetDate &&
-                    ti.TaskList.TaskListMembers.Any(m => m.UserId == userId))
+                    ti.TaskList.TaskListMembers.Any(m => m.UserId == userId));
+
+            if (!string.IsNullOrWhiteSpace(request.Search))
+            {
+                var searchLower = request.Search.ToLower();
+                query = query.Where(ti =>
+                    (ti.Description != null && ti.Description.ToLower().Contains(searchLower)) ||
+                    ti.TaskList.Name.ToLower().Contains(searchLower));
+            }
+
+            if (request.IsCompleted.HasValue)
+            {
+                query = query.Where(ti => ti.IsCompleted == request.IsCompleted.Value);
+            }
+
+            query = (request.SortBy.ToLower(), request.SortDirection.ToLower()) switch
+            {
+                ("description", "asc") => query.OrderBy(ti => ti.Description),
+                ("description", "desc") => query.OrderByDescending(ti => ti.Description),
+                ("duedate", "asc") => query.OrderBy(ti => ti.DueDate),
+                ("duedate", "desc") => query.OrderByDescending(ti => ti.DueDate),
+                ("completed", "asc") => query.OrderBy(ti => ti.IsCompleted),
+                ("completed", "desc") => query.OrderByDescending(ti => ti.IsCompleted),
+                _ => query.OrderBy(ti => ti.DueDate)
+            };
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            var pagedItems = await query
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .Select(ti => new
                 {
                     ti.Id,
@@ -69,14 +107,7 @@ public class TaskListItemCategoryGroup
                             c.Category.Color,
                             c.Category.Tag
                         }).FirstOrDefault()
-                });
-
-            var totalCount = await query.CountAsync(cancellationToken);
-
-            var pagedItems = await query
-                .OrderBy(i => i.DueDate)
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
+                })
                 .ToListAsync(cancellationToken);
 
             var grouped = pagedItems

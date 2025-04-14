@@ -9,10 +9,25 @@ public static class GetTaskListItemsPerCategoryByDateEndpoint
     public static void MapGetTaskListItemsPerCategoryByDateEndpoint(this IEndpointRouteBuilder routes)
     {
         routes.MapGet("/api/task-list/due-by-date",
-                async (IMediator mediator, [FromQuery] DateTime date, [FromQuery] int page = 1,
-                    [FromQuery] int pageSize = 20) =>
+                async (IMediator mediator,
+                    [FromQuery] DateTime date,
+                    [FromQuery] int page = 1,
+                    [FromQuery] int pageSize = 20,
+                    [FromQuery] string? search = null,
+                    [FromQuery] string sortBy = "duedate",
+                    [FromQuery] string sortDirection = "desc",
+                    [FromQuery] bool? isCompleted = null) =>
                 {
-                    var query = new GetTaskListItemsPerCategoryByDateQuery(date, page, pageSize);
+                    var query = new GetTaskListItemsPerCategoryByDateQuery(
+                        date,
+                        page,
+                        pageSize,
+                        search,
+                        sortBy,
+                        sortDirection,
+                        isCompleted
+                    );
+
                     var response = await mediator.Send(query);
                     return Results.Ok(ApiResponse<PagedResponse<TaskListItemCategoryGroup>>.SuccessWithData(response));
                 })
