@@ -25,7 +25,7 @@ public class TaskListItemDue
     public string TaskListName { get; set; } = null!;
 }
 
-public class TaskListItemCategoryGroup
+public class TaskListCategoryGroup
 {
     public int CategoryId { get; set; }
     public string CategoryName { get; set; } = null!;
@@ -35,12 +35,19 @@ public class TaskListItemCategoryGroup
     public int DueCount { get; set; }
 }
 
+public class TaskListItemCategoryGroup
+{
+    public DateTime Date { get; set; }
+    public List<TaskListCategoryGroup> Categories { get; set; } = new();
+}
+
 public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequiredHandler,
     IRequestHandler<GetTaskListItemsDueForTheWeekPerCategoryQuery, PagedResponse<TaskListItemCategoryGroup>>
 {
     private readonly AppDbContext _context;
 
-    public GetTaskListItemsDueForTheWeekPerCategoryQueryHandler(IHttpContextAccessor httpContextAccessor,
+    public GetTaskListItemsDueForTheWeekPerCategoryQueryHandler(
+        IHttpContextAccessor httpContextAccessor,
         AppDbContext context)
         : base(httpContextAccessor)
     {
@@ -52,6 +59,7 @@ public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequired
         CancellationToken cancellationToken)
     {
         var userId = GetAuthenticatedUserId();
+
         var startDate = DateTime.UtcNow.Date.AddDays(1);
         var endDate = startDate.AddDays(7);
 
@@ -59,7 +67,8 @@ public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequired
             .AsNoTracking()
             .Where(ti =>
                 ti.DueDate.HasValue &&
-                ti.DueDate.Value.Date >= startDate && ti.DueDate.Value.Date < endDate &&
+                ti.DueDate.Value.Date >= startDate &&
+                ti.DueDate.Value.Date < endDate &&
                 ti.TaskList.TaskListMembers.Any(m => m.UserId == userId));
 
         if (!string.IsNullOrWhiteSpace(request.Search))
@@ -113,24 +122,37 @@ public class GetTaskListItemsDueForTheWeekPerCategoryQueryHandler : AuthRequired
 
         var grouped = pagedItems
             .Where(i => i.Category != null)
-            .GroupBy(i => new { i.Category!.Id, i.Category.Name, i.Category.Color, i.Category.Tag })
-            .Select(g => new TaskListItemCategoryGroup
+            .GroupBy(i => i.DueDate.Date)
+            .Select(dateGroup => new TaskListItemCategoryGroup
             {
-                CategoryId = g.Key.Id,
-                CategoryName = g.Key.Name,
-                CategoryColor = g.Key.Color,
-                CategoryTag = g.Key.Tag,
-                Items = g.Select(i => new TaskListItemDue
-                {
-                    Id = i.Id,
-                    Description = i.Description,
-                    DueDate = i.DueDate,
-                    IsCompleted = i.IsCompleted,
-                    TaskListId = i.TasklistId,
-                    TaskListName = i.TaskListName
-                }).ToList(),
-                DueCount = g.Count()
+                Date = dateGroup.Key,
+                Categories = dateGroup
+                    .GroupBy(i => new
+                    {
+                        i.Category!.Id,
+                        i.Category.Name,
+                        i.Category.Color,
+                        i.Category.Tag
+                    })
+                    .Select(catGroup => new TaskListCategoryGroup
+                    {
+                        CategoryId = catGroup.Key.Id,
+                        CategoryName = catGroup.Key.Name,
+                        CategoryColor = catGroup.Key.Color,
+                        CategoryTag = catGroup.Key.Tag,
+                        Items = catGroup.Select(i => new TaskListItemDue
+                        {
+                            Id = i.Id,
+                            Description = i.Description,
+                            DueDate = i.DueDate,
+                            IsCompleted = i.IsCompleted,
+                            TaskListId = i.TasklistId,
+                            TaskListName = i.TaskListName
+                        }).ToList(),
+                        DueCount = catGroup.Count()
+                    }).ToList()
             })
+            .OrderBy(g => g.Date)
             .ToList();
 
         return new PagedResponse<TaskListItemCategoryGroup>(grouped, request.Page, request.PageSize, totalCount);

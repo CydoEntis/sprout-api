@@ -20,7 +20,7 @@ public static class GetTaskListItemsDueForTheWeekPerCategoryEndpoint
                 {
                     var query = new GetTaskListItemsDueForTheWeekPerCategoryQuery(
                         page,
-                        1,
+                        10,
                         search,
                         sortBy,
                         sortDirection,
