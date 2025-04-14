@@ -128,6 +128,8 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
             {
                 ("name", "asc") => query.OrderBy(ut => ut.Name),
                 ("name", "desc") => query.OrderByDescending(ut => ut.Name),
+                ("favorited", "asc") => query.OrderBy(ut => ut.IsFavorited),
+                ("favorited", "desc") => query.OrderByDescending(ut => ut.IsFavorited),
                 ("createdat", "asc") => query.OrderBy(ut => ut.CreatedAt),
                 _ => query.OrderByDescending(ut => ut.CreatedAt)
             };

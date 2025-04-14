@@ -55,6 +55,7 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
+//Disable only in development
 app.UseHttpsRedirection();
 
 app.MapAuthEndpoints();

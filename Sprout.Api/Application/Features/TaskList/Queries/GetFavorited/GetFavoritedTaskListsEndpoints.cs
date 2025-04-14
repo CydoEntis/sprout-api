@@ -12,7 +12,6 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetFavorited
             routes.MapGet("/api/task-list/favorites", async (
                     IMediator mediator,
                     [FromQuery] int page,
-                    [FromQuery] int pageSize,
                     [FromQuery] string? search,
                     [FromQuery] string sortBy,
                     [FromQuery] string sortDirection
@@ -20,7 +19,6 @@ namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetFavorited
                 {
                     var query = new GetFavoritedTaskListsQuery(
                         Page: page,
-                        PageSize: pageSize,
                         Search: search,
                         SortBy: sortBy,
                         SortDirection: sortDirection

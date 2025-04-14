@@ -9,7 +9,7 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWi
 
 public record GetCategoriesWithTaskListCountQuery(
     int Page = 1,
-    int PageSize = 10,
+    int PageSize = 3,
     string? Search = null,
     string SortBy = "createdAt",
     string SortDirection = "desc"

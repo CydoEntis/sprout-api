@@ -8,12 +8,11 @@ public static class CorsServiceRegistration
         {
             options.AddPolicy("AllowAll", policy =>
             {
-                policy.WithOrigins("https://localhost:5173")
+                policy.WithOrigins("https://sprout.loca.lt") 
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
                     .WithExposedHeaders("Cross-Origin-Opener-Policy", "Cross-Origin-Embedder-Policy");
-                ;
             });
         });
 

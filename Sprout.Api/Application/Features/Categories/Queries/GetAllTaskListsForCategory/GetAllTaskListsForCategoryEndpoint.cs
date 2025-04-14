@@ -12,7 +12,6 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     IMediator mediator,
                     [FromRoute] string category,
                     [FromQuery] int page = 1, 
-                    [FromQuery] int pageSize = 1, 
                     [FromQuery] string? search = null, 
                     [FromQuery] string sortBy = "createdAt", 
                     [FromQuery] string sortDirection = "desc" 
@@ -21,7 +20,6 @@ namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskLists
                     var queryWithCategory = new GetAllTaskListsForCategoryQuery(
                         CategoryName: category,
                         Page: page,
-                        PageSize: pageSize,
                         Search: search,
                         SortBy: sortBy,
                         SortDirection: sortDirection
