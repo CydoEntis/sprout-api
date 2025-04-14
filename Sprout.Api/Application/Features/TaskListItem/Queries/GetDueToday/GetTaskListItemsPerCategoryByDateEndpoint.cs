@@ -12,7 +12,7 @@ public static class GetTaskListItemsPerCategoryByDateEndpoint
                 async (IMediator mediator,
                     [FromQuery] DateTime date,
                     [FromQuery] int page = 1,
-                    [FromQuery] int pageSize = 20,
+                    [FromQuery] int pageSize = 10,
                     [FromQuery] string? search = null,
                     [FromQuery] string sortBy = "duedate",
                     [FromQuery] string sortDirection = "desc",
