@@ -25,6 +25,7 @@ namespace TaskGarden.Api.Infrastructure.Services.Email
             _emailTemplateService = emailTemplateService;
         }
 
+
         public async Task SendEmailAsync(string preview, string toEmail, string subject, string templateName,
             Dictionary<string, string> placeholders)
         {

@@ -93,6 +93,7 @@ public class GoogleLoginCommandHandler
             var clientId = _configuration["Authentication:Google:ClientId"];
             var clientSecret = _configuration["Authentication:Google:ClientSecret"];
 
+
             var redirectUri = "postmessage";
 
             var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer

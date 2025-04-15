@@ -1,0 +1,64 @@
+# User-specific files
+.idea/
+.vscode/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# .NET Core build results
+bin/
+obj/
+
+# User secrets (stored locally)
+secrets.json
+
+# Local .NET SDK and other generated files
+project.lock.json
+project.fragment.lock.json
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files (created by Visual Studio)
+.vs2019/
+.vs2017/
+
+# Windows installer files
+*.exe
+*.dll
+
+# ASP.NET
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Visual Studio for Mac
+.vscode/
+.idea/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Rider IDE
+.idea/
+
+# Other IDEs
+# JetBrains Rider
+.idea/
+.idea/*
+
+# macOS
+.DS_Store
+*.swp
+
+# Logs
+logs/
+*.log

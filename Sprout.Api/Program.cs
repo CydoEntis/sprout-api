@@ -12,9 +12,30 @@ using TaskGarden.Api.Infrastructure.DependencyInjection;
 using TaskGarden.Api.Infrastructure.Middlewares;
 using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Configurations;
-using TaskGarden.Infrastructure;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    var certFilePath = Environment.GetEnvironmentVariable("CERT_FILE_PATH");  
+    var certPassword = Environment.GetEnvironmentVariable("CERT_PASSWORD");    
+
+    Console.WriteLine($"Certificate File Path: {certFilePath}");
+    Console.WriteLine($"Certificate Password: {certPassword}");
+    
+    if (string.IsNullOrEmpty(certFilePath) || string.IsNullOrEmpty(certPassword))
+    {
+        throw new InvalidOperationException("SSL certificate path or password is not set.");
+    }
+
+    serverOptions.ListenAnyIP(443, listenOptions =>
+    {
+        listenOptions.UseHttps(certFilePath, certPassword);
+    });
+});
+
+
 
 // Add services to the container
 builder.Services.AddEndpointsApiExplorer();
@@ -30,7 +51,6 @@ builder.Services.AddApplicationServices();
 builder.Services.AddEmailService();
 
 builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
-
 
 builder.Services.AddIdentityCore<AppUser>()
     .AddRoles<IdentityRole>()
@@ -55,7 +75,8 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
-//Disable only in development
+
+// 🔒 Redirect HTTP to HTTPS (safe to keep, will be ignored if no HTTP port)
 app.UseHttpsRedirection();
 
 app.MapAuthEndpoints();
