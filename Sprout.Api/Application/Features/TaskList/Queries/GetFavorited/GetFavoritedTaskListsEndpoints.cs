@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetFavorited
+namespace Sprout.Api.Application.Features.TaskList.Queries.GetFavorited
 {
     public static class GetFavoritedTaskListsEndpoints
     {

@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
-using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
-using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using Sprout.Api.Application.Features.TaskList.Commands.CreateTaskList;
+using Sprout.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using Sprout.Api.Application.Features.TaskList.Queries.GetTaskListById;
 // using Sprout.Api.Application.Features.TaskList.Queries.GetTaskListById;
-using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
-using TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using Sprout.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Application.Shared.Mappings;
+namespace Sprout.Api.Application.Shared.Mappings;
 
 public class TaskListMappingProfile : Profile
 {

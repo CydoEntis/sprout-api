@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Enums;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Enums;
 
-namespace TaskGarden.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
+namespace Sprout.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
 
 public static class UpdateUserRoleEndpoint
 {

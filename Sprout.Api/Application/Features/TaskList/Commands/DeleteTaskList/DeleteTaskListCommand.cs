@@ -1,15 +1,15 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Extensions;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Enums;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Enums;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Extensions;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Enums;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Domain.Enums;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
+namespace Sprout.Api.Application.Features.TaskList.Commands.DeleteTaskList;
 
 public record DeleteTaskListCommand(int TasklistId) : IRequest<DeleteTaskListResponse>;
 

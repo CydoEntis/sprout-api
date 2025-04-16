@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Infrastructure.Persistence;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Infrastructure.Persistence;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
+namespace Sprout.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
 
 public record GetCategoriesWithTaskListCountQuery(
     int Page = 1,

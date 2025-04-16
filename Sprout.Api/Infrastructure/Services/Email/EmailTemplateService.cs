@@ -1,8 +1,8 @@
-﻿using TaskGarden.Application.Common.Constants;
+﻿using Sprout.Application.Common.Constants;
 using System.IO;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
+using Sprout.Api.Infrastructure.Services.Interfaces;
 
-namespace TaskGarden.Api.Infrastructure.Services.Email;
+namespace Sprout.Api.Infrastructure.Services.Email;
 
 public class EmailTemplateService : IEmailTemplateService
 {

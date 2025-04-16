@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Application.Shared.Projections;
+﻿namespace Sprout.Api.Application.Shared.Projections;
 
 public class TasklistItemDetail
 {

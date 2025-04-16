@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
+namespace Sprout.Api.Application.Features.TaskList.Commands.CreateTaskList;
 
 public static class CreateTaskListEndpoint
 {

@@ -1,6 +1,6 @@
-﻿using TaskGarden.Api.Domain.Entities;
+﻿using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Application.Shared.Projections;
+namespace Sprout.Api.Application.Shared.Projections;
 
 public class CategoryWithTasklistCount
 {

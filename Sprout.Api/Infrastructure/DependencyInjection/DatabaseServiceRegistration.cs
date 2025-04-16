@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Constants;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Constants;
 
-namespace TaskGarden.Api.Infrastructure.DependencyInjection;
+namespace Sprout.Api.Infrastructure.DependencyInjection;
 
 public static class DatabaseServiceRegistration
 {

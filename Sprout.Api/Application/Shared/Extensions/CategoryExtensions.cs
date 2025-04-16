@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Shared.Extensions;
+namespace Sprout.Api.Application.Shared.Extensions;
 
 public static class CategoryExtensions
 {

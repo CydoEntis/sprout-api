@@ -1,8 +1,8 @@
-﻿using TaskGarden.Api.Infrastructure.Services.Email;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
+﻿using Sprout.Api.Infrastructure.Services.Email;
+using Sprout.Api.Infrastructure.Services.Interfaces;
 
 
-namespace TaskGarden.Api.Infrastructure.DependencyInjection;
+namespace Sprout.Api.Infrastructure.DependencyInjection;
 
 public static class EmailServiceRegistration
 {

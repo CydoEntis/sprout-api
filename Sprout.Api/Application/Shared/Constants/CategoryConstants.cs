@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Application.Features.Shared.Constants
+﻿namespace Sprout.Application.Features.Shared.Constants
 {
     public class CategoryConstants
     {

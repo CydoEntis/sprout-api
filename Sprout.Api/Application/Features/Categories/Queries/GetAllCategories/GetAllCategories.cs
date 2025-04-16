@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Infrastructure.Persistence;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Infrastructure.Persistence;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
+namespace Sprout.Api.Application.Features.Categories.Queries.GetAllCategories;
 
 public record GetAllCategoriesQuery() : IRequest<List<GetAllCategoriesResponse>>;
 

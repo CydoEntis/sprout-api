@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
+namespace Sprout.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
 
 public record FavoriteTaskListCommand(int TaskListId) : IRequest<FavoriteTaskListResponse>;
 

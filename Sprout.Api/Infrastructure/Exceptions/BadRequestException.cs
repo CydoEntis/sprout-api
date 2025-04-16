@@ -1,7 +1,7 @@
-﻿using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Application.Common.Exceptions;
+﻿using Sprout.Api.Application.Shared.Models;
+using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Infrastructure.Exceptions;
+namespace Sprout.Api.Infrastructure.Exceptions;
 
 public class BadRequestException : BaseException
 {

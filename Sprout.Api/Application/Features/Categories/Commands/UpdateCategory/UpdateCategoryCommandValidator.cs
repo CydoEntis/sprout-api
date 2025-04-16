@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using TaskGarden.Application.Features.Shared.Constants;
+using Sprout.Application.Features.Shared.Constants;
 
-namespace TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
+namespace Sprout.Api.Application.Features.Categories.Commands.UpdateCategory;
 
 public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
 {

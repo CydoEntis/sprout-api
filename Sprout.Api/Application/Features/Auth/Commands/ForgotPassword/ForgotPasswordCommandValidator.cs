@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.ForgotPassword;
+namespace Sprout.Api.Application.Features.Auth.Commands.ForgotPassword;
 
 public class ForgotPasswordCommandValidator : AbstractValidator<ForgotPasswordCommand>
 {

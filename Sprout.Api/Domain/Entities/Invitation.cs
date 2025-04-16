@@ -1,7 +1,7 @@
-﻿using TaskGarden.Api.Domain.Enums;
-using TaskGarden.Domain.Enums;
+﻿using Sprout.Api.Domain.Enums;
+using Sprout.Domain.Enums;
 
-namespace TaskGarden.Api.Domain.Entities;
+namespace Sprout.Api.Domain.Entities;
 
 public class Invitation : BaseEntity
 {

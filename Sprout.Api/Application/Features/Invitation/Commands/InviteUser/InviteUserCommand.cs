@@ -1,18 +1,18 @@
 ﻿using MediatR;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Domain.Enums;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Extensions;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Domain.Enums;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Extensions;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Domain.Enums;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Application.Common.Constants;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.Invitation.Commands.InviteUser;
+namespace Sprout.Api.Application.Features.Invitation.Commands.InviteUser;
 
 public record InviteUserCommand : IRequest<bool>
 {

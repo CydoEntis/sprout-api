@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
+namespace Sprout.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 
 public static class ReorderTasklistItemEndpoint
 {

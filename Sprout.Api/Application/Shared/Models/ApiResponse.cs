@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Application.Shared.Models;
+﻿namespace Sprout.Api.Application.Shared.Models;
 
 
 public class ApiResponse<T>

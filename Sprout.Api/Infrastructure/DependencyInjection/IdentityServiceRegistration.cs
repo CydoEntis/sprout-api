@@ -1,9 +1,9 @@
-﻿using TaskGarden.Api.Infrastructure.Services.Identity;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Services.Contracts;
-using TaskGarden.Infrastructure.Services.Identity;
+﻿using Sprout.Api.Infrastructure.Services.Identity;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Application.Services.Contracts;
+using Sprout.Infrastructure.Services.Identity;
 
-namespace TaskGarden.Api.Infrastructure.DependencyInjection;
+namespace Sprout.Api.Infrastructure.DependencyInjection;
 
 public static class IdentityServiceRegistration
 {

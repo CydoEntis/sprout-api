@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Infrastructure.Persistence;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Infrastructure.Persistence;
 
-namespace TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListItems
+namespace Sprout.Api.Application.Features.TasklistItem.Queries.GetTaskListItems
 {
     public record GetTaskListItemsQuery(int TaskListId, int Page, int PageSize)
         : IRequest<PagedResponse<TasklistItemDetail>>;

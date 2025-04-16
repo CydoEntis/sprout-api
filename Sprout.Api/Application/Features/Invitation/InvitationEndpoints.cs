@@ -1,9 +1,9 @@
-﻿using TaskGarden.Api.Application.Features.Invitation.Commands.AcceptInvite;
-using TaskGarden.Api.Application.Features.Invitation.Commands.DeclineInvite;
-using TaskGarden.Api.Application.Features.Invitation.Commands.InviteUser;
+﻿using Sprout.Api.Application.Features.Invitation.Commands.AcceptInvite;
+using Sprout.Api.Application.Features.Invitation.Commands.DeclineInvite;
+using Sprout.Api.Application.Features.Invitation.Commands.InviteUser;
 
 
-namespace TaskGarden.Api.Application.Features.Invitation;
+namespace Sprout.Api.Application.Features.Invitation;
 
 public static class InvitationEndpoints
 {

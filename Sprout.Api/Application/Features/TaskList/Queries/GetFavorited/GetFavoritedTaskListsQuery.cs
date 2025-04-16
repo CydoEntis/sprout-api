@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Infrastructure.Persistence;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Infrastructure.Persistence;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetFavorited
+namespace Sprout.Api.Application.Features.TaskList.Queries.GetFavorited
 {
     public record GetFavoritedTaskListsQuery(
         int Page = 1,

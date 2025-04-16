@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Common.Constants;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Application.Common.Constants;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.ForgotPassword;
+namespace Sprout.Api.Application.Features.Auth.Commands.ForgotPassword;
 
 public record ForgotPasswordCommand(string Email) : IRequest<ForgotPasswordResponse>;
 
@@ -70,7 +70,7 @@ public class ForgotPasswordCommandHandler : AuthRequiredHandler,
             { "Reset Link", resetUrl }
         };
 
-        await _emailService.SendEmailAsync("TaskGarden", email, "Forgot Password Request", "ForgotPasswordTemplate",
+        await _emailService.SendEmailAsync("Sprout", email, "Forgot Password Request", "ForgotPasswordTemplate",
             placeholders);
     }
 }

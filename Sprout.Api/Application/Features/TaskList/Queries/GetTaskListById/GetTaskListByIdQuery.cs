@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Domain.Enums;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Domain.Enums;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById
+namespace Sprout.Api.Application.Features.TaskList.Queries.GetTaskListById
 {
     public record GetTaskListByIdQuery(int TaskListId) : IRequest<GetTaskListByIdQueryResponse>;
 

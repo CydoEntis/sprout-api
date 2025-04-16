@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api;
+﻿namespace Sprout.Api;
 
 public static class CorsServiceRegistration
 {

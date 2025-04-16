@@ -4,14 +4,14 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Services.Contracts;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Application.Common.Constants;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Application.Services.Contracts;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.Google;
+namespace Sprout.Api.Application.Features.Auth.Commands.Google;
 
 public record GoogleLoginCommand(string AuthorizationCode) : IRequest<GoogleLoginResponse>;
 

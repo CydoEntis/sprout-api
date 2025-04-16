@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+namespace Sprout.Api.Application.Features.TaskList.Commands.UpdateTaskList;
 
 public static class UpdateTaskListEndpoint
 {

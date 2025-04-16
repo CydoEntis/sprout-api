@@ -1,6 +1,6 @@
-﻿using TaskGarden.Api.Application.Shared.Models;
+﻿using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Infrastructure.Services.Interfaces;
+namespace Sprout.Api.Infrastructure.Services.Interfaces;
 
 public interface IGoogleAuthService
 {

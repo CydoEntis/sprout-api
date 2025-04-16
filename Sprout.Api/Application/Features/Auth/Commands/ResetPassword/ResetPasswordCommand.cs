@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Exceptions;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Application.Common.Exceptions;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Exceptions;
+using Sprout.Application.Common.Constants;
+using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.ResetPassword;
+namespace Sprout.Api.Application.Features.Auth.Commands.ResetPassword;
 
 public record ResetPasswordCommand(string Email, string Token, string NewPassword) : IRequest<ResetPasswordResponse>;
 

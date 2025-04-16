@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.Google
+namespace Sprout.Api.Application.Features.Auth.Commands.Google
 {
     public class GoogleLoginCommandValidator : AbstractValidator<GoogleLoginCommand>
     {

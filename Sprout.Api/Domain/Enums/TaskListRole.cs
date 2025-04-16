@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Domain.Enums;
+﻿namespace Sprout.Api.Domain.Enums;
 
 public enum TaskListRole
 {

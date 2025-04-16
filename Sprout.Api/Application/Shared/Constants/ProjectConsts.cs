@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Application.Common.Constants;
+﻿namespace Sprout.Application.Common.Constants;
 
 
 

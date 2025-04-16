@@ -1,22 +1,21 @@
 ﻿using FluentValidation;
-using TaskGarden.Api.Application.Features.Auth.Commands.ChangePassword;
-using TaskGarden.Api.Application.Features.Auth.Commands.ForgotPassword;
-using TaskGarden.Api.Application.Features.Auth.Commands.Google;
-using TaskGarden.Api.Application.Features.Auth.Commands.Login;
-using TaskGarden.Api.Application.Features.Auth.Commands.Register;
-using TaskGarden.Api.Application.Features.Categories.Commands.CreateCategory;
-using TaskGarden.Api.Application.Features.Categories.Commands.DeleteCategory;
-using TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
-using TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
-using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
-using TaskGarden.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
-using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
-using TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
+using Sprout.Api.Application.Features.Auth.Commands.ChangePassword;
+using Sprout.Api.Application.Features.Auth.Commands.ForgotPassword;
+using Sprout.Api.Application.Features.Auth.Commands.Google;
+using Sprout.Api.Application.Features.Auth.Commands.Login;
+using Sprout.Api.Application.Features.Auth.Commands.Register;
+using Sprout.Api.Application.Features.Categories.Commands.CreateCategory;
+using Sprout.Api.Application.Features.Categories.Commands.DeleteCategory;
+using Sprout.Api.Application.Features.Categories.Commands.UpdateCategory;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using Sprout.Api.Application.Features.TaskList.Commands.CreateTaskList;
+using Sprout.Api.Application.Features.TaskList.Commands.DeleteTaskList;
+using Sprout.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using Sprout.Api.Application.Features.TaskListItem.Commands.CreateTaskListItem;
+using Sprout.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItem;
+using Sprout.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
 
-
-namespace TaskGarden.Api.Application.DependencyInjection;
+namespace Sprout.Api.Application.DependencyInjection;
 
 public static class ValidatorServiceRegistration
 {

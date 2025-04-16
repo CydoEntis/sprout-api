@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TasklistMembers.Commands.RemoveUserFromTasklist;
+namespace Sprout.Api.Application.Features.TasklistMembers.Commands.RemoveUserFromTasklist;
 
 public static class RemoveUserFromTasklistEndpoint
 {

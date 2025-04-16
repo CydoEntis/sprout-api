@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Constants;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api;
+namespace Sprout.Api;
 
 public static class AuthenticationServiceRegistration
 {

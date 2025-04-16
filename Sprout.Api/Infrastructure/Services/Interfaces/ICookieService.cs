@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Application.Services.Contracts;
+﻿namespace Sprout.Application.Services.Contracts;
 
 
 public interface ICookieService

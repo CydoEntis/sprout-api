@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Invitation.Commands.AcceptInvite;
+namespace Sprout.Api.Application.Features.Invitation.Commands.AcceptInvite;
 
 public static class AcceptInviteEndpoint
 {

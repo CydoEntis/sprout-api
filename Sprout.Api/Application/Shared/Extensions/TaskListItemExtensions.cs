@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Application.Shared.Extensions;
+namespace Sprout.Api.Application.Shared.Extensions;
 
 public static class TaskListItemExtensions
 {

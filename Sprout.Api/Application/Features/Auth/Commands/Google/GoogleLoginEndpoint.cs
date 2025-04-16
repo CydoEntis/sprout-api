@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.Google;
+namespace Sprout.Api.Application.Features.Auth.Commands.Google;
 
 public static class GoogleLoginEndpoint
 {

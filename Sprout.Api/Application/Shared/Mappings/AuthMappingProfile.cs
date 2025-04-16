@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TaskGarden.Api.Application.Features.Auth.Commands.Login;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Application.Features.Auth.Commands.Login;
+using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Application.Shared.Mappings;
+namespace Sprout.Api.Application.Shared.Mappings;
 
 public class AuthMappingProfile : Profile
 {

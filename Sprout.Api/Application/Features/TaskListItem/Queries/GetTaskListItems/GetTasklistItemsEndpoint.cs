@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Application.Shared.Projections;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Projections;
 
-namespace TaskGarden.Api.Application.Features.TasklistItem.Queries.GetTaskListItems;
+namespace Sprout.Api.Application.Features.TasklistItem.Queries.GetTaskListItems;
 
 public static class GetTasklistItemsEndpoint
 {

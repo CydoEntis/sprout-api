@@ -1,13 +1,13 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Enums;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
+namespace Sprout.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
 
 public record UpdateUserRoleCommand(int TaskListId, string UserId, TaskListRole NewRole)
     : IRequest<UpdateUserRoleCommandResponse>;

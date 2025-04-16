@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Domain.Entities;
 
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.Register;
+namespace Sprout.Api.Application.Features.Auth.Commands.Register;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {

@@ -1,12 +1,12 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Application.Services.Contracts;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Application.Common.Constants;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Application.Services.Contracts;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.Logout;
+namespace Sprout.Api.Application.Features.Auth.Commands.Logout;
 
 public record LogoutCommand : IRequest<LogoutResponse>;
 

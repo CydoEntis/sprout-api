@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Api.Infrastructure.Exceptions;
-using TaskGarden.Application.Common.Exceptions;
+using Sprout.Api.Infrastructure.Exceptions;
+using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Application.Shared.Extensions;
+namespace Sprout.Api.Application.Shared.Extensions;
 
 public static class ExceptionExtensions
 {

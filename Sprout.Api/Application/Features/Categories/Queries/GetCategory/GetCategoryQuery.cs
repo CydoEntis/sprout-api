@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Exceptions;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategory;
+namespace Sprout.Api.Application.Features.Categories.Queries.GetCategory;
 
 public record GetCategoryQuery(string CategoryName) : IRequest<GetCategoryResponse>;
 

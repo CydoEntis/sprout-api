@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Infrastructure.Persistence;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Infrastructure.Persistence;
 
-namespace TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueToday;
+namespace Sprout.Api.Application.Features.TaskListItem.Queries.GetDueToday;
 
 public record GetTaskListItemsPerCategoryByDateQuery(
     DateTime Date,

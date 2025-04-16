@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Persistence.Configurations;
-using TaskGarden.Api.Infrastructure.Persistence.Seeding;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Persistence.Configurations;
+using Sprout.Api.Infrastructure.Persistence.Seeding;
 
-namespace TaskGarden.Api.Infrastructure.Persistence;
+namespace Sprout.Api.Infrastructure.Persistence;
 
 public class AppDbContext : IdentityDbContext<AppUser>
 {

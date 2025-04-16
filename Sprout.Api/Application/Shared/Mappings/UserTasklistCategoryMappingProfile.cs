@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetRecentCategories;
-using TaskGarden.Api.Application.Shared.Projections;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllCategories;
+using Sprout.Api.Application.Features.Categories.Queries.GetRecentCategories;
+using Sprout.Api.Application.Shared.Projections;
 
-namespace TaskGarden.Api.Application.Shared.Mappings;
+namespace Sprout.Api.Application.Shared.Mappings;
 
 public class UserTasklistCategoryMappingProfile : Profile
 {

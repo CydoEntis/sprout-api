@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http; 
 using System;                   
-using TaskGarden.Application.Services.Contracts;
+using Sprout.Application.Services.Contracts;
 
-namespace TaskGarden.Infrastructure.Services.Identity;
+namespace Sprout.Infrastructure.Services.Identity;
 
 public class CookieService : ICookieService
 {

@@ -1,7 +1,7 @@
-﻿using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Entities;
+﻿using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Infrastructure.Services.Interfaces;
+namespace Sprout.Api.Infrastructure.Services.Interfaces;
 
 public interface ISessionService
 {

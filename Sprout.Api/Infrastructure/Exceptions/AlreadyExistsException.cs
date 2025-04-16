@@ -1,8 +1,8 @@
-﻿using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Application.Common.Constants;
-using TaskGarden.Application.Common.Exceptions;
+﻿using Sprout.Api.Application.Shared.Models;
+using Sprout.Application.Common.Constants;
+using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Infrastructure.Exceptions;
+namespace Sprout.Api.Infrastructure.Exceptions;
 
 public class AlreadyExistsException : BaseException
 {

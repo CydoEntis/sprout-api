@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using TaskGarden.Api.Application.Features.Categories.Commands.CreateCategory;
-using TaskGarden.Api.Application.Features.Categories.Commands.UpdateCategory;
-using TaskGarden.Api.Application.Features.Categories.Queries;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Application.Features.Invitation.Commands.AcceptInvite;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Application.Features.Categories.Commands.CreateCategory;
+using Sprout.Api.Application.Features.Categories.Commands.UpdateCategory;
+using Sprout.Api.Application.Features.Categories.Queries;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllCategories;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using Sprout.Api.Application.Features.Invitation.Commands.AcceptInvite;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Domain.Entities;
 
 
-namespace TaskGarden.Api.Application.Shared.Mappings;
+namespace Sprout.Api.Application.Shared.Mappings;
 
 public class CategoryMappingProfile : Profile
 {

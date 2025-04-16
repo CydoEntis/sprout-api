@@ -3,9 +3,9 @@ using MimeKit;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using System.Collections.Generic;
 using System;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
+using Sprout.Api.Infrastructure.Services.Interfaces;
 
-namespace TaskGarden.Api.Infrastructure.Services.Email
+namespace Sprout.Api.Infrastructure.Services.Email
 
 {
     public class MailKitService : IEmailService

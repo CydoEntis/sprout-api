@@ -1,13 +1,13 @@
-﻿using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskList;
-using TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskListWithCategory;
-using TaskGarden.Api.Application.Features.TaskList.Commands.DeleteTaskList;
-using TaskGarden.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
-using TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
-using TaskGarden.Api.Application.Features.TaskList.Queries.GetFavorited;
-using TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
+﻿using Sprout.Api.Application.Features.TaskList.Commands.CreateTaskList;
+using Sprout.Api.Application.Features.TaskList.Commands.CreateTaskListWithCategory;
+using Sprout.Api.Application.Features.TaskList.Commands.DeleteTaskList;
+using Sprout.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
+using Sprout.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+using Sprout.Api.Application.Features.TaskList.Queries.GetFavorited;
+using Sprout.Api.Application.Features.TaskList.Queries.GetTaskListById;
 
 
-namespace TaskGarden.Api.Application.Features.TaskList;
+namespace Sprout.Api.Application.Features.TaskList;
 
 public static class TaskListEndpoints
 {

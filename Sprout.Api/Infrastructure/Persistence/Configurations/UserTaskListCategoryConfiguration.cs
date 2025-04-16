@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Infrastructure.Persistence.Configurations;
+namespace Sprout.Api.Infrastructure.Persistence.Configurations;
 
 public class UserTaskListCategoryConfiguration : IEntityTypeConfiguration<UserTaskListCategory>
 {

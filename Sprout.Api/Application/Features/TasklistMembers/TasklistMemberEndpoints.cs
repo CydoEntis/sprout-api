@@ -1,8 +1,8 @@
-﻿using TaskGarden.Api.Application.Features.TasklistItem.Queries;
-using TaskGarden.Api.Application.Features.TasklistMembers.Commands.RemoveUserFromTasklist;
-using TaskGarden.Api.Application.Features.TasklistMembers.Commands.TransferOwnership;
-using TaskGarden.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
-using TaskGarden.Api.Application.Features.TasklistMembers.Queries.GetTasklistMembers;
+﻿using Sprout.Api.Application.Features.TasklistItem.Queries;
+using Sprout.Api.Application.Features.TasklistMembers.Commands.RemoveUserFromTasklist;
+using Sprout.Api.Application.Features.TasklistMembers.Commands.TransferOwnership;
+using Sprout.Api.Application.Features.TasklistMembers.Commands.UpdateUserRole;
+using Sprout.Api.Application.Features.TasklistMembers.Queries.GetTasklistMembers;
 
 public static class TasklistMemberEndpoints
 {

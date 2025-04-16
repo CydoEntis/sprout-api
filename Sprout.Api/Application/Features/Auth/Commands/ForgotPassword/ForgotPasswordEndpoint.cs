@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.ForgotPassword;
+namespace Sprout.Api.Application.Features.Auth.Commands.ForgotPassword;
 
 public static class ForgotPasswordEndpoint
 {

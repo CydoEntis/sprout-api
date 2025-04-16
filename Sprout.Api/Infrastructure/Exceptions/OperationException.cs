@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace TaskGarden.Application.Common.Exceptions;
+namespace Sprout.Application.Common.Exceptions;
 
 
 public class OperationException(string title, string message)

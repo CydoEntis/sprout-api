@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Infrastructure.Services.Interfaces;
+﻿namespace Sprout.Api.Infrastructure.Services.Interfaces;
 
 public interface IEmailTemplateService
 {

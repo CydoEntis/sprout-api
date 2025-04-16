@@ -1,6 +1,6 @@
-﻿using TaskGarden.Application.Common.Exceptions;
+﻿using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Application.Shared.Handlers;
+namespace Sprout.Api.Application.Shared.Handlers;
 
 public abstract class AuthRequiredHandler
 {

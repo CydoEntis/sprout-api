@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TaskGarden.Api.Domain.Entities;
+namespace Sprout.Api.Domain.Entities;
 
 public class Category : BaseEntity
 {

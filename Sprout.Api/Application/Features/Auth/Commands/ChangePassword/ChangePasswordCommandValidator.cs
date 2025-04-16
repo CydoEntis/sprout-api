@@ -1,4 +1,5 @@
-﻿namespace TaskGarden.Api.Application.Features.Auth.Commands.ChangePassword;
+﻿
+namespace Sprout.Api.Application.Features.Auth.Commands.ChangePassword;
 
 using FluentValidation;
 

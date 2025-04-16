@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
+namespace Sprout.Api.Application.Features.Categories.Queries.GetCategoriesWithTaskListCount;
 
 public static class GetCategoriesWithTaskListCountEndpoint
 {

@@ -1,7 +1,8 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Features.Auth.Commands.ChangePassword;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.ChangePassword;
+namespace Sprout.Api.Application.Features.Auth.Commands.ChangePassword;
 
 public static class ChangePasswordEndpoint
 {

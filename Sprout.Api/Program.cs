@@ -1,17 +1,17 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
-using TaskGarden.Api;
-using TaskGarden.Api.Application.Features.Auth;
-using TaskGarden.Api.Application.Features.Categories;
-using TaskGarden.Api.Application.Features.Invitation;
-using TaskGarden.Api.Application.Features.TaskList;
-using TaskGarden.Api.Application.Features.TaskListItem;
-using TaskGarden.Api.Application.Shared.Extensions;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.DependencyInjection;
-using TaskGarden.Api.Infrastructure.Middlewares;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Configurations;
+using Sprout.Api.Application.DependencyInjection;
+using Sprout.Api;
+using Sprout.Api.Application.Features.Auth;
+using Sprout.Api.Application.Features.Categories;
+using Sprout.Api.Application.Features.Invitation;
+using Sprout.Api.Application.Features.TaskList;
+using Sprout.Api.Application.Features.TaskListItem;
+using Sprout.Api.Application.Shared.Extensions;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.DependencyInjection;
+using Sprout.Api.Infrastructure.Middlewares;
+using Sprout.Api.Infrastructure.Persistence;
 
 
 var builder = WebApplication.CreateBuilder(args);

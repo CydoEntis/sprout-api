@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Commands.UpdateTaskList;
+namespace Sprout.Api.Application.Features.TaskList.Commands.UpdateTaskList;
 
 public class UpdateTaskListCommandValidator : AbstractValidator<UpdateTaskListCommand>
 {

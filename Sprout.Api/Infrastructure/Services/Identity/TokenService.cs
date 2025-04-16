@@ -2,15 +2,15 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using TaskGarden.Application.Common.Constants;
+using Sprout.Application.Common.Constants;
 using Newtonsoft.Json;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Domain.Enums;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Domain.Enums;
 
-namespace TaskGarden.Api.Infrastructure.Services.Identity;
+namespace Sprout.Api.Infrastructure.Services.Identity;
 
 public class TokenService : ITokenService
 {

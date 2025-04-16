@@ -1,6 +1,6 @@
-﻿using TaskGarden.Api.Infrastructure.Services.Interfaces;
+﻿using Sprout.Api.Infrastructure.Services.Interfaces;
 
-namespace TaskGarden.Api.Infrastructure.Middlewares
+namespace Sprout.Api.Infrastructure.Middlewares
 {
     public class JwtTokenMiddleware
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TaskGarden.Api.Domain.Entities;
+using Sprout.Api.Domain.Entities;
 
-namespace TaskGarden.Api.Infrastructure.Persistence.Seeding;
+namespace Sprout.Api.Infrastructure.Persistence.Seeding;
 
 public class UserSeeder : IEntityTypeConfiguration<AppUser>
 {

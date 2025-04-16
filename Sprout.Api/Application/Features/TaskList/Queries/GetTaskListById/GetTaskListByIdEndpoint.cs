@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Queries.GetTaskListById;
+namespace Sprout.Api.Application.Features.TaskList.Queries.GetTaskListById;
 
 public static class GetTaskListByIdEndpoint
 {

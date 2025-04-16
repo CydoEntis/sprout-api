@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Extensions;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Exceptions;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Extensions;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Exceptions;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
+namespace Sprout.Api.Application.Features.TaskListItem.Commands.ReorderTaskListItem;
 
 public record ReorderTasklistItemCommand(int TaskListId, List<TasklistItemPosition> Items)
     : IRequest<ReorderTaskListItemResponse>;

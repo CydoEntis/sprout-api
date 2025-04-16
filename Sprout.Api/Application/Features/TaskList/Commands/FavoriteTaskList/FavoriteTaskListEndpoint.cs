@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
+namespace Sprout.Api.Application.Features.Tasklist.Commands.FavoriteTasklist;
 
 public static class FavoriteTaskListEndpoint
 {

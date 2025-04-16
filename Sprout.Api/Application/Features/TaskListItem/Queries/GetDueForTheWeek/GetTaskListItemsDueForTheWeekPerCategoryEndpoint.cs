@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.TaskListItem.Queries.GetDueForTheWeek;
+namespace Sprout.Api.Application.Features.TaskListItem.Queries.GetDueForTheWeek;
 
 public static class GetTaskListItemsDueForTheWeekPerCategoryEndpoint
 {

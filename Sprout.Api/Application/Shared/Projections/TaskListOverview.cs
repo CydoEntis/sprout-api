@@ -1,8 +1,8 @@
-﻿using TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
-using TaskGarden.Api.Domain.Enums;
-using TaskGarden.Domain.Enums;
+﻿using Sprout.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory;
+using Sprout.Api.Domain.Enums;
+using Sprout.Domain.Enums;
 
-namespace TaskGarden.Api.Application.Shared.Projections;
+namespace Sprout.Api.Application.Shared.Projections;
 
 public class TaskListOverview
 {

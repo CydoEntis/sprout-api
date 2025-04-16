@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Features.Categories.Queries.GetAllCategories;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
+namespace Sprout.Api.Application.Features.Categories.Queries.GetAllCategories;
 
 public static class GetAllCategoriesEndpoint
 {

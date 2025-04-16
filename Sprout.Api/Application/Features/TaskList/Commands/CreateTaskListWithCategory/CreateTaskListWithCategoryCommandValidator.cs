@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TaskGarden.Api.Application.Features.TaskList.Commands.CreateTaskListWithCategory;
+namespace Sprout.Api.Application.Features.TaskList.Commands.CreateTaskListWithCategory;
 
 public class CreateTaskListWithCategoryCommandValidator : AbstractValidator<CreateTaskListWithCategoryCommand>
 {

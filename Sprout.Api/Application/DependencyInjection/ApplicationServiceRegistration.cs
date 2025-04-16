@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace TaskGarden.Application.Configurations;
+namespace Sprout.Api.Application.DependencyInjection;
 
 public static class ApplicationServiceRegistration
 {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace TaskGarden.Api.Application.Shared.Mappings;
+namespace Sprout.Api.Application.Shared.Mappings;
 
 public class MapperConfig
 {

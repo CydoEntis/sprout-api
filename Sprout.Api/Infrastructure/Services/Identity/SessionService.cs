@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Api.Infrastructure.Services.Interfaces;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Api.Infrastructure.Services.Interfaces;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Infrastructure.Services.Identity;
+namespace Sprout.Api.Infrastructure.Services.Identity;
 
 public class SessionService : ISessionService
 {

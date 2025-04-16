@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Infrastructure;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Infrastructure;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetRecentCategories;
+namespace Sprout.Api.Application.Features.Categories.Queries.GetRecentCategories;
 
 public record GetRecentCategoriesQuery() : IRequest<List<GetRecentCategoriesQueryResponse>>;
 

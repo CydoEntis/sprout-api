@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Domain.Enums;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Domain.Common;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Domain.Enums;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Domain.Common;
 
-namespace TaskGarden.Api.Application.Features.Demo
+namespace Sprout.Api.Application.Features.Demo
 {
     public static class SeedDataManager
     {

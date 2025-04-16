@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Api.Domain.Entities;
+﻿namespace Sprout.Api.Domain.Entities;
 public class Session : BaseEntity
 {
     public required string SessionId { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Application.Common.Exceptions;
+﻿namespace Sprout.Application.Common.Exceptions;
 
 
 public class BaseException : Exception

@@ -2,14 +2,14 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TaskGarden.Api.Application.Shared.Handlers;
-using TaskGarden.Api.Application.Shared.Models;
-using TaskGarden.Api.Application.Shared.Projections;
-using TaskGarden.Api.Domain.Entities;
-using TaskGarden.Api.Infrastructure.Persistence;
-using TaskGarden.Application.Common.Exceptions;
+using Sprout.Api.Application.Shared.Handlers;
+using Sprout.Api.Application.Shared.Models;
+using Sprout.Api.Application.Shared.Projections;
+using Sprout.Api.Domain.Entities;
+using Sprout.Api.Infrastructure.Persistence;
+using Sprout.Application.Common.Exceptions;
 
-namespace TaskGarden.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory
+namespace Sprout.Api.Application.Features.Categories.Queries.GetAllTaskListsForCategory
 {
     public record GetAllTaskListsForCategoryQuery(
         string CategoryName,

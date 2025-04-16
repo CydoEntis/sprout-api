@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using TaskGarden.Api.Application.Features.Auth.Commands.Login;
-using TaskGarden.Api.Application.Shared.Models;
+using Sprout.Api.Application.Features.Auth.Commands.Login;
+using Sprout.Api.Application.Shared.Models;
 
-namespace TaskGarden.Api.Application.Features.Auth.Commands.Register;
+namespace Sprout.Api.Application.Features.Auth.Commands.Register;
 
 public static class RegisterEndpoint
 {

@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Domain.Common;
+﻿namespace Sprout.Domain.Common;
 
 using System.Collections.Immutable;
 using System.Collections.Generic;

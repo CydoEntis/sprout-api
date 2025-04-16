@@ -1,4 +1,4 @@
-﻿namespace TaskGarden.Domain.Enums;
+﻿namespace Sprout.Domain.Enums;
 
 public enum InvitationStatus
 {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TaskGarden.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
+namespace Sprout.Api.Application.Features.TaskListItem.Commands.UpdateTaskListItemCompletedStatus;
 
 public class
     UpdateTasklistItemCompletedStatusCommandValidator : AbstractValidator<UpdateTaskListItemCompletedStatusCommand>
