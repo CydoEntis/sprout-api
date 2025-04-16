@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskGarden.Api.Infrastructure.Persistence;
 using TaskGarden.Application.Common.Constants;
-using TaskGarden.Infrastructure;
 
 namespace TaskGarden.Api.Infrastructure.DependencyInjection;
 
@@ -11,6 +10,8 @@ public static class DatabaseServiceRegistration
         IConfiguration configuration)
     {
         var connectionString = configuration[ProjectConsts.ConnectionString];
+
+        Console.WriteLine(connectionString);
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString, options => options.CommandTimeout(360)));

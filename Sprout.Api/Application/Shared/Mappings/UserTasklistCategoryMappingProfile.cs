@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetAllCategories;
 using TaskGarden.Api.Application.Features.Categories.Queries.GetRecentCategories;
-using TaskGarden.Application.Projections;
+using TaskGarden.Api.Application.Shared.Projections;
 
 namespace TaskGarden.Api.Application.Shared.Mappings;
 

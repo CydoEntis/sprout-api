@@ -16,25 +16,14 @@ using TaskGarden.Application.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    var certFilePath = Environment.GetEnvironmentVariable("CERT_FILE_PATH");  
-    var certPassword = Environment.GetEnvironmentVariable("CERT_PASSWORD");    
-
-    Console.WriteLine($"Certificate File Path: {certFilePath}");
-    Console.WriteLine($"Certificate Password: {certPassword}");
-    
-    if (string.IsNullOrEmpty(certFilePath) || string.IsNullOrEmpty(certPassword))
-    {
-        throw new InvalidOperationException("SSL certificate path or password is not set.");
-    }
-
-    serverOptions.ListenAnyIP(443, listenOptions =>
-    {
-        listenOptions.UseHttps(certFilePath, certPassword);
-    });
-});
-
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ListenAnyIP(5000); // HTTP
+//     options.ListenAnyIP(5001, listenOptions =>
+//     {
+//         listenOptions.UseHttps();
+//     });
+// });
 
 
 // Add services to the container
@@ -78,6 +67,12 @@ app.UseAuthorization();
 
 // 🔒 Redirect HTTP to HTTPS (safe to keep, will be ignored if no HTTP port)
 app.UseHttpsRedirection();
+
+app.MapGet("/test", () =>
+{
+    return Results.Ok(new { message = "API is working!" });
+});
+
 
 app.MapAuthEndpoints();
 app.MapCategoryEndpoints();

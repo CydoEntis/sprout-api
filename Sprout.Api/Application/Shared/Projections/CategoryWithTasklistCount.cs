@@ -1,6 +1,6 @@
 ﻿using TaskGarden.Api.Domain.Entities;
 
-namespace TaskGarden.Application.Projections;
+namespace TaskGarden.Api.Application.Shared.Projections;
 
 public class CategoryWithTasklistCount
 {
