@@ -1,4 +1,4 @@
-﻿namespace Sprout.Application.Common.Constants;
+﻿namespace Sprout.Api.Application.Shared.Constants;
 
 
 
@@ -10,5 +10,5 @@ public class ProjectConsts
     public const string EmailTemplatesDir = "Templates";
     public const string DevUrl = "https://localhost:433";
     public const string ProdUrl = "";
-    public const string ConnectionString = "DefaultConnectionString";
+    public const string ConnectionString = "DefaultConnection";
 }

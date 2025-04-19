@@ -8,8 +8,7 @@ public static class CorsServiceRegistration
         {
             options.AddPolicy("AllowAll", policy =>
             {
-                policy.WithOrigins("https://localhost:5173", "http://client-container:5173",
-                        "https://client-container:5173")
+                policy.WithOrigins("https://localhost:5173")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()

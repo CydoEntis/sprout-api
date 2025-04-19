@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sprout.Api.Application.Shared.Constants;
 using Sprout.Api.Infrastructure.Persistence;
 using Sprout.Application.Common.Constants;
 
@@ -9,7 +10,7 @@ public static class DatabaseServiceRegistration
     public static IServiceCollection AddDatabaseService(this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = configuration[ProjectConsts.ConnectionString];
+        var connectionString = configuration.GetConnectionString(ProjectConsts.ConnectionString);
 
         Console.WriteLine(connectionString);
 

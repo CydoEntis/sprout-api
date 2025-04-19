@@ -5,7 +5,7 @@
 
 public class JwtConsts
 {
-    public const string Secret = "JwtSecret";
-    public const string Audience = "JwtAudience";
-    public const string Issuer = "JwtIssuer";
+    public const string Secret = "JwtSettings:Secret";
+    public const string Audience = "JwtSettings:Audience";
+    public const string Issuer = "JwtSettings:Issuer";
 }
